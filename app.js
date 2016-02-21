@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 
 mongoose.connect('mongodb://js16a:js16mongo@ds055855.mongolab.com:55855/js16a');
+
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', function () {
@@ -19,6 +20,13 @@ mongoose.connection.on('error',function (err) {
 mongoose.connection.on('disconnected', function () {
   console.log('Mongoose default connection disconnected');
 });
+
+// I get on server start:
+/*
+ Node server is listening on port 8080
+ Mongoose default connection disconnected
+ Mongoose default connection error: MongoError: auth failed
+ */
 
 
 // to get the data from a POST
