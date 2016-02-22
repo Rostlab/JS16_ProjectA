@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 
 dbCfg = require('./cfg/db');
-mongoose.connect('mongodb://'+dbCfg.name+':'+dbCfg.password+'@'+dbCfg.db);
+mongoose.connect('mongodb://'+dbCfg.name+':'+dbCfg.password+'@'+dbCfg.db+':'+dbCfg.port+'/'+dbCfg.db);
 
 // CONNECTION EVENTS
 // When successfully connected

@@ -47,6 +47,7 @@ node_modules/*
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.cfg/db.js
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
