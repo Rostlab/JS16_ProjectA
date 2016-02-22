@@ -10,8 +10,8 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "express": "^4.13.4",
-    "mongoose": "~3.6.13",
+    "express": "latest",
+    "mongoose": "~4.2.5",
     "body-parser": "~1.0.1"
   }
 }

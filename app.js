@@ -2,23 +2,34 @@ var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
+var config     = require('./cfg/config');
 
-dbCfg = require('./cfg/db');
-mongoose.connect('mongodb://'+dbCfg.name+':'+dbCfg.password+'@'+dbCfg.db+':'+dbCfg.port+'/'+dbCfg.db);
+var databaseParams = config.database;
+
+var dbConnection = "mongodb://" +
+    databaseParams.username + ":" +
+    databaseParams.password + "@" +
+    databaseParams.uri     + ":" +
+    databaseParams.port     + "/" +
+    databaseParams.collection;
+
+console.log("Going to connect to " + dbConnection);
+mongoose.connect(dbConnection);
+var db = mongoose.connection;
 
 // CONNECTION EVENTS
 // When successfully connected
-mongoose.connection.on('connected', function () {
-    console.log('Mongoose default connection open to ' + dbURI);
+db.on('connected', function () {
+    console.log('Mongoose connected');
 });
 
 // If the connection throws an error
-mongoose.connection.on('error',function (err) {
+db.on('error',function (err) {
     console.log('Mongoose default connection error: ' + err);
 });
 
 // When the connection is disconnected
-mongoose.connection.on('disconnected', function () {
+db.on('disconnected', function () {
     console.log('Mongoose default connection disconnected');
 });
 // I get on server start:
@@ -28,39 +39,40 @@ mongoose.connection.on('disconnected', function () {
  Mongoose default connection error: MongoError: auth failed
  */
 
+db.on('open', function() {
+    // to get the data from a POST
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
 
-// to get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
+    var router = express.Router();
 
-var router = express.Router();
+    // this happens for every request
+    router.use(function(req, res, next) {
+        console.log('Request incoming.');
 
-// this happens for every request
-router.use(function(req, res, next) {
-    console.log('Request incoming.');
+        // HERE LOGIN TEST
 
-    // HERE LOGIN TEST
+        next(); // go to the specialized request
+    });
 
-    next(); // go to the specialized request
+    /*
+    #### Routes
+    */
+    var defController = require('./app/controllers/default');
+    router.get('/', defController.init);
+
+    var housesController = require('./app/controllers/house');
+    router.post('/houses', housesController.addHouse);
+
+    /*
+    ###
+    */
+
+    // prefix for all routes
+    app.use('/api', router);
+
+    var port = 8080;
+    app.listen(port);
+    console.log('Node server is listening on port ' + port);
 });
-
-/*
-#### Routes
- */
-var defController = require('./app/controllers/default');
-router.get('/', defController.init);
-
-var housesController = require('./app/controllers/house');
-router.post('/houses', housesController.addHouse);
-
-/*
-###
- */
-
-// prefix for all routes
-app.use('/api', router);
-
-var port = 8080;
-app.listen(port);
-console.log('Node server is listening on port ' + port);

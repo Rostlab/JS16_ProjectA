@@ -1,0 +1,9 @@
+{
+    "database" : {
+        "username": "readWriteUser",
+        "password": "somePassword",
+        "port": "1234",
+        "uri": "my.server.com",
+        "collection": "awol"
+    }
+}
