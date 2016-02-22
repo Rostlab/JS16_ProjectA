@@ -3,7 +3,8 @@ var app        = express();
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 
-mongoose.connect('mongodb://js16a:js16mongo@ds055855.mongolab.com:55855/js16a');
+dbCfg = require('./cfg/db');
+mongoose.connect('mongodb://'+dbCfg.name+':'+dbCfg.password+'@'+dbCfg.db);
 
 // CONNECTION EVENTS
 // When successfully connected
