@@ -29,9 +29,9 @@ module.exports = {
 		*/
 		var houses = houseController.getData();
 		var characters = characterController.getData();
-		var culture = culture.getData();
+		var culture = cultureController.getData();
 		var episodes = episodeController.getData();
-		var history = hoistoryController.getData();
+		var history = historyController.getData();
 		
 		/*
 		*	Insert the data in the freshly made collections
