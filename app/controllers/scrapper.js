@@ -1,5 +1,5 @@
 module.exports = {
-    scrapWebPage: function (req, res) {
+    scrapWebPage: function () {
         var cheerio = require('cheerio');
 		var request = require('request');
 		
@@ -23,7 +23,7 @@ module.exports = {
 		});	
     },
 	
-	scrapWebPageNew: function (req, res) {
+	scrapWebPageNew: function () {
 		var MediaWiki = require("mediawiki");
 		var bot = new MediaWiki.Bot({
 			endpoint: "http://awoiaf.westeros.org/api.php"
