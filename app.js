@@ -1,16 +1,17 @@
-var express    = require('express');
-var app        = express();
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
-var mongoose   = require('mongoose');
-var config     = require('./cfg/config');
+var mongoose = require('mongoose');
+var config = require('./cfg/config');
 
 var databaseParams = config.database;
-
-var dbConnection = "mongodb://" +
-    databaseParams.username + ":" +
-    databaseParams.password + "@" +
-    databaseParams.uri     + ":" +
-    databaseParams.port     + "/" +
+var dbConnection = "mongodb://"
+if (databaseParams.username.length > 0 && databaseParams.password.length > 0) {
+    dbConnection += databaseParams.username + ":" +
+        databaseParams.password + "@";
+}
+dbConnection += databaseParams.uri + ":" +
+    databaseParams.port + "/" +
     databaseParams.collection;
 
 console.log("Going to connect to " + dbConnection);
@@ -24,7 +25,7 @@ db.on('connected', function () {
 });
 
 // If the connection throws an error
-db.on('error',function (err) {
+db.on('error', function (err) {
     console.log('Mongoose default connection error: ' + err);
 });
 
@@ -39,16 +40,16 @@ db.on('disconnected', function () {
  Mongoose default connection error: MongoError: auth failed
  */
 
-db.on('open', function() {
+db.on('open', function () {
     // to get the data from a POST
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
 
     var router = express.Router();
 
     // this happens for every request
-    router.use(function(req, res, next) {
+    router.use(function (req, res, next) {
         console.log('Request incoming.');
 
         // HERE LOGIN TEST
@@ -57,8 +58,8 @@ db.on('open', function() {
     });
 
     /*
-    #### Routes
-    */
+     #### Routes
+     */
     var defController = require('./app/controllers/default');
     router.get('/', defController.init);
 
@@ -66,8 +67,8 @@ db.on('open', function() {
     router.post('/houses', housesController.addHouse);
 
     /*
-    ###
-    */
+     ###
+     */
 
     // prefix for all routes
     app.use('/api', router);
