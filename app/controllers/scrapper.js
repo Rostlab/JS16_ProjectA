@@ -1,39 +1,54 @@
 module.exports = {
-    scrapWebPage: function () {
-        var cheerio = require('cheerio');
-		var request = require('request');
-		
-		url = 'http://awoiaf.westeros.org/index.php/Houses_of_Westeros';
-		request(url, function(error, response, html) {			
-			var body = cheerio.load(html);
-			var arr = body('.navbox-list').filter(function() {
-				var data = body(this);
-				/*
-					For testing purposes
-					Write to console all houses names
-				*/
-				var arr = data.children().text().split("·");
-				/*
-				for(i = 0; i < arrayOfChildren.length; i++) {
-					var child = arrayOfChildren[i];
-					console.log(child);
-				}
-				*/
-			})
-		});	
-    },
 	
-	scrapWebPageNew: function () {
-		var MediaWiki = require("mediawiki");
-		var bot = new MediaWiki.Bot({
-			endpoint: "http://awoiaf.westeros.org/api.php"
+	/*
+	* @return: Returns an array of String containing the scrapped values
+	*/
+	
+	getAllHouses: function () {
+		
+		//Setup the mediawiki bot
+		var bot = require("nodemw");
+		
+		var client = new bot({
+			server: "awoiaf.westeros.org",
+			path: "/api.php"
 		});
-		//var url = http://awoiaf.westeros.org/api.php?action=query&titles=Houses%20Of%20Westeros&list=search&srsearch=house&format=xml&sroffset=10";
-		bot.get({action: "query", titles: "Houses%20Of%20Westeros", list: "search", srsearch: "house", format: "xml", sroffset: "0"}).complete(function(response) {
-			console.log(response.text);
-		}).error(function (err) {
-			console.log(err.toString());
-		});		
+		
+		houses = [];
+		
+		
+		//Iterate through all the houses
+		//Needed because searchoffset is only 10
+		for(i = 0; i < 580; i = i+10) {
+			//Setup up the api parameters
+			var params = {
+				action: "query",
+				titles: "Houses%20Of%20Westeros",
+				list: "search",
+				srsearch: "house",
+				format: "json",
+				sroffset: String(i)
+			};
+			
+			//Get results from api
+			client.api.call(params, function(err, info, next, data) {
+				for(j = 0; j < data["query"]["search"].length; j++) {
+					title = String(data["query"]["search"][j]["title"]);
+					if(title.indexOf("House") != 0) {
+						continue;
+					}
+					if(title == null) {
+						break;
+					}
+					houses.push(title);
+				}			
+			});
+		}
+		
+		
+		//TODO: return value houses
+		//Wait for the call task to end and then return
+		
 	}
 	
 };

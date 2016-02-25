@@ -13,6 +13,7 @@
     "express": "latest",
     "mongoose": "~4.2.5",
     "body-parser": "~1.0.1",
-    "kerberos": "~0.0.17"
+    "kerberos": "~0.0.17",
+	"nodemw": "0.8.1"
   }
 }
