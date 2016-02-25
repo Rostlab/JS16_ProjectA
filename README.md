@@ -16,7 +16,8 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 * Clone this project to a folder on your harddrive and open a console inside it
 * Run `sudo npm install` to install any submodules required
 * Copy the config file in `cfg` to `config.json` and edit it
+* Togi: I left username and password empty. With that you can avoid Mongoose connection errors.
 * Start local MongoDB server with `mongod --dbpath /your/db/path/here --port 12345`
 * Run `nodejs app.js` to start the server
 * Node should show in console `Mongoose connected - Node server is listening on port 8080`
-* If needed, you can start MongoDB shell via `mongo`.
+* If needed, you can start MongoDB shell via `mongo`. Then type `show dbs` to see all databases. Type `use db_name_here` to switch to preferred database. With `show collections` you can see all tables (in NoSQL tables are called collections). With `db.collection_name.find()` you can output the collection content.
