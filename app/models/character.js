@@ -11,6 +11,12 @@ var CharacterSchema   = new Schema({
     age: { type: Number, min: 8, max: 100 },                              // ??
     born: Date,                                                           // 259 AC 
     died: Date,                                                           // 283 AC
+    
+    brothersSisters: {type: Schema.Types.ObjectId, ref: "BrothersSisters"}, //no sister
+    mother: {type: Schema.Types.ObjectId, ref: "Parents"},		// was the eldest son of King Aerys II Targaryen 
+    father: {type: Schema.Types.ObjectId, ref: "Parents"},		// his sister-wife, Queen Rhaella.
+    
+    
     placeOfBirth: String,                                                 // Summerhall
     placeOfDeath: String,                                                 // Trident
 	house: {type: Schema.Types.ObjectId, ref: "House"},                   // House Targaryen
