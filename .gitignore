@@ -43,6 +43,7 @@ node_modules/*
 
 # User-specific stuff:
 .idea/
+/mongodb/
 
 ## File-based project format:
 *.iws
@@ -64,6 +65,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Mac OS X file data
+.DS_Store
 
 ############# Sensible data:
 cfg/config.json
