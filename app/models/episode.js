@@ -6,8 +6,16 @@ var EpisodeSchema   = new Schema({
     character: [{type: mongoose.Schema.types.ObjectId, ref: 'Character'}],
     start_time: { type : Date, default: Date.now},
     episode_length: { type : Number, min : 60, max : 70 },        // maximum 70 min, minimum 60 min duration as the episodes differ in duration
-    predecessor: [{type: mongoose.Schema.types.ObjectId, ref: 'Predecessor'}],
-    successor: [{type: mongoose.Schema.types.ObjectId, ref: 'Successor'}],
+    predecessor: {
+		episode:{
+					name: { type: String, ref: 'Episode' }
+				} 
+    	},
+    successor: {
+		episode:{
+					name: { type: String, ref: 'Episode' }
+				} 
+    	},
     created_at: { type : Date, default: Date.now},
     updated_at: { type : Date, default: Date.now},
 });
