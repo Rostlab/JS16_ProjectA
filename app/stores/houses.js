@@ -63,6 +63,34 @@ module.exports = {
 
     },
 
+    editHouse: function (id, data, callback) {
+        this.getHouseById(id,function(success, house) {
+            // house exists
+            if(success == 1) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        house[key] = data[key];
+                    }
+                }
+                house.save(function(err) {
+                    if (err){
+                        callback(false,err);
+                    }
+                    else {
+                        callback(true,house);
+                    }
+                });
+            }
+            // house is not existing
+            else if (success == 3) {
+                callback(false, 'Failure. No house with id "'+id +'" existing!')
+            }
+            else {
+                callback(false, house);
+            }
+        });
+    },
+
     addHouseType: function(name,callback) {
         var HouseType = require(this.houseTypeModel);
         var entry = new HouseType();
