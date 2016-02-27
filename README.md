@@ -5,14 +5,16 @@ In this project we will lay the foundations for our system by integrating data f
 Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to document your services and list them here, for example:
 
 # Services:
-  - [Login](https://github.com/Rostlab/JS16_ProjectA/wiki/Login)
-  - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
+  
+  - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
-  - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
+  - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
   - [Remove house](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house)
-  - [Add house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house-type)
+  
   - [Get house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-types)
+  - [Add house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house-type)
+  - [Remove house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house-type)
 
 
 # Links
