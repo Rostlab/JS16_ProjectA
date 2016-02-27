@@ -2,7 +2,6 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
-    _id: Schema.Types.ObjectId,
     name: String,                                                         // Targaryen
     type: {type: Schema.Types.ObjectId, ref: "HouseTypes"},                                                         // 0 = Current Great house
                                                                           // 1 = Exiled Great house
@@ -18,9 +17,6 @@ var HouseSchema   = new Schema({
     cadetBranch: String,                                                  // House Blackfyre is the cadet branch of House Targaryen
     ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
     founded: String                                                       // > 126 BC, Age of Heroes
-
-    // To get the characters of a house: api/characters/byHouse/Targaryen
-    // character: [{type: Schema.Types.ObjectId, ref: 'Character'}]          // Characters belong to this house
 });
 
 module.exports = mongoose.model('House', HouseSchema);
