@@ -7,6 +7,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 # Services:
   - [Login](https://github.com/Rostlab/JS16_ProjectA/wiki/Login)
   - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
+  - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
 
 
 # Links
