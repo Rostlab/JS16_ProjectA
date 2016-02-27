@@ -10,6 +10,7 @@ module.exports = {
     },
 
     getHouses: function (req, res) {
+        var housesStore = require('../stores/houses');
 
         housesStore.getHouses(function(houses) {
             if(houses != false) {
@@ -23,12 +24,24 @@ module.exports = {
     },
     getHouseByName: function(req, res) {
         var housesStore = require('../stores/houses');
-        var houses;
+
         housesStore.getHouseByName(req.params.houseName, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
                 res.status(200).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
+            else
+                res.status(400).json({ message: 'Error: Bad request.', error: message });
+        });
+    },
+    getHouseById: function(req, res) {
+        var housesStore = require('../stores/houses');
+
+        housesStore.getHouseById(req.params.houseId, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if (success == 3)
+                res.status(200).json({ message: 'Failure. No house with id "'+req.params.houseId +'" existing!' });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });

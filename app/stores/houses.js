@@ -36,7 +36,18 @@ module.exports = {
             else
                 callback(1, obj);
         });
-
+    },
+    getHouseById: function(id, callback) {
+        var House = require(this.model);
+        House.findOne({'_id': id}, function(err,obj)
+        {
+            if (err)
+                callback(2,err);
+            else if(obj == null)
+                callback(3,'No house with id "'+ id +'" in the database.');
+            else
+                callback(1, obj);
+        });
     },
     addHouseType: function(name,callback) {
         var HouseType = require(this.houseTypeModel);
