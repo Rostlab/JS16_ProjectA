@@ -1,10 +1,6 @@
 module.exports = {
 	
-	/*
-	* @return: Returns an array of String containing the scrapped values
-	*/
-	
-	getAllHouses: function () {
+	getAllHouses: function (callback) {
 		
 		//Setup the mediawiki bot
 		var bot = require("nodemw");
@@ -16,9 +12,10 @@ module.exports = {
 		
 		houses = [];
 		
-		
 		//Iterate through all the houses
-		//Needed because searchoffset is only 10
+		
+		console.log("Loading all houses from the wiki. This might take a while");
+		
 		for(i = 0; i < 580; i = i+10) {
 			//Setup up the api parameters
 			var params = {
@@ -34,21 +31,16 @@ module.exports = {
 			client.api.call(params, function(err, info, next, data) {
 				for(j = 0; j < data["query"]["search"].length; j++) {
 					title = String(data["query"]["search"][j]["title"]);
-					if(title.indexOf("House") != 0) {
-						continue;
-					}
 					if(title == null) {
 						break;
 					}
 					houses.push(title);
-				}			
+				}
+				if(houses.length == data["query"]["searchinfo"]["totalhits"]) {
+					callback(houses);
+				}
 			});
 		}
-		
-		
-		//TODO: return value houses
-		//Wait for the call task to end and then return
-		
 	}
 	
 };
