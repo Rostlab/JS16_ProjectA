@@ -32,8 +32,13 @@ var CharacterSchema   = new Schema({
     */
 	
 	
-	brothersSisters: [{type: Schema.Types.ObjectId, ref: 'Character' }],
-	parents: [{type: Schema.Types.ObjectId, ref: 'Character' }],	//should also be fixed size of 2	
+	brothersSisters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
+	mother: {type: Schema.Types.ObjectId, ref: 'Character'},
+	father: {type: Schema.Types.ObjectId, ref: 'Character'},
+    children: [{type: Schema.Types.ObjectId, ref: 'Character'}],	
+    heir: {type: Schema.Types.ObjectId, ref: 'Character'},
+    
+    battles: [{type: Schema.Types.ObjectId, ref: 'Battle'}]
     
     placeOfBirth: String,                                                 // Summerhall
     placeOfDeath: String,                                                 // Trident
