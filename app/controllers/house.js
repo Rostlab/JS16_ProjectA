@@ -49,10 +49,10 @@ module.exports = {
     removeHouse: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.removeHouse(req.params.houseId,function(success) {
-            if(success)
+            if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(400).json({ message: 'Failure: No .' });
+                res.status(400).json({ message: 'Failure: No house with the id "'+req.params.houseId +'".' });
         });
 
     },

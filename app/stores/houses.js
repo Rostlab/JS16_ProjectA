@@ -56,9 +56,9 @@ module.exports = {
             _id: id
         }, function(err, house) {
             if (err)
-                callback(true);
-            else
                 callback(false);
+            else
+                callback(true);
         });
 
     },
