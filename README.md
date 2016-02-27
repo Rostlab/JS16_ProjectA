@@ -9,6 +9,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
   - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
   - [Add house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house-type)
+  - [Get house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-types)
 
 
 # Links
