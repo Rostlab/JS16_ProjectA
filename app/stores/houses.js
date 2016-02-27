@@ -25,6 +25,19 @@ module.exports = {
             }
         });
     },
+    getHouseByName: function(name, callback) {
+        var House = require(this.model);
+        House.findOne({'name':name}, function(err,obj)
+        {
+            if (err)
+                callback(2,err);
+            else if(obj == null)
+                callback(3,'No house with name "'+ name +'" in the database.');
+            else
+                callback(1, obj);
+        });
+
+    },
     addHouseType: function(name,callback) {
         var HouseType = require(this.houseTypeModel);
         var entry = new HouseType();

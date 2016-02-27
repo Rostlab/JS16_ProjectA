@@ -62,6 +62,7 @@ db.on('open', function () {
     router.post('/houseTypes', housesController.addHouseType);
     router.get('/houses', housesController.getHouses);
     router.get('/houseTypes', housesController.getHouseTypes);
+    router.get('/houses/:houseName',housesController.getHouseByName);
 
     /*
      ###

@@ -10,8 +10,7 @@ module.exports = {
     },
 
     getHouses: function (req, res) {
-        var housesStore = require('../stores/houses');
-        var houses;
+
         housesStore.getHouses(function(houses) {
             if(houses != false) {
                 res.status(200).json(houses);
@@ -21,6 +20,18 @@ module.exports = {
             }
         });
 
+    },
+    getHouseByName: function(req, res) {
+        var housesStore = require('../stores/houses');
+        var houses;
+        housesStore.getHouseByName(req.params.houseName, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if (success == 3)
+                res.status(200).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
+            else
+                res.status(400).json({ message: 'Error: Bad request.', error: message });
+        });
     },
     addHouseType: function (req, res) {
         var housesStore = require('../stores/houses');
