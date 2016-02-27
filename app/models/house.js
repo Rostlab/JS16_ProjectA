@@ -4,14 +4,14 @@ var Schema       = mongoose.Schema;
 var HouseSchema   = new Schema({
     _id: Schema.Types.ObjectId,
     name: String,                                                         // Targaryen
-    type: Number,                                                         // 0 = Current Great house
+    type: {type: Schema.Types.ObjectId, ref: "HouseTypes"},                                                         // 0 = Current Great house
                                                                           // 1 = Exiled Great house
                                                                           // 2 = Extinct Great house
     coatOfArms: String,                                                   // Sable, a dragon thrice-headed gules
     words: String,                                                        // Fire and Blood
-    currentLord: String,  // shouldn´ that use a reference?               // Queen Daenerys Targaryen
+    currentLord: {type: Schema.Types.ObjectId, ref: "Character"},                 // Queen Daenerys Targaryen
                           // What means current? After season/book?
-    overlord: String,                                                     // None
+    overlord: {type: Schema.Types.ObjectId, ref: "Character"},                                                     // None
     title: [String],                                                      // King of the Andals, the Rhoynar, and the First Men,Lord of the Seven Kingdoms
                                                                           // Prince of Dragonstone, Prince of Summerhall
     region: String,                                                       // Crownlands (formerly Valyria)
