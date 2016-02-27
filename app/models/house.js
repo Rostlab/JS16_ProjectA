@@ -2,20 +2,25 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
-	_id: Schema.Types.ObjectId,
-    name: String,                                                         // House Targaryen
-    type: String,                                                         // Type of houses: Current Great house, Exiled Great house, Extinct Great house
-    coat_of_arms: String,                                                 // Sable, a dragon thrice-headed gules  
+    // _id: Schema.Types.ObjectId,    <-- Not working that way. Ids are automatically set.
+    name: String,                                                         // Targaryen
+    type: Number,                                                         // 0 = Current Great house
+                                                                          // 1 = Exiled Great house
+                                                                          // 2 = Extinct Great house
+    coatOfArms: String,                                                   // Sable, a dragon thrice-headed gules
     words: String,                                                        // Fire and Blood
-    current_lord: String,                                                 // Queen Daenerys Targaryen
+    currentLord: String,  // shouldn´ that use a reference?               // Queen Daenerys Targaryen
+                          // What means current? After season/book?
     overlord: String,                                                     // None
     title: [String],                                                      // King of the Andals, the Rhoynar, and the First Men,Lord of the Seven Kingdoms
                                                                           // Prince of Dragonstone, Prince of Summerhall
     region: String,                                                       // Crownlands (formerly Valyria)
-    cadet_branch: String,                                                 // House Blackfyre is the cadet branch of House Targaryen
-    ancestral_weapon: [String],                                           // Blackfyre and Dark Sister
-    founded: Date,                                                        // > 126 BC
-    character: [{type: Schema.Types.ObjectId, ref: 'Character'}]          // Characters belong to this house
+    cadetBranch: String,                                                  // House Blackfyre is the cadet branch of House Targaryen
+    ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
+    founded: String                                                       // > 126 BC, Age of Heroes
+
+    // To get the characters of a house: api/characters/byHouse/Targaryen
+    // character: [{type: Schema.Types.ObjectId, ref: 'Character'}]          // Characters belong to this house
 });
 
 module.exports = mongoose.model('House', HouseSchema);
