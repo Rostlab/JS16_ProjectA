@@ -1,6 +1,6 @@
 module.exports = {
     model: '../models/house',
-    addHouse: function (data) {
+    addHouse: function (data, callback) {
         var House = require(this.model);
         var house = new House();
         house.name = data.name;
@@ -10,25 +10,22 @@ module.exports = {
 
         house.save(function(err) {
             if (err){
-                console.log(err);
-                return false;
+                callback(err);
             }
             else {
-                console.log('Well, true is to return.');
-                return true; // why undefined?
+                callback(true);
             }
         });
     },
 
-    getHouses: function () {
+    getHouses: function (callback) {
         var House = require(this.model);
         House.find(function (err, houses) {
             if (err){
-                console.log(err);
-                return false;
+                callback(err);
             }
             else {
-                return houses;
+                callback(houses);
             }
         });
     }
