@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
-	_id: ObjectId
+	_id: Schema.Types.ObjectId,
     name: String,                                                         // House Targaryen
     type: String,                                                         // Type of houses: Current Great house, Exiled Great house, Extinct Great house
     coat_of_arms: String,                                                 // Sable, a dragon thrice-headed gules  
