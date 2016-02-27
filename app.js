@@ -33,12 +33,6 @@ db.on('error', function (err) {
 db.on('disconnected', function () {
     console.log('Mongoose default connection disconnected');
 });
-// I get on server start:
-/*
- Node server is listening on port 8080
- Mongoose default connection disconnected
- Mongoose default connection error: MongoError: auth failed
- */
 
 db.on('open', function () {
     // to get the data from a POST
@@ -65,6 +59,7 @@ db.on('open', function () {
 
     var housesController = require('./app/controllers/house');
     router.post('/houses', housesController.addHouse);
+    router.get('/houses', housesController.getHouses);
 
     /*
      ###
