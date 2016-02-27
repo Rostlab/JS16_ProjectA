@@ -49,6 +49,20 @@ module.exports = {
                 callback(1, obj);
         });
     },
+
+    removeHouse: function (id, callback) {
+        var House = require(this.model);
+        House.remove({
+            _id: id
+        }, function(err, house) {
+            if (err)
+                callback(true);
+            else
+                callback(false);
+        });
+
+    },
+
     addHouseType: function(name,callback) {
         var HouseType = require(this.houseTypeModel);
         var entry = new HouseType();

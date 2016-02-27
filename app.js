@@ -64,6 +64,7 @@ db.on('open', function () {
     router.get('/houseTypes', housesController.getHouseTypes);
     router.get('/houses/:houseName',housesController.getHouseByName);
     router.get('/houses/byId/:houseId',housesController.getHouseById);
+    router.delete('/houses/:houseId',housesController.getHouseById);
 
     /*
      ###
