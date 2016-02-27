@@ -54,7 +54,6 @@ module.exports = {
             else
                 res.status(200).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
         });
-
     },
     addHouseType: function (req, res) {
         var housesStore = require('../stores/houses');
@@ -76,6 +75,14 @@ module.exports = {
                 res.status(400).json({ message: 'Error', error: types });
             }
         });
-
-    }
+    },
+    removeHouseType: function(req,res) {
+        var housesStore = require('../stores/houses');
+        housesStore.removeHouseType(req.params.houseTypeId,function(success) {
+            if(success == true)
+                res.status(200).json({ message: 'Success.' });
+            else
+                res.status(200).json({ message: 'Failure: No houseType with the id "'+req.params.houseTypeId +'" is existing.' });
+        });
+    },
 };

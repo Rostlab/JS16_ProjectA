@@ -97,5 +97,18 @@ module.exports = {
                 callback(types);
             }
         });
+    },
+
+    removeHouseType: function (id, callback) {
+        var House = require(this.houseTypeModel);
+        House.remove({
+            _id: id
+        }, function(err, house) {
+            if (err)
+                callback(false);
+            else
+                callback(true);
+        });
+
     }
 };
