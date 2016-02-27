@@ -17,10 +17,10 @@ module.exports = {
 
         house.save(function(err) {
             if (err){
-                callback(err);
+                callback(false,err);
             }
             else {
-                callback(true);
+                callback(true,house);
             }
         });
     },

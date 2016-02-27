@@ -1,11 +1,11 @@
 module.exports = {
     addHouse: function (req, res) {
         var housesStore = require('../stores/houses');
-        housesStore.addHouse(req.body,function(success) {
-            if(success)
-                res.json({ message: 'House created!' });
+        housesStore.addHouse(req.body,function(success, message) {
+            if(success == true)
+                res.status(200).json({ message: 'Success', data: message });
             else
-                res.json({ message: 'House could not be created. Check console.' });
+                res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
 
@@ -14,10 +14,10 @@ module.exports = {
         var houses;
         housesStore.getHouses(function(houses) {
             if(houses != false) {
-                res.json(houses);
+                res.status(200).json(houses);
             }
             else {
-                res.json({ message: 'Error: ' + houses });
+                res.status(400).json({ message: 'Error', error: houses });
             }
         });
 
