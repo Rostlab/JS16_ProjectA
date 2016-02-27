@@ -41,6 +41,35 @@ module.exports = {
 				}
 			});
 		}
+	},
+	
+	getAllCharacters: function (callback) {
+		
+		//Setup the mediawiki bot
+		var bot = require("nodemw");
+		
+		var client = new bot({
+			server: "awoiaf.westeros.org",
+			path: "/api.php"
+		});
+		var params = {
+				action: "parse",
+				page: "List_of_characters",
+				prop: "links",
+				format: "json"
+			};
+		
+		characters = [];
+		
+		//Iterate through all the Characters
+		
+		console.log("Loading all characters from the wiki. This might take a while");
+		client.api.call(params, function(err, info, next, data) {
+			for(i = 0; i < data["parse"]["links"].length; i++) {
+				characters.push(data["parse"]["links"][i]["*"]);
+			}
+			callback(characters);
+		});
 	}
 	
 };
