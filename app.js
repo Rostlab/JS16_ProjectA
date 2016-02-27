@@ -59,7 +59,9 @@ db.on('open', function () {
 
     var housesController = require('./app/controllers/house');
     router.post('/houses', housesController.addHouse);
+    router.post('/houseTypes', housesController.addHouseType);
     router.get('/houses', housesController.getHouses);
+    router.get('/houseTypes', housesController.getHouseTypes);
 
     /*
      ###

@@ -1,5 +1,6 @@
 module.exports = {
     model: '../models/house',
+    houseTypeModel: '../models/houseType',
     addHouse: function (data, callback) {
         var House = require(this.model);
         var house = new House();
@@ -24,7 +25,19 @@ module.exports = {
             }
         });
     },
-
+    addHouseType: function(name,callback) {
+        var HouseType = require(this.houseTypeModel);
+        var entry = new HouseType();
+        entry.name = name;
+        entry.save(function(err) {
+            if (err){
+                callback(false,err);
+            }
+            else {
+                callback(true,entry);
+            }
+        });
+    },
     getHouses: function (callback) {
         var House = require(this.model);
         House.find(function (err, houses) {
@@ -33,6 +46,17 @@ module.exports = {
             }
             else {
                 callback(houses);
+            }
+        });
+    },
+    getHouseTypes: function (callback) {
+        var HouseType = require(this.houseTypeModel);
+        HouseType.find(function (err, types) {
+            if (err){
+                callback(err);
+            }
+            else {
+                callback(types);
             }
         });
     }
