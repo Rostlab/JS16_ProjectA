@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
-    // _id: Schema.Types.ObjectId,    <-- Not working that way. Ids are automatically set.
+    _id: Schema.Types.ObjectId,
     name: String,                                                         // Targaryen
     type: Number,                                                         // 0 = Current Great house
                                                                           // 1 = Exiled Great house
