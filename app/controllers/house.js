@@ -52,7 +52,7 @@ module.exports = {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(400).json({ message: 'Failure: No house with the id "'+req.params.houseId +'".' });
+                res.status(200).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
         });
 
     },
