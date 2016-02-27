@@ -1,12 +1,7 @@
 module.exports = {
     addHouse: function (req, res) {
-        var data = {
-            name: req.body.name
-            // TODO: Further glue statements necessary when model is fixed.
-            // For testing purposes only the name field left in the model.
-        }
         var housesStore = require('../stores/houses');
-        housesStore.addHouse(data,function(success) {
+        housesStore.addHouse(req.body,function(success) {
             if(success)
                 res.json({ message: 'House created!' });
             else

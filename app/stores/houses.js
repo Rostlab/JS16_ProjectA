@@ -3,10 +3,17 @@ module.exports = {
     addHouse: function (data, callback) {
         var House = require(this.model);
         var house = new House();
-        house.name = data.name;
-        /**
-         * TODO: Glue code to the model still needed here, but model still not defined.
-         */
+
+        // filter by house schema
+        House.schema.eachPath(function(path) {
+            if (path == '_id' || path == '__v')
+                return;
+
+            // add field data to new house document
+            if (data.hasOwnProperty(path)) {
+                house[path] = data[path];
+            }
+        });
 
         house.save(function(err) {
             if (err){
