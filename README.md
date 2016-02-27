@@ -10,6 +10,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
   - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
+  - [Edit house](https://github.com/Rostlab/JS16_ProjectA/wiki/Edit-house)
   - [Remove house](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house)
   
   - [Get house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-types)
