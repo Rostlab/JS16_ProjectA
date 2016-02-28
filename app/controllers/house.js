@@ -2,7 +2,7 @@ module.exports = {
     add: function (req, res) {
         var housesStore = require('../stores/houses');
         housesStore.add(req.body,function(success, message) {
-            if(success == true)
+            if(success == 1)
                 res.status(201).json({ message: 'Success', data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
@@ -25,7 +25,7 @@ module.exports = {
             else if (success == 3)
                 res.status(404).json({ message: 'Failure. No house with that data existing!',data: message });
             else
-                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property', errorProperty: message });
+                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
 
@@ -55,10 +55,14 @@ module.exports = {
         var housesStore = require('../stores/houses');
 
         housesStore.edit(req.params.houseId, req.body,function(success, message) {
-            if(success == true)
+            if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(404).json({ message: 'Error. No house exsiting with that id', id: req.params.houseId });
+            else if(success == 4)
+                res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 

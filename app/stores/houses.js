@@ -72,6 +72,16 @@ module.exports = {
     },
 
     edit: function (id, data, callback) {
+        var House = require(this.model);
+
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
+                callback(4,key);
+                return;
+            }
+        }
+
         this.getById(id,function(success, house) {
             // house exists
             if(success == 1) {
@@ -82,16 +92,16 @@ module.exports = {
                 }
                 house.save(function(err) {
                     if (err){
-                        callback(false,err);
+                        callback(3,err);
                     }
                     else {
-                        callback(true,house);
+                        callback(1,house);
                     }
                 });
             }
             // house is not existing
             else if (success == 3) {
-                callback(false, 'Failure. No house with id "'+id +'" existing!')
+                callback(2, id);
             }
             else {
                 callback(false, house);
