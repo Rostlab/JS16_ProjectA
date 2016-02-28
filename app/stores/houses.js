@@ -131,13 +131,12 @@ module.exports = {
 
     removeType: function (id, callback) {
         var House = require(this.houseTypeModel);
-        House.remove({
-            _id: id
-        }, function(err, house) {
-            if (err)
-                callback(false);
-            else
+        House.remove({_id: id},function(err, resp) {
+            // more than zero entries removed?
+            if (resp.result.n > 0)
                 callback(true);
+            else
+                callback(false);
         });
 
     }
