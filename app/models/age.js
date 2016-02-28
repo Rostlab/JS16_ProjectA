@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var AgeSchema = new Schema({
     name: String,
-    startDate: Date,
-	endDate: Date,
+    startDate: Number,
+	endDate: Number,
     predecessor: {type: Schema.types.ObjectId, ref: 'Age'},
     successor: {type: Schema.types.ObjectId, ref: 'Age'}
 });
