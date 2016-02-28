@@ -14,7 +14,6 @@ module.exports = {
         client.stream('statuses/filter', {track: keywords}, function (stream) {
             stream.on('data', function (tweet) {
                 console.log(tweet.text);
-                //res.render(tweet.txt);
                 res.status(200).json(tweet)
             });
             stream.on('error', function (error) {

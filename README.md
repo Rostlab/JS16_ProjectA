@@ -36,7 +36,7 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
     * You can leave username and password empty on default configurations 
     * Use 127.0.0.1 and port 27017 for default configurations
 * Start local MongoDB server with `mongod`
-    * You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 12345`
+    * You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 27017`
 * Run `nodejs app.js` to start the server
 * Node should show in console `Mongoose connected - Node server is listening on port 8080`
 * If needed, you can start MongoDB shell via `mongo`. Then type `show dbs` to see all databases. Type `use db_name_here` to switch to preferred database. With `show collections` you can see all tables (in NoSQL tables are called collections). With `db.collection_name.find()` you can output the collection content.
