@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AgeSchema = new Schema({
-    name: String,
-    startDate: Number,
-	endDate: Number,
+    name: {type: String, required: true},
+    startDate: {type:Number,required: true},
+	endDate: {type:Number,required: true},
     predecessor: {type: Schema.types.ObjectId, ref: 'Age'},
     successor: {type: Schema.types.ObjectId, ref: 'Age'}
 });
