@@ -9,6 +9,16 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   
 # Services
 Below are the links to our documented API services.
+
+##Episodes
+  - [Get episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episodes)
+  - [Get episode by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-data)
+  - [Get episode by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-name)
+  - [Get episode by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-id)
+  - [Add episode](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-episode)
+  - [Edit episode](https://github.com/Rostlab/JS16_ProjectA/wiki/Edit-episode)
+  - [Remove episode](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-episode)
+
 ##Houses
   - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
   - [Get house by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-data)
