@@ -44,7 +44,7 @@ module.exports = {
         res.status(400).json({ message: 'Error', error: "something went wrong" });
     },
 
-    getAllCharacters: function (callback) {
+    getAllCharacters: function (req, res) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
