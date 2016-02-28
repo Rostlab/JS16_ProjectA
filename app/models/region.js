@@ -2,8 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var RegionSchema   = new Schema({
-	_id: ObjectId,
-    name: String,
+    name: {type: String, required: true},
     continent: {type: Schema.Types.ObjectId, ref: "Continent"},
     neighbors:[{type: Schema.Types.ObjectId, ref: "Region"}],
     cultures: [{type: Schema.Types.ObjectId, ref: "Culture"}],
