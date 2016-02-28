@@ -11,7 +11,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 Below are the links to our documented API services.
 
 ##Characters
-  - [Get characters](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-characters)
+  - [Get all characters](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-characters)
   - [Get character by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-data)
   - [Get character by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-name)
   - [Get character by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-id)
@@ -20,7 +20,7 @@ Below are the links to our documented API services.
   - [Remove character](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-character)
 
 ##Episodes
-  - [Get episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episodes)
+  - [Get all episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-episodes)
   - [Get episode by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-data)
   - [Get episode by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-name)
   - [Get episode by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-id)
@@ -29,7 +29,7 @@ Below are the links to our documented API services.
   - [Remove episode](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-episode)
 
 ##Houses
-  - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
+  - [Get all houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-houses)
   - [Get house by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-data)
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
@@ -38,7 +38,7 @@ Below are the links to our documented API services.
   - [Remove house](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house)
   
 ##House Types
-  - [Get house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-types)
+  - [Get all house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-house-types)
   - [Add house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house-type)
   - [Remove house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house-type)
 
