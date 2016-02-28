@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var ObjectId = mongoose.ObjectID;
 var Schema = mongoose.Schema;
 
 var EpisodeSchema = new Schema({
