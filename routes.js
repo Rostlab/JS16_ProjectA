@@ -50,6 +50,14 @@ module.exports = function (app, router) {
     router.delete('/cultures/:id', geographyController.removeCulture);
     router.put('/cultures/:id', geographyController.editCulture);
 
+    router.post('/regions', geographyController.addRegion);
+    router.post('/regions/find', geographyController.getRegions);
+    router.get('/regions', geographyController.getAllRegions);
+    router.get('/regions/:name', geographyController.getRegionByName);
+    router.get('/regions/byId/:id', geographyController.getRegionById);
+    router.delete('/regions/:id', geographyController.removeRegion);
+    router.put('/regions/:id', geographyController.editRegion);
+
 
     var scraperController = require('./app/controllers/scraper');
     router.get('/scrapper/houses', scraperController.getAllHouses);
