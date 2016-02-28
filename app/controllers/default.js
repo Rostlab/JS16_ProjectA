@@ -1,5 +1,14 @@
 module.exports = {
-    init: function (req, res) {
+	/**
+	 * @api {put} /api/ Default route to show
+	 * @apiVersion 0.0.1
+	 * @apiName Default
+	 * @apiGroup Default
+	 * @apiPermission none
+	 *
+	 * @apiDescription This function shows the "hello world" message to prove the nodejs app is working
+	 */
+	init: function (req, res) {
         res.json({ message: 'Hello World!' });
     },
 	

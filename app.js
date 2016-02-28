@@ -75,6 +75,9 @@ db.on('open', function () {
     // prefix for all routes
     app.use('/api', router);
 
+    //Route for doc folder
+    app.use('/doc', express.static('apidoc'));
+
     //Redirect to default page
     app.get('*', function(req, res) {
         res.redirect('/api');

@@ -18,6 +18,13 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   - [Remove house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house-type)
 
 
+# Documentation
+
+We are using [apidoc](http://apidocjs.com/) to generate documentation for the RESTful API service. To get started follow these instructions:
+* Open a terminal and `cd` into the checked out git repository folder
+* Install the tool globally: `sudo npm install apidoc -g`
+* Generate the documentation: `apidoc -i app/ -o apidoc/`
+
 # Links
 
   - Main wiki with project description: https://rostlab.org/owiki/index.php/Javascript_technology_2016#Project_A
