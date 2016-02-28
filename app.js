@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 global.__base = __dirname + '/';
+global.__appbase = __dirname + '/app/';
 
 //Create the DB connection string
 var databaseParams = config.database;
@@ -66,6 +67,14 @@ db.on('open', function () {
     router.delete('/houses/:houseId', housesController.removeHouse);
     router.put('/houses/:houseId', housesController.editHouse);
     router.delete('/houseTypes/:houseId', housesController.removeHouseType);
+
+    var episodeController = require(__appbase + 'controllers/episode');
+    router.post('/episodes', episodeController.add);
+    router.get('/episodes', episodeController.getAll);
+    router.get('/episodes/:name', episodeController.getByName);
+    router.get('/episodes/byId/:id', episodeController.getById);
+    router.delete('/episodes/:id', episodeController.remove);
+    router.put('/episodes/:id', episodeController.edit);
 
 
     var scraperController = require('./app/controllers/scraper');
