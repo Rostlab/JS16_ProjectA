@@ -110,15 +110,27 @@ module.exports = {
         });
     },
 
-    addType: function(name,callback) {
+    addType: function(data,callback) {
         var entry = new HouseType();
-        entry.name = name;
+
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !HouseType.schema.paths.hasOwnProperty(key)) {
+                callback(2,key);
+                return;
+            }
+            else
+            {
+                entry[key] = data[key];
+            }
+        }
+
         entry.save(function(err) {
             if (err){
-                callback(false,err);
+                callback(3,err);
             }
             else {
-                callback(true,entry);
+                callback(1,entry);
             }
         });
     },

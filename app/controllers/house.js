@@ -80,11 +80,13 @@ module.exports = {
 
     addType: function (req, res) {
         var housesStore = require('../stores/houses');
-        housesStore.addType(req.body.name,function(success, message) {
-            if(success == true)
+        housesStore.addType(req.body,function(success, message) {
+            if(success == 1)
                 res.status(201).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 
