@@ -7,7 +7,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 # Links
   - Main wiki with project description: https://rostlab.org/owiki/index.php/Javascript_technology_2016#Project_A
   
-# Services:
+# Services
 
   ## Houses
   - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
