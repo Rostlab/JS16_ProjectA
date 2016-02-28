@@ -32,6 +32,13 @@ module.exports = function (app, router) {
     router.get('/characters/byId/:id', characterController.getById);
     router.delete('/characters/:id', characterController.remove);
     router.put('/characters/:id', characterController.edit);
+    router.post('/skills', characterController.addSkill);
+    router.post('/skills/find', characterController.getSkills);
+    router.get('/skills', characterController.getAllSkills);
+    router.get('/skills/:name', characterController.getSkillByName);
+    router.get('/skills/byId/:id', characterController.getSkillById);
+    router.delete('/skills/:id', characterController.removeSkill);
+    router.put('/skills/:id', characterController.editSkill);
 
     var geographyController = require(__appbase + 'controllers/geography');
     router.post('/continents', geographyController.addContinent);
