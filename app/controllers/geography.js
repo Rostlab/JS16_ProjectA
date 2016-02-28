@@ -161,12 +161,12 @@ module.exports = {
                 res.status(404).json({ message: 'Failure: No region with that id is existing.', id: req.params.id });
         });
     },
-    /*
-     * regions
-     */
-    addRegion: function (req, res) {
-        var regionsStore = require('../stores/regions');
-        regionsStore.add(req.body,function(success, message) {
+/*
+ * cultures
+ */
+    addCulture: function (req, res) {
+        var culturesStore = require('../stores/cultures');
+        culturesStore.add(req.body,function(success, message) {
             if(success == 1)
                 res.status(201).json({ message: 'Success', data: message });
             else if(success == 2)
@@ -176,56 +176,56 @@ module.exports = {
         });
     },
 
-    getAllRegions: function (req, res) {
-        var regionsStore = require('../stores/regions');
+    getAllCultures: function (req, res) {
+        var culturesStore = require('../stores/cultures');
 
-        regionsStore.getAll(function(success,regions) {
-            res.status(200).json(regions);
+        culturesStore.getAll(function(success,cultures) {
+            res.status(200).json(cultures);
         });
     },
 
-    getRegions: function(req,res) {
-        var regionsStore = require('../stores/regions');
-        regionsStore.get(req.body, function(success, message) {
+    getCultures: function(req,res) {
+        var culturesStore = require('../stores/cultures');
+        culturesStore.get(req.body, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(404).json({ message: 'Failure. No regions with that data existing!',data: message });
+                res.status(404).json({ message: 'Failure. No cultures with that data existing!',data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
 
-    getRegionByName: function(req, res) {
-        var regionsStore = require('../stores/regions');
+    getCultureByName: function(req, res) {
+        var culturesStore = require('../stores/cultures');
 
-        regionsStore.getByName(req.params.name, function(success, message) {
+        culturesStore.getByName(req.params.name, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
-                res.status(404).json({ message: 'Failure. No region with that data existing!',data: message });
+                res.status(404).json({ message: 'Failure. No culture with that data existing!',data: message });
         });
     },
 
-    getRegionById: function(req, res) {
-        var regionsStore = require('../stores/regions');
+    getCultureById: function(req, res) {
+        var culturesStore = require('../stores/cultures');
 
-        regionsStore.getById(req.params.id, function(success, message) {
+        culturesStore.getById(req.params.id, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
-                res.status(404).json({ message: 'Failure. No region with that data existing!',data: message });
+                res.status(404).json({ message: 'Failure. No culture with that data existing!',data: message });
         });
     },
 
-    editRegion: function(req, res) {
-        var regionsStore = require('../stores/regions');
+    editCulture: function(req, res) {
+        var culturesStore = require('../stores/cultures');
 
-        regionsStore.edit(req.params.id, req.body,function(success, message) {
+        culturesStore.edit(req.params.id, req.body,function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if(success == 2)
-                res.status(404).json({ message: 'Error. No region exsiting with that id', id: req.params.id });
+                res.status(404).json({ message: 'Error. No culture exsiting with that id', id: req.params.id });
             else if(success == 4)
                 res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
             else
@@ -233,13 +233,13 @@ module.exports = {
         });
     },
 
-    removeRegion: function(req,res) {
-        var regionsStore = require('../stores/regions');
-        regionsStore.remove(req.params.id,function(success) {
+    removeCulture: function(req,res) {
+        var culturesStore = require('../stores/cultures');
+        culturesStore.remove(req.params.id,function(success) {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(404).json({ message: 'Failure: No region with that id is existing.', id: req.params.id });
+                res.status(404).json({ message: 'Failure: No culture with that id is existing.', id: req.params.id });
         });
     }
 };
