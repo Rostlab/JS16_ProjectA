@@ -144,7 +144,8 @@ module.exports = {
     },
 
     removeType: function (id, callback) {
-        House.remove({_id: id},function(err, resp) {
+        HouseType.remove({_id: id},function(err, resp) {
+            console.log(id);
             // more than zero entries removed?
             if (resp.result.n > 0)
                 callback(true);
