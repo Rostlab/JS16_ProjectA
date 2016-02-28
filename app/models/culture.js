@@ -1,8 +1,7 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var CultureSchema   = new Schema({
-	_id: ObjectId,
+var CultureSchema   = new Schema(
     name: String,
     //todo missing fields?    
 });
