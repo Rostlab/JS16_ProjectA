@@ -1,6 +1,6 @@
 module.exports = {
 	/**
-	 * @api {put} /api/ Default route to show
+	 * @api {get} /api/ Default route
 	 * @apiVersion 0.0.1
 	 * @apiName Default
 	 * @apiGroup Default
