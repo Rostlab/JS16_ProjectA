@@ -3,7 +3,6 @@ var ObjectId = mongoose.ObjectID;
 var Schema = mongoose.Schema;
 
 var EpisodeSchema = new Schema({
-    _id: ObjectId,
     name: String,
     character: [{type: Schema.types.ObjectId, ref: 'Character'}],
     start_time: {type: Date, default: Date.now},
