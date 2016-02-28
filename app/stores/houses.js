@@ -27,7 +27,17 @@ module.exports = {
     },
     get: function(data, callback) {
         var House = require(this.model);
-        House.findOne(data, function(err,obj)
+        var cleanData = {};
+
+        // filter by house schema
+        House.schema.eachPath(function(path) {
+            // add field data to new house document
+            if (data.hasOwnProperty(path)) {
+                cleanData[path] = data[path];
+            }
+        });
+
+        House.findOne(cleanData, function(err,obj)
         {
             if (err)
                 callback(2,err);
@@ -42,6 +52,17 @@ module.exports = {
     },
     getById: function(id, callback) {
         this.get({'_id': id},callback);
+    },
+    getAll: function (callback) {
+        var House = require(this.model);
+        House.find(function (err, houses) {
+            if (err){
+                callback(err);
+            }
+            else {
+                callback(houses);
+            }
+        });
     },
     remove: function (id, callback) {
         var House = require(this.model);
@@ -94,17 +115,6 @@ module.exports = {
             }
             else {
                 callback(true,entry);
-            }
-        });
-    },
-    getAll: function (callback) {
-        var House = require(this.model);
-        House.find(function (err, houses) {
-            if (err){
-                callback(err);
-            }
-            else {
-                callback(houses);
             }
         });
     },

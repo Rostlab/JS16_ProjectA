@@ -5,6 +5,7 @@ module.exports = function (app, router) {
 
     var housesController = require('./app/controllers/house');
     router.post('/houses', housesController.add);
+    router.post('/houses/find', housesController.get);
     router.post('/houseTypes', housesController.addType);
     router.get('/houses', housesController.getAll);
     router.get('/houseTypes', housesController.getAllTypes);

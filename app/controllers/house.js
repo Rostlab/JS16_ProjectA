@@ -20,8 +20,20 @@ module.exports = {
                 res.status(400).json({ message: 'Error', error: houses });
             }
         });
-
     },
+
+    get: function(req,res) {
+        var housesStore = require('../stores/houses');
+        housesStore.get(req.body, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if (success == 3)
+                res.status(200).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
+            else
+                res.status(400).json({ message: 'Error: Bad request.', error: message });
+        });
+    },
+
     getByName: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -34,6 +46,7 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
+
     getById: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -46,6 +59,7 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
+
     edit: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -56,6 +70,7 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
+
     remove: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.remove(req.params.houseId,function(success) {
@@ -65,6 +80,7 @@ module.exports = {
                 res.status(200).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
         });
     },
+
     addType: function (req, res) {
         var housesStore = require('../stores/houses');
         housesStore.addType(req.body.name,function(success, message) {
@@ -74,6 +90,7 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
+
     getAllTypes: function (req, res) {
         var housesStore = require('../stores/houses');
         var houses;
@@ -86,6 +103,7 @@ module.exports = {
             }
         });
     },
+
     removeType: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.removeType(req.params.houseTypeId,function(success) {
