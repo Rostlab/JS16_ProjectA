@@ -1,71 +1,81 @@
 module.exports = {
-
-    addCharacter: function (req, res) {
-        var characterStore = require('../stores/character');
-        characterStore.addCharacter(req.body,function(success, message) {
-            if(success == true)
-                res.status(200).json({ message: 'Success', data: message });
+    add: function (req, res) {
+        var charactersStore = require('../stores/characters');
+        charactersStore.add(req.body,function(success, message) {
+            if(success == 1)
+                res.status(201).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 
-    getCharacters: function (req, res) {
-        var characterStore = require('../stores/character');
+    getAll: function (req, res) {
+        var charactersStore = require('../stores/characters');
 
-        characterStore.getCharacters(function(character) {
-            if(character != false) {
-                res.status(200).json(character);
-            }
-            else {
-                res.status(400).json({ message: 'Error', error: character });
-            }
+        charactersStore.getAll(function(success,characters) {
+            res.status(200).json(characters);
         });
-
     },
 
-    getCharacterByName: function(req, res) {
-        var characterStore = require('../stores/character');
-
-        characterStore.getCharacterByName(req.params.characterName, function(success, message) {
+    get: function(req,res) {
+        var charactersStore = require('../stores/characters');
+        charactersStore.get(req.body, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(200).json({ message: 'Failure. No character with name "'+req.params.characterName +'" existing!' });
+                res.status(404).json({ message: 'Failure. No character with that data existing!',data: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
 
-    getCharacterById: function(req, res) {
-        var characterStore = require('../stores/character');
+    getByName: function(req, res) {
+        var charactersStore = require('../stores/characters');
 
-        characterStore.getCharacterById(req.params.characterId, function(success, message) {
+        charactersStore.getByName(req.params.name, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
-            else if (success == 3)
-                res.status(200).json({ message: 'Failure. No character with id "'+req.params.characterId +'" existing!' });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(404).json({ message: 'Failure. No character with that data existing!',data: message });
         });
     },
-    editCharacter: function(req, res) {
-        var characterStore = require('../stores/character');
 
-        characterStore.editCharacter(req.params.characterId, req.body,function(success, message) {
-            if(success == true)
+    getById: function(req, res) {
+        var charactersStore = require('../stores/characters');
+
+        charactersStore.getById(req.params.id, function(success, message) {
+            if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(404).json({ message: 'Failure. No character with that data existing!',data: message });
         });
     },
-    removeCharacter: function(req,res) {
-        var characterStore = require('../stores/character');
-        charactersStore.removeCharacter(req.params.characterId,function(success) {
+
+    edit: function(req, res) {
+        var charactersStore = require('../stores/characters');
+
+        charactersStore.edit(req.params.id, req.body,function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(404).json({ message: 'Error. No character exsiting with that id', id: req.params.id });
+            else if(success == 4)
+                res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
+            else
+                res.status(400).json({ message: 'Error.', error: message });
+        });
+    },
+
+    remove: function(req,res) {
+        var charactersStore = require('../stores/characters');
+        charactersStore.remove(req.params.id,function(success) {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(200).json({ message: 'Failure: No character with the id "'+req.params.characterId +'" is existing.' });
+                res.status(404).json({ message: 'Failure: No character with that id is existing.', id: req.params.id });
         });
     }
+
 };
