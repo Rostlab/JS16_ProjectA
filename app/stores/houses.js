@@ -56,12 +56,10 @@ module.exports = {
     getAll: function (callback) {
         var House = require(this.model);
         House.find(function (err, houses) {
-            if (err){
-                callback(err);
-            }
-            else {
-                callback(houses);
-            }
+            if (err)
+                callback(false,err);
+            else
+                callback(true,houses);
         });
     },
     remove: function (id, callback) {
@@ -120,12 +118,10 @@ module.exports = {
     getAllTypes: function (callback) {
         var HouseType = require(this.houseTypeModel);
         HouseType.find(function (err, types) {
-            if (err){
-                callback(err);
-            }
-            else {
-                callback(types);
-            }
+            if (err)
+                callback(false,err);
+            else
+                callback(true,types);
         });
     },
 

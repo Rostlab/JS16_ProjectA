@@ -12,13 +12,8 @@ module.exports = {
     getAll: function (req, res) {
         var housesStore = require('../stores/houses');
 
-        housesStore.getAll(function(houses) {
-            if(houses != false) {
-                res.status(200).json(houses);
-            }
-            else {
-                res.status(400).json({ message: 'Error', error: houses });
-            }
+        housesStore.getAll(function(success,houses) {
+            res.status(200).json(houses);
         });
     },
 
