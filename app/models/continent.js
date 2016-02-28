@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var ContinentSchema   = new Schema({
-    name: String,
+    name: {type: String, required: true},
 	neighbors: [{type: Schema.Types.ObjectId, ref: "Region"}]
 });
 
