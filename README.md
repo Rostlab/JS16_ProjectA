@@ -11,6 +11,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 Below are the links to our documented API services.
 ##Houses
   - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
+  - [Get house by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-data)
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
   - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
