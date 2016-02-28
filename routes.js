@@ -24,6 +24,15 @@ module.exports = function (app, router) {
     router.delete('/episodes/:id', episodeController.remove);
     router.put('/episodes/:id', episodeController.edit);
 
+    var characterController = require(__appbase + 'controllers/character');
+    router.post('/characters', characterController.add);
+    router.post('/characters/find', characterController.get);
+    router.get('/characters', characterController.getAll);
+    router.get('/characters/:name', characterController.getByName);
+    router.get('/characters/byId/:id', characterController.getById);
+    router.delete('/characters/:id', characterController.remove);
+    router.put('/characters/:id', characterController.edit);
+
 
     var scraperController = require('./app/controllers/scraper');
     router.get('/scrapper/houses', scraperController.getAllHouses);
