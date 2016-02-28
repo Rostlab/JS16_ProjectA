@@ -68,6 +68,9 @@ db.on('open', function () {
     router.put('/houses/:houseId',housesController.editHouse);
     router.delete('/houseTypes/:houseId',housesController.removeHouseType);
 
+    var twitterController = require('./app/controllers/twitter');
+    router.get('/twitter/search/:byKeywords', twitterController.searchTwitter);
+
     /*
      ###
      */
