@@ -12,7 +12,7 @@ Below are the links to our documented API services.
 
 ##Characters
   - [Get all characters](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-characters)
-  - [Get character by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-data)
+  - [Find characters](https://github.com/Rostlab/JS16_ProjectA/wiki/Find-characters)
   - [Get character by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-name)
   - [Get character by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-id)
   - [Add character](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-character)
@@ -21,7 +21,7 @@ Below are the links to our documented API services.
 
 ##Episodes
   - [Get all episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-episodes)
-  - [Get episode by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-data)
+  - [Find episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Find-episodes)
   - [Get episode by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-name)
   - [Get episode by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-id)
   - [Add episode](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-episode)
@@ -30,7 +30,7 @@ Below are the links to our documented API services.
 
 ##Houses
   - [Get all houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-all-houses)
-  - [Get house by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-data)
+  - [Find houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Find-houses)
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
   - [Add house](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house)
