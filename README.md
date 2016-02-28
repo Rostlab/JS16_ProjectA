@@ -8,7 +8,7 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   - Main wiki with project description: https://rostlab.org/owiki/index.php/Javascript_technology_2016#Project_A
   
 # Services:
-  
+  ## Houses:
   - [Get houses](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-houses)
   - [Get house by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-name)
   - [Get house by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-by-id)
@@ -16,9 +16,13 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
   - [Edit house](https://github.com/Rostlab/JS16_ProjectA/wiki/Edit-house)
   - [Remove house](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house)
   
+  ## House Types:
   - [Get house types](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-house-types)
   - [Add house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-house-type)
   - [Remove house type](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-house-type)
+
+  ## Twitter Streaming:
+  - [Get Twitter streaming](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-Twitter-stream-by-keywords)
 
 # Documentation
 
