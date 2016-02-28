@@ -75,4 +75,134 @@ module.exports = {
         res.status(400).json({ message: 'Error', error: "something went wrong" });
     }
 
+
+    getAllHistory: function (req, res) {
+
+        //Setup the mediawiki bot
+        var bot = require("nodemw");
+
+        var client = new bot({
+            server: "awoiaf.westeros.org",
+            path: "/api.php"
+        });
+        var params = {
+            action: "",
+            page: "",
+            prop: "",
+            format: "json"
+        };
+
+        history = [];
+
+        //Iterate through all histroy
+
+        console.log("Loading all history from the wiki. This might take a while");
+        client.api.call(params, function (err, info, next, data) {
+            for (i = 0; i < data[""][""].length; i++) {
+                characters.push(data[""][""][i]["*"]);
+            }
+            res.status(200).json(history);
+        });
+
+        res.status(400).json({ message: 'Error', error: "something went wrong" });
+    }
+
+
+    getAllCulture: function (req, res) {
+
+        //Setup the mediawiki bot
+        var bot = require("nodemw");
+
+        var client = new bot({
+            server: "awoiaf.westeros.org",
+            path: "/api.php"
+        });
+        var params = {
+            action: "",
+            page: "",
+            prop: "",
+            format: "json"
+        };
+
+        culture = [];
+
+        //Iterate through all culture
+
+        console.log("Loading all culture from the wiki. This might take a while");
+        client.api.call(params, function (err, info, next, data) {
+            for (i = 0; i < data[""][""].length; i++) {
+                characters.push(data[""][""][i]["*"]);
+            }
+            res.status(200).json(culture);
+        });
+
+        res.status(400).json({ message: 'Error', error: "something went wrong" });
+    }
+
+    getAllGeography: function (req, res) {
+
+        //Setup the mediawiki bot
+        var bot = require("nodemw");
+
+        var client = new bot({
+            server: "awoiaf.westeros.org",
+            path: "/api.php"
+        });
+        var params = {
+            action: "parse",
+            page: "List_of_characters",
+            prop: "links",
+            format: "json"
+        };
+
+        geography = [];
+
+        //Iterate through all Geography
+
+        console.log("Loading all geography from the wiki. This might take a while");
+        client.api.call(params, function (err, info, next, data) {
+            for (i = 0; i < data[""][""].length; i++) {
+                characters.push(data[""][""][i]["*"]);
+            }
+            res.status(200).json(geography);
+        });
+
+        res.status(400).json({ message: 'Error', error: "something went wrong" });
+    }
+
+    getAllTVEpisodes: function (req, res) {
+
+        //Setup the mediawiki bot
+        var bot = require("nodemw");
+
+        var client = new bot({
+            server: "awoiaf.westeros.org",
+            path: "/api.php"
+        });
+        var params = {
+            action: "",
+            page: "",
+            prop: "",
+            format: "json"
+        };
+
+        episodes = [];
+
+        //Iterate through all the episodes
+
+        console.log("Loading all episodes from the wiki. This might take a while");
+        client.api.call(params, function (err, info, next, data) {
+            for (i = 0; i < data[""][""].length; i++) {
+                characters.push(data["]["links"][i]["*"]);
+            }
+            res.status(200).json(episodes);
+        });
+
+        res.status(400).json({ message: 'Error', error: "something went wrong" });
+    }
+
+
+
+
+
 };
