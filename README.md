@@ -10,6 +10,15 @@ Use the [repository wiki](https://github.com/Rostlab/JS16_ProjectA/wiki/) to doc
 # Services
 Below are the links to our documented API services.
 
+##Characters
+  - [Get characters](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-characters)
+  - [Get character by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-data)
+  - [Get character by name](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-name)
+  - [Get character by id](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-character-by-id)
+  - [Add character](https://github.com/Rostlab/JS16_ProjectA/wiki/Add-character)
+  - [Edit character](https://github.com/Rostlab/JS16_ProjectA/wiki/Edit-character)
+  - [Remove character](https://github.com/Rostlab/JS16_ProjectA/wiki/Remove-character)
+
 ##Episodes
   - [Get episodes](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episodes)
   - [Get episode by data](https://github.com/Rostlab/JS16_ProjectA/wiki/Get-episode-by-data)
