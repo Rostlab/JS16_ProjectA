@@ -75,6 +75,13 @@ db.on('open', function () {
     // prefix for all routes
     app.use('/api', router);
 
+    //Redirect to default page
+    app.get('*', function(req, res) {
+        res.redirect('/api');
+    });
+
+
+
     var port = 8080;
     app.listen(port);
     console.log('Node server is listening on port ' + port);
