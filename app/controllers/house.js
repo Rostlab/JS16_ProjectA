@@ -88,14 +88,9 @@ module.exports = {
 
     getAllTypes: function (req, res) {
         var housesStore = require('../stores/houses');
-        var houses;
-        housesStore.getAllTypes(function(types) {
-            if(types != false) {
-                res.status(200).json(types);
-            }
-            else {
-                res.status(400).json({ message: 'Error', error: types });
-            }
+
+        housesStore.getAllTypes(function(success,types) {
+            res.status(200).json(types);
         });
     },
 
