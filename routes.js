@@ -15,13 +15,13 @@ module.exports = function (app, router) {
     router.put('/houses/:houseId', housesController.edit);
     router.delete('/houseTypes/:houseTypeId', housesController.removeType);
 
-    var episodeController = require(__appbase + 'controllers/episode');
+    /*var episodeController = require(__appbase + 'controllers/episode');
     router.post('/episodes', episodeController.add);
     router.get('/episodes', episodeController.getAll);
     router.get('/episodes/:name', episodeController.getByName);
     router.get('/episodes/byId/:id', episodeController.getById);
     router.delete('/episodes/:id', episodeController.remove);
-    router.put('/episodes/:id', episodeController.edit);
+    router.put('/episodes/:id', episodeController.edit);*/
 
 
     var scraperController = require('./app/controllers/scraper');

@@ -37,7 +37,7 @@ module.exports = {
             }
         }
 
-        House.findOne(data, function(err,obj)
+        House.find(data, function(err,obj)
         {
             if(obj == null)
                 callback(3,data);
