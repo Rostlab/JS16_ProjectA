@@ -3,7 +3,7 @@ module.exports = {
         var housesStore = require('../stores/houses');
         housesStore.add(req.body,function(success, message) {
             if(success == true)
-                res.status(200).json({ message: 'Success', data: message });
+                res.status(201).json({ message: 'Success', data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
@@ -28,7 +28,7 @@ module.exports = {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(200).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
+                res.status(404).json({ message: 'Failure. No house with that data existing!',data: req.body });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
@@ -41,7 +41,7 @@ module.exports = {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(200).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
+                res.status(404).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
@@ -54,7 +54,7 @@ module.exports = {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(200).json({ message: 'Failure. No house with id "'+req.params.houseId +'" existing!' });
+                res.status(404).json({ message: 'Failure. No house with id "'+req.params.houseId +'" existing!' });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
@@ -77,7 +77,7 @@ module.exports = {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(200).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
+                res.status(404).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
         });
     },
 
@@ -85,7 +85,7 @@ module.exports = {
         var housesStore = require('../stores/houses');
         housesStore.addType(req.body.name,function(success, message) {
             if(success == true)
-                res.status(200).json({ message: 'Success', data: message });
+                res.status(201).json({ message: 'Success', data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
@@ -110,7 +110,7 @@ module.exports = {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(200).json({ message: 'Failure: No houseType with the id "'+req.params.houseTypeId +'" is existing.' });
+                res.status(404).json({ message: 'Failure: No houseType with the id "'+req.params.houseTypeId +'" is existing.' });
         });
     },
 };
