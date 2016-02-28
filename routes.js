@@ -33,6 +33,15 @@ module.exports = function (app, router) {
     router.delete('/characters/:id', characterController.remove);
     router.put('/characters/:id', characterController.edit);
 
+    var geographyController = require(__appbase + 'controllers/geography');
+    router.post('/continents', geographyController.addContinent);
+    router.post('/continents/find', geographyController.getContinents);
+    router.get('/continents', geographyController.getAllContinents);
+    router.get('/continents/:name', geographyController.getContinentByName);
+    router.get('/continents/byId/:id', geographyController.getContinentById);
+    router.delete('/continents/:id', geographyController.removeContinent);
+    router.put('/continents/:id', geographyController.editContinent);
+
 
     var scraperController = require('./app/controllers/scraper');
     router.get('/scrapper/houses', scraperController.getAllHouses);
