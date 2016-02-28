@@ -87,6 +87,6 @@ db.on('open', function () {
     });
 
     //Start listening for requests
-    app.listen(config.port);
-    console.log('Node server is listening on port ' + config.port);
+    app.listen(config.server.port);
+    console.log('Node server is listening on port ' + config.server.port);
 });
