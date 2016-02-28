@@ -66,19 +66,18 @@ module.exports = {
     },
     remove: function (id, callback) {
         var House = require(this.model);
-        House.remove({
-            _id: id
-        }, function(err, house) {
-            if (err)
-                callback(false);
-            else
+        House.remove({_id: id}, function(err, resp) {
+            // more than zero entries removed?
+            if (resp.result.n > 0)
                 callback(true);
+            else
+                callback(false);
         });
 
     },
 
     edit: function (id, data, callback) {
-        this.getHouseById(id,function(success, house) {
+        this.getById(id,function(success, house) {
             // house exists
             if(success == 1) {
                 for (var key in data) {
