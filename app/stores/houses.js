@@ -39,7 +39,7 @@ module.exports = {
 
         House.find(data, function(err,obj)
         {
-            if(obj == null)
+            if(obj.length == 0)
                 callback(3,data);
             else
                 callback(1, obj);
