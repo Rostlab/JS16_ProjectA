@@ -2,9 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
-    name: String,
-    befAC: Boolean,
-    date: Date,
+    name: {type: String, required: true},
+    date: Number,
     age: {type: Schema.types.ObjectId, ref: 'Age'},
 
     createdAt: {type: Date, default: Date.now},
