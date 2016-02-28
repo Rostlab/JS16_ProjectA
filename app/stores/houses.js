@@ -1,33 +1,34 @@
+var House = require(__appbase + 'models/house');
+var HouseType = require(__appbase + 'models/houseType');
+
 module.exports = {
-    model: '../models/house',
-    houseTypeModel: '../models/houseType',
+
     add: function (data, callback) {
-        var House = require(this.model);
         var house = new House();
 
-        // filter by house schema
-        House.schema.eachPath(function(path) {
-            if (path == '_id' || path == '__v')
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
+                callback(2,key);
                 return;
-
-            // add field data to new house document
-            if (data.hasOwnProperty(path)) {
-                house[path] = data[path];
             }
-        });
+            else
+            {
+                house[key] = data[key];
+            }
+        }
 
         house.save(function(err) {
             if (err){
-                callback(false,err);
+                callback(3,err);
             }
             else {
-                callback(true,house);
+                callback(1,house);
             }
         });
     },
-    get: function(data, callback) {
-        var House = require(this.model);
 
+    get: function(data, callback) {
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
@@ -44,14 +45,16 @@ module.exports = {
                 callback(1, obj);
         });
     },
+
     getByName: function(name, callback) {
         this.get({'name':name},callback);
     },
+
     getById: function(id, callback) {
         this.get({'_id': id},callback);
     },
+
     getAll: function (callback) {
-        var House = require(this.model);
         House.find(function (err, houses) {
             if (err)
                 callback(false,err);
@@ -59,8 +62,8 @@ module.exports = {
                 callback(true,houses);
         });
     },
+
     remove: function (id, callback) {
-        var House = require(this.model);
         House.remove({_id: id}, function(err, resp) {
             // more than zero entries removed?
             if (resp.result.n > 0)
@@ -72,8 +75,6 @@ module.exports = {
     },
 
     edit: function (id, data, callback) {
-        var House = require(this.model);
-
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
@@ -110,7 +111,6 @@ module.exports = {
     },
 
     addType: function(name,callback) {
-        var HouseType = require(this.houseTypeModel);
         var entry = new HouseType();
         entry.name = name;
         entry.save(function(err) {
@@ -123,7 +123,6 @@ module.exports = {
         });
     },
     getAllTypes: function (callback) {
-        var HouseType = require(this.houseTypeModel);
         HouseType.find(function (err, types) {
             if (err)
                 callback(false,err);
@@ -133,7 +132,6 @@ module.exports = {
     },
 
     removeType: function (id, callback) {
-        var House = require(this.houseTypeModel);
         House.remove({_id: id},function(err, resp) {
             // more than zero entries removed?
             if (resp.result.n > 0)
@@ -141,6 +139,5 @@ module.exports = {
             else
                 callback(false);
         });
-
     }
 };

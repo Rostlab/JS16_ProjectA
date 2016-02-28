@@ -4,8 +4,10 @@ module.exports = {
         housesStore.add(req.body,function(success, message) {
             if(success == 1)
                 res.status(201).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 
@@ -72,7 +74,7 @@ module.exports = {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(404).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
+                res.status(404).json({ message: 'Failure: No house with that id is existing.', id: req.params.houseId });
         });
     },
 
@@ -100,7 +102,7 @@ module.exports = {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(404).json({ message: 'Failure: No houseType with the id "'+req.params.houseTypeId +'" is existing.' });
+                res.status(404).json({ message: 'Failure: No houseType with that id is existing.', id: req.params.houseTypeId });
         });
     },
 };
