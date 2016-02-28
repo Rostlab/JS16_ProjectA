@@ -34,7 +34,7 @@ module.exports = {
     getByName: function(req, res) {
         var episodesStore = require('../stores/episodes');
 
-        episodesStore.getByName(req.params.episodeName, function(success, message) {
+        episodesStore.getByName(req.params.name, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
@@ -45,7 +45,7 @@ module.exports = {
     getById: function(req, res) {
         var episodesStore = require('../stores/episodes');
 
-        episodesStore.getById(req.params.episodeId, function(success, message) {
+        episodesStore.getById(req.params.id, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
@@ -56,11 +56,11 @@ module.exports = {
     edit: function(req, res) {
         var episodesStore = require('../stores/episodes');
 
-        episodesStore.edit(req.params.episodeId, req.body,function(success, message) {
+        episodesStore.edit(req.params.id, req.body,function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if(success == 2)
-                res.status(404).json({ message: 'Error. No episode exsiting with that id', id: req.params.episodeId });
+                res.status(404).json({ message: 'Error. No episode exsiting with that id', id: req.params.id });
             else if(success == 4)
                 res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
             else
@@ -70,11 +70,11 @@ module.exports = {
 
     remove: function(req,res) {
         var episodesStore = require('../stores/episodes');
-        episodesStore.remove(req.params.episodeId,function(success) {
+        episodesStore.remove(req.params.id,function(success) {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
-                res.status(404).json({ message: 'Failure: No episode with that id is existing.', id: req.params.episodeId });
+                res.status(404).json({ message: 'Failure: No episode with that id is existing.', id: req.params.id });
         });
     }
 
