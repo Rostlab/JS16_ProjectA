@@ -1,4 +1,13 @@
 module.exports = {
+    /**
+     * @api {get} /api/twitter/search/:byKeywords
+     * @apiVersion 0.0.1
+     * @apiName Default
+     * @apiGroup Default
+     * @apiPermission none
+     *
+     * @apiDescription This function streams related Tweets in real-time. Make sure to replace :byKeywords.
+     */
     searchTwitter: function (req, res) {
         var twitter = require('twitter');
         var config = require(__base + 'cfg/config.json');
@@ -14,7 +23,7 @@ module.exports = {
         client.stream('statuses/filter', {track: keywords}, function (stream) {
             stream.on('data', function (tweet) {
                 console.log(tweet.text);
-                res.status(200).json(tweet)
+                res.status(200).json(tweet);
             });
             stream.on('error', function (error) {
                 res.status(400).json({ message: 'Error.', error: error });
