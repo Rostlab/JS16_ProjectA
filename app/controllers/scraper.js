@@ -41,7 +41,7 @@ module.exports = {
                 }
             });
         }
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
+        res.status(400).json({message: 'Error', error: "something went wrong"});
     },
 
     getAllCharacters: function (req, res) {
@@ -72,9 +72,8 @@ module.exports = {
             res.status(200).json(characters);
         });
 
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
-    }
-
+        res.status(400).json({message: 'Error', error: "something went wrong"});
+    },
 
     getAllHistory: function (req, res) {
 
@@ -104,8 +103,8 @@ module.exports = {
             res.status(200).json(history);
         });
 
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
-    }
+        res.status(400).json({message: 'Error', error: "something went wrong"});
+    },
 
 
     getAllCulture: function (req, res) {
@@ -136,8 +135,8 @@ module.exports = {
             res.status(200).json(culture);
         });
 
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
-    }
+        res.status(400).json({message: 'Error', error: "something went wrong"});
+    },
 
     getAllGeography: function (req, res) {
 
@@ -167,8 +166,8 @@ module.exports = {
             res.status(200).json(geography);
         });
 
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
-    }
+        res.status(400).json({message: 'Error', error: "something went wrong"});
+    },
 
     getAllTVEpisodes: function (req, res) {
 
@@ -193,16 +192,13 @@ module.exports = {
         console.log("Loading all episodes from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
             for (i = 0; i < data[""][""].length; i++) {
-                characters.push(data["]["links"][i]["*"]);
+                characters.push(data[""]["links"][i]["*"]);
             }
             res.status(200).json(episodes);
         });
 
-        res.status(400).json({ message: 'Error', error: "something went wrong" });
+        res.status(400).json({message: 'Error', error: "something went wrong"});
     }
-
-
-
 
 
 };
