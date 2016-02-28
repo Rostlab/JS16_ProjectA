@@ -1,7 +1,7 @@
 module.exports = {
     searchTwitter: function (req, res) {
         var twitter = require('twitter');
-        var config = require('./cfg/config');
+        var config = require(__base + 'cfg/config.json');
         var keywords = req.params.byKeywords;
 
         var client = new twitter({

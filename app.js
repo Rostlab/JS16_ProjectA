@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
+global.__base = __dirname + '/';
 
 //Create the DB connection string
 var databaseParams = config.database;
