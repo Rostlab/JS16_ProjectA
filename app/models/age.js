@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AgeSchema = new Schema({
-    _id: ObjectId,
     name: String,
     startDate: Date,
 	endDate: Date,
