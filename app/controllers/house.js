@@ -23,9 +23,9 @@ module.exports = {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(404).json({ message: 'Failure. No house with that data existing!',data: req.body });
+                res.status(404).json({ message: 'Failure. No house with that data existing!',data: message });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property', errorProperty: message });
         });
     },
 
@@ -35,10 +35,8 @@ module.exports = {
         housesStore.getByName(req.params.houseName, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
-            else if (success == 3)
-                res.status(404).json({ message: 'Failure. No house with name "'+req.params.houseName +'" existing!' });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(404).json({ message: 'Failure. No house with that data existing!',data: message });
         });
     },
 
@@ -48,10 +46,8 @@ module.exports = {
         housesStore.getById(req.params.houseId, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
-            else if (success == 3)
-                res.status(404).json({ message: 'Failure. No house with id "'+req.params.houseId +'" existing!' });
             else
-                res.status(400).json({ message: 'Error: Bad request.', error: message });
+                res.status(404).json({ message: 'Failure. No house with that data existing!',data: message });
         });
     },
 

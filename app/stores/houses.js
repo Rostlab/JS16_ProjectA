@@ -27,22 +27,19 @@ module.exports = {
     },
     get: function(data, callback) {
         var House = require(this.model);
-        var cleanData = {};
 
-        // filter by house schema
-        House.schema.eachPath(function(path) {
-            // add field data to new house document
-            if (data.hasOwnProperty(path)) {
-                cleanData[path] = data[path];
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
+                callback(2,key);
+                return;
             }
-        });
+        }
 
-        House.findOne(cleanData, function(err,obj)
+        House.findOne(data, function(err,obj)
         {
-            if (err)
-                callback(2,err);
-            else if(obj == null)
-                callback(3,'No house with data "'+ data +'" in the database.');
+            if(obj == null)
+                callback(3,data);
             else
                 callback(1, obj);
         });
