@@ -25,31 +25,24 @@ module.exports = {
             }
         });
     },
-    getByName: function(name, callback) {
+    get: function(data, callback) {
         var House = require(this.model);
-        House.findOne({'name':name}, function(err,obj)
+        House.findOne(data, function(err,obj)
         {
             if (err)
                 callback(2,err);
             else if(obj == null)
-                callback(3,'No house with name "'+ name +'" in the database.');
+                callback(3,'No house with data "'+ data +'" in the database.');
             else
                 callback(1, obj);
         });
+    },
+    getByName: function(name, callback) {
+        this.get({'name':name},callback);
     },
     getById: function(id, callback) {
-        var House = require(this.model);
-        House.findOne({'_id': id}, function(err,obj)
-        {
-            if (err)
-                callback(2,err);
-            else if(obj == null)
-                callback(3,'No house with id "'+ id +'" in the database.');
-            else
-                callback(1, obj);
-        });
+        this.get({'_id': id},callback);
     },
-
     remove: function (id, callback) {
         var House = require(this.model);
         House.remove({
