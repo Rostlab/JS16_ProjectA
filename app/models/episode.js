@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var EpisodeSchema = new Schema({
     name: String,
-    character: [{type: Schema.Types.ObjectId, ref: 'Character'}],
+    characters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
     start_time: {type: Date, default: Date.now},
     episode_length: {type: Number, min: 60, max: 70},        // maximum 70 min, minimum 60 min duration as the episodes differ in duration
 
