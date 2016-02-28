@@ -5,7 +5,8 @@ var AgeSchema = new Schema({
     _id: ObjectId,
     name: String,
     events: [{type: Schema.types.ObjectId, ref: 'Event'}],
-    period: {from: Number, to: Number},
+    startDate: Date,
+	endDate: Date,
     predecessor: {type: Schema.types.ObjectId, ref: 'Age'},
     successor: {type: Schema.types.ObjectId, ref: 'Age'}
 });
