@@ -1,7 +1,7 @@
 module.exports = {
     model: '../models/house',
     houseTypeModel: '../models/houseType',
-    addHouse: function (data, callback) {
+    add: function (data, callback) {
         var House = require(this.model);
         var house = new House();
 
@@ -25,7 +25,7 @@ module.exports = {
             }
         });
     },
-    getHouseByName: function(name, callback) {
+    getByName: function(name, callback) {
         var House = require(this.model);
         House.findOne({'name':name}, function(err,obj)
         {
@@ -37,7 +37,7 @@ module.exports = {
                 callback(1, obj);
         });
     },
-    getHouseById: function(id, callback) {
+    getById: function(id, callback) {
         var House = require(this.model);
         House.findOne({'_id': id}, function(err,obj)
         {
@@ -50,7 +50,7 @@ module.exports = {
         });
     },
 
-    removeHouse: function (id, callback) {
+    remove: function (id, callback) {
         var House = require(this.model);
         House.remove({
             _id: id
@@ -63,7 +63,7 @@ module.exports = {
 
     },
 
-    editHouse: function (id, data, callback) {
+    edit: function (id, data, callback) {
         this.getHouseById(id,function(success, house) {
             // house exists
             if(success == 1) {
@@ -91,7 +91,7 @@ module.exports = {
         });
     },
 
-    addHouseType: function(name,callback) {
+    addType: function(name,callback) {
         var HouseType = require(this.houseTypeModel);
         var entry = new HouseType();
         entry.name = name;
@@ -104,7 +104,7 @@ module.exports = {
             }
         });
     },
-    getHouses: function (callback) {
+    getAll: function (callback) {
         var House = require(this.model);
         House.find(function (err, houses) {
             if (err){
@@ -115,7 +115,7 @@ module.exports = {
             }
         });
     },
-    getHouseTypes: function (callback) {
+    getAllTypes: function (callback) {
         var HouseType = require(this.houseTypeModel);
         HouseType.find(function (err, types) {
             if (err){
@@ -127,7 +127,7 @@ module.exports = {
         });
     },
 
-    removeHouseType: function (id, callback) {
+    removeType: function (id, callback) {
         var House = require(this.houseTypeModel);
         House.remove({
             _id: id

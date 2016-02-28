@@ -1,7 +1,7 @@
 module.exports = {
-    addHouse: function (req, res) {
+    add: function (req, res) {
         var housesStore = require('../stores/houses');
-        housesStore.addHouse(req.body,function(success, message) {
+        housesStore.add(req.body,function(success, message) {
             if(success == true)
                 res.status(200).json({ message: 'Success', data: message });
             else
@@ -9,10 +9,10 @@ module.exports = {
         });
     },
 
-    getHouses: function (req, res) {
+    getAll: function (req, res) {
         var housesStore = require('../stores/houses');
 
-        housesStore.getHouses(function(houses) {
+        housesStore.getAll(function(houses) {
             if(houses != false) {
                 res.status(200).json(houses);
             }
@@ -22,10 +22,10 @@ module.exports = {
         });
 
     },
-    getHouseByName: function(req, res) {
+    getByName: function(req, res) {
         var housesStore = require('../stores/houses');
 
-        housesStore.getHouseByName(req.params.houseName, function(success, message) {
+        housesStore.getByName(req.params.houseName, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
@@ -34,10 +34,10 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
-    getHouseById: function(req, res) {
+    getById: function(req, res) {
         var housesStore = require('../stores/houses');
 
-        housesStore.getHouseById(req.params.houseId, function(success, message) {
+        housesStore.getById(req.params.houseId, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
@@ -46,38 +46,38 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
-    editHouse: function(req, res) {
+    edit: function(req, res) {
         var housesStore = require('../stores/houses');
 
-        housesStore.editHouse(req.params.houseId, req.body,function(success, message) {
+        housesStore.edit(req.params.houseId, req.body,function(success, message) {
             if(success == true)
                 res.status(200).json({ message: 'Success', data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
-    removeHouse: function(req,res) {
+    remove: function(req,res) {
         var housesStore = require('../stores/houses');
-        housesStore.removeHouse(req.params.houseId,function(success) {
+        housesStore.remove(req.params.houseId,function(success) {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(200).json({ message: 'Failure: No house with the id "'+req.params.houseId +'" is existing.' });
         });
     },
-    addHouseType: function (req, res) {
+    addType: function (req, res) {
         var housesStore = require('../stores/houses');
-        housesStore.addHouseType(req.body.name,function(success, message) {
+        housesStore.addType(req.body.name,function(success, message) {
             if(success == true)
                 res.status(200).json({ message: 'Success', data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request.', error: message });
         });
     },
-    getHouseTypes: function (req, res) {
+    getAllTypes: function (req, res) {
         var housesStore = require('../stores/houses');
         var houses;
-        housesStore.getHouseTypes(function(types) {
+        housesStore.getAllTypes(function(types) {
             if(types != false) {
                 res.status(200).json(types);
             }
@@ -86,9 +86,9 @@ module.exports = {
             }
         });
     },
-    removeHouseType: function(req,res) {
+    removeType: function(req,res) {
         var housesStore = require('../stores/houses');
-        housesStore.removeHouseType(req.params.houseTypeId,function(success) {
+        housesStore.removeType(req.params.houseTypeId,function(success) {
             if(success == true)
                 res.status(200).json({ message: 'Success.' });
             else
