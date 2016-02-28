@@ -9,8 +9,9 @@ var CharacterSchema = new Schema({
     male: Boolean,                                                       // Male
     culture: String,                                                      // Valyrian
     age: {type: Number, min: 1, max: 200},                              // ??
-    dateOfBirth: Date,                                                        // 259 AC
-    dateOfDeath: Date,  	                                                     // 283 AC
+    dateOfBirth: Number,                                                        // 259 AC
+    dateOfDeath: Number,  	                                                     // 283 AC
+    actor: String,
 
     brothers: [{type: Schema.Types.ObjectId, ref: 'Character'}],
     sisters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
