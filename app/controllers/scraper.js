@@ -179,9 +179,8 @@ module.exports = {
             path: "/api.php"
         });
         var params = {
-            action: "",
-            page: "",
-            prop: "",
+            action: "parse",
+            page: "Portal:TV_Show",
             format: "json"
         };
 
@@ -191,14 +190,13 @@ module.exports = {
 
         console.log("Loading all episodes from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
-            for (i = 0; i < data[""][""].length; i++) {
-                characters.push(data[""]["links"][i]["*"]);
-            }
-            res.status(200).json(episodes);
+			arr =data["parse"]["text"]["*"].match(/<li>(.*?)<\/li>/g);
+			for(i = 0; i < arr.length; i++) {
+				subArr = arr[i].match(/>(.*?)</g);
+				episodes.push(subArr[1].substring(1,subArr[1].length-1));
+			}
+			res.status(200).json(episodes);
         });
-
-        res.status(400).json({message: 'Error', error: "something went wrong"});
+		res.status(400).json({message: 'Error', error: "something went wrong"});
     }
-
-
 };
