@@ -1,10 +1,9 @@
 module.exports = {
     /**
-     * @api {get} /api/twitter/search/:byKeywords
+     * @api {get} /api/twitter/search/:byKeywords Twitter search
      * @apiVersion 0.0.1
-     * @apiName Default
-     * @apiGroup Default
-     * @apiPermission none
+     * @apiName TwitterSearch
+     * @apiGroup Twitter
      *
      * @apiDescription This function streams related Tweets in real-time. Make sure to replace :byKeywords.
      */

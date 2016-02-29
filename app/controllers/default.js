@@ -4,7 +4,6 @@ module.exports = {
 	 * @apiVersion 0.0.1
 	 * @apiName Default
 	 * @apiGroup Default
-	 * @apiPermission none
 	 *
 	 * @apiDescription This function shows the "hello world" message to prove the nodejs app is working
 	 */

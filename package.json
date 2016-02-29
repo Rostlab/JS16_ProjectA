@@ -15,6 +15,9 @@
     "body-parser": "~1.0.1",
     "kerberos": "~0.0.17",
     "twitter": "latest",
-	"nodemw": "0.8.1"
+    "nodemw": "0.8.1"
+  },
+  "devDependencies": {
+    "apidoc": "^0.15.1"
   }
 }
