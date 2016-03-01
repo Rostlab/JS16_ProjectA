@@ -7,8 +7,8 @@
   "license": "ISC",
   "private": true,
   "homepage": "https://github.com/Rostlab/JS16_ProjectA",
-  "bugs": { 
-    "url" : "https://github.com/Rostlab/JS16_ProjectA/issues"
+  "bugs": {
+    "url": "https://github.com/Rostlab/JS16_ProjectA/issues"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,13 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "express": "latest",
-    "mongoose": "~4.4.5",
     "body-parser": "~1.15.0",
+    "express": "latest",
     "kerberos": "~0.0.17",
-    "twitter": "latest",
-    "nodemw": "0.8.1"
+    "mongoose": "~4.4.5",
+    "nodemw": "0.8.1",
+    "swig": "^1.4.2",
+    "twitter": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

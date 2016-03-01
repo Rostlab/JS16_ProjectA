@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
+var swig = require('swig');
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
 
@@ -39,15 +40,20 @@ db.on('open', function () {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
+    //Set swig as template engine
+    app.engine('html', swig.renderFile);
+    app.set('view engine', 'html');
+    app.set('views', __appbase + '/views');
+    app.set('view cache', false);
 
+
+    //Set up our router
     var router = express.Router();
 
     // this happens for every request
     router.use(function (req, res, next) {
         console.log('Request incoming.');
-
         // HERE LOGIN TEST
-
         next(); // go to the specialized request
     });
 

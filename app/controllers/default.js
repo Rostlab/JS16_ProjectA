@@ -8,7 +8,7 @@ module.exports = {
 	 * @apiDescription This function shows the "hello world" message to prove the nodejs app is working
 	 */
 	init: function (req, res) {
-        res.json({ message: 'Hello World!' });
+		res.render('main');
     },
 	
 	populateDB: function (db) {
