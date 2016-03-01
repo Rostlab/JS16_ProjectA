@@ -3,13 +3,13 @@
     "startDate" : -10000,
     "endDate" : -8000,
     "predecessor" : "AgeOfHeroes",
-    "successor" : "56d595012d0c0d49bebb48b0"
+    "successor" : "Age of Valyria" //set it with the id
 }
 
 {
     "name" : "Age of Valyria",
     "startDate" : -5000,
     "endDate" : 100,
-    "predecessor" : "56d594472d0c0d49bebb48af",
+    "predecessor" : "Andal invasion", //set it with the id
     "successor" : "The Seven Kingdoms"
 }
