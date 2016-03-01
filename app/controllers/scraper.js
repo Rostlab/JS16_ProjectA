@@ -16,6 +16,26 @@ module.exports = {
 
         console.log("Loading all houses from the wiki. This might take a while");
 
+        var apiCallback = function (err, info, next, data) {
+            for (j = 0; j < data.query.search.length; j++) {
+                title = String(data.query.search[j].title);
+                if (title === null) {
+                    break;
+                }
+                console.log("Getting details for house " + title);
+
+
+                this.getHouseDetails(title, function(result) {
+
+                });
+
+                houses.push(title);
+            }
+            if (houses.length == data.query.searchinfo.totalhits) {
+                callback(houses);
+            }
+        };
+
         for (i = 0; i < 580; i = i + 10) {
             //Setup up the api parameters
             var params = {
@@ -28,25 +48,7 @@ module.exports = {
             };
 
             //Get results from api
-            client.api.call(params, function (err, info, next, data) {
-                for (j = 0; j < data["query"]["search"].length; j++) {
-                    title = String(data["query"]["search"][j]["title"]);
-                    if (title == null) {
-                        break;
-                    }
-					console.log("Getting details for house " + title);
-					
-					
-					this.getHouseDetails(title, function(result) {
-						
-					});
-					
-                    houses.push(title);
-                }
-                if (houses.length == data["query"]["searchinfo"]["totalhits"]) {
-					callback(houses);
-                }
-            });
+            client.api.call(params, apiCallback);
         }
     },
 	
@@ -66,7 +68,7 @@ module.exports = {
 		};
 		fields = [];
 		subClient.api.call(params, function (err, info, next, data) {
-			var arr = data["parse"]["text"]["*"].match(/<th scope="row" style="text-align:left;">(.*?)<\/th>/g);
+			var arr = data.parse.text["*"].match(/<th scope="row" style="text-align:left;">(.*?)<\/th>/g);
 			for(i = 0; i < arr.length; i++) {
 				subArr = arr[i].match(/>(.*?)</g);
 				fields.push(subArr[1].substring(1,subArr[1].length-1));
@@ -96,8 +98,8 @@ module.exports = {
 
         console.log("Loading all characters from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
-            for (i = 0; i < data["parse"]["links"].length; i++) {
-                characters.push(data["parse"]["links"][i]["*"]);
+            for (i = 0; i < data.parse.links.length; i++) {
+                characters.push(data.parse.links[i]["*"]);
             }
             res.status(200).json(characters);
         });
@@ -220,7 +222,7 @@ module.exports = {
 
         console.log("Loading all episodes from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
-			arr =data["parse"]["text"]["*"].match(/<li>(.*?)<\/li>/g);
+			arr =data.parse.text["*"].match(/<li>(.*?)<\/li>/g);
 			for(i = 0; i < arr.length; i++) {
 				subArr = arr[i].match(/>(.*?)</g);
 				episodes.push(subArr[1].substring(1,subArr[1].length-1));
