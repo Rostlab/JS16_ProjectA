@@ -75,6 +75,7 @@ module.exports = {
     },
 
     edit: function (id, data, callback) {
+
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
@@ -86,6 +87,9 @@ module.exports = {
         this.getById(id,function(success, house) {
             // house exists
             if(success == 1) {
+
+                var house = new House();
+
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
                         house[key] = data[key];
