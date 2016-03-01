@@ -1,4 +1,4 @@
-# JS16_ProjectA ![Build Status in TravisCI](https://api.travis-ci.org/kordianbruck/JS16_ProjectA.svg)
+# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA)
 In this project we will lay the foundations for our system by integrating data from multiple sources into a central database. The database will serve the apps and the visualization tool that will be developed in other projects.
 
 # Links
