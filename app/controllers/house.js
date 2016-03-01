@@ -58,6 +58,22 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {post} /api/houses/ Find houses
+     * @apiVersion 0.0.1
+     * @apiName FindHouses
+     * @apiGroup Houses
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message": "Success",
+     *       "data": houses
+     *     }
+     *
+     * @apiError (404) NotFound Failure. No house with that data existing!.
+     * @apiError (400) BadRequest Error: Bad request. Usage of non existing schema property!
+     */
     get: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.get(req.body, function(success, message) {
