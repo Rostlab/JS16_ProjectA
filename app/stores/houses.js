@@ -75,6 +75,8 @@ module.exports = {
     },
 
     edit: function (id, data, callback) {
+        var house = new House();
+
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !House.schema.paths.hasOwnProperty(key)) {
