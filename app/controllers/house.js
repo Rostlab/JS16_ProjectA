@@ -3,9 +3,13 @@ module.exports = {
      * @api {post} /api/houses/ Add house
      * @apiVersion 0.0.1
      * @apiName AddHouse
+     * @apiDescription Add a house to the collection.
      * @apiGroup Houses
      *
-     * @apiSuccessExample {json} Success-Response:
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Stark"}
+     *
+     * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
      *     {
      *       "message": "Success",
@@ -13,7 +17,7 @@ module.exports = {
      *     }
      *
      * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
-     * @apiErrorExample {json} PropertyInvalid:
+     * @apiErrorExample {json} PropertyInvalid
      *     HTTP/1.1 400
      *     {
      *          "message": "Error. Property not valid to schema.",
@@ -21,14 +25,13 @@ module.exports = {
      *     }
      *
      * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
-     * @apiErrorExample {json} ValidationError:
+     * @apiErrorExample {json} ValidationError
      *     HTTP/1.1 400
      *     {
      *          "message": "Error. A value for a property is not valid to the underlying schema.",
      *          "error": mongooseError
      *     }
      *
-     * @apiDescription Get all houses of the collection.
      */
     add: function (req, res) {
         var housesStore = require('../stores/houses');
@@ -46,9 +49,28 @@ module.exports = {
      * @api {get} /api/houses/ Get all houses
      * @apiVersion 0.0.1
      * @apiName GetAllHouses
+     * @apiDescription Get all houses.
      * @apiGroup Houses
      *
-     * @apiSuccess (200) {Array} houses Array of houses.
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * [
+     *    {
+     *       "_id": "56d331be37f9bc06554c8af0",
+     *       "words": "Hear Me Roar!",
+     *       "name": "Lennister",
+     *       "__v": 0,
+     *       "updatedAt": "2016-02-28T17:43:26.246Z",
+     *       "createdAt": "2016-02-28T17:43:26.245Z",
+     *       "ancestralWeapon": [],
+     *       "title": []
+     *    }
+     * ]
+     *
+     * @apiSuccessExample {json} No db-entries:
+     * HTTP/1.1 200 OK
+     * [
+     * ]
      */
     getAll: function (req, res) {
         var housesStore = require('../stores/houses');
@@ -62,17 +84,44 @@ module.exports = {
      * @api {post} /api/houses/ Find houses
      * @apiVersion 0.0.1
      * @apiName FindHouses
+     * @apiDescription Find house by query.
      * @apiGroup Houses
      *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
+     * @apiHeaderExample {json} Header-Example
+     * {"words": "Hear Me Roar!"}
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     *
+     * {
+     *    "message": "Success",
+     *    "data": [
+     *       {
+     *          "_id": "56d331be37f9bc06554c8af0",
+     *          "words": "Hear Me Roar!",
+     *          "name": "Lennister",
+     *          "__v": 0,
+     *          "updatedAt": "2016-02-28T17:43:26.246Z",
+     *          "createdAt": "2016-02-28T17:43:26.245Z",
+     *          "ancestralWeapon": [],
+     *          "title": []
+     *       }
+     *    ]
+     * }
+     *
+     * @apiErrorExample {json} NotFound
+     *     HTTP/1.1 404
      *     {
-     *       "message": "Success",
-     *       "data": houses
+     *          "message": "Failure. No house with that data existing!",
+     *          "data": {"words": "Hear Me Laugh!"}
      *     }
      *
-     * @apiError (404) NotFound Failure. No house with that data existing!.
-     * @apiError (400) BadRequest Error: Bad request. Usage of non existing schema property!
+     * @apiErrorExample {json} BadRequest
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error: Bad request. Usage of non existing schema property!",
+     *          "errorProperty": 'sdfn'
+     *     }
      */
     get: function(req,res) {
         var housesStore = require('../stores/houses');
@@ -85,7 +134,38 @@ module.exports = {
                 res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
-
+    /**
+     * @api {get} /api/houses/:name Get house by name
+     * @apiVersion 0.0.1
+     * @apiName GetHouseByName
+     * @apiDescription Get house by name.
+     * @apiGroup Houses
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * {
+     *    "message": "Success",
+     *    "data": [
+     *       {
+     *          "_id": "56d331be37f9bc06554c8af0",
+     *          "words": "Hear Me Roar!",
+     *          "name": "Lennister",
+     *          "__v": 0,
+     *          "updatedAt": "2016-02-28T17:43:26.246Z",
+     *          "createdAt": "2016-02-28T17:43:26.245Z",
+     *          "ancestralWeapon": [],
+     *          "title": []
+     *       }
+     *    ]
+     * }
+     *
+     * @apiErrorExample {json} NotFound
+     *     HTTP/1.1 404
+     *     {
+     *          "message": "Failure. No house with that data existing!",
+     *          "data": {"words": "Hear Me Laugh!"}
+     *     }
+     */
     getByName: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -97,6 +177,38 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {get} /api/houses/byId/:id Get house by id
+     * @apiVersion 0.0.1
+     * @apiName GetHouseById
+     * @apiDescription Get house by id.
+     * @apiGroup Houses
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * {
+     *    "message": "Success",
+     *    "data": [
+     *       {
+     *          "_id": "56d331be37f9bc06554c8af0",
+     *          "words": "Hear Me Roar!",
+     *          "name": "Lennister",
+     *          "__v": 0,
+     *          "updatedAt": "2016-02-28T17:43:26.246Z",
+     *          "createdAt": "2016-02-28T17:43:26.245Z",
+     *          "ancestralWeapon": [],
+     *          "title": []
+     *       }
+     *    ]
+     * }
+     *
+     * @apiErrorExample {json} NotFound
+     *     HTTP/1.1 404
+     *     {
+     *          "message": "Failure. No house with that data existing!",
+     *          "data": {"id": "56d331be37f9bc06554c8af1"}
+     *     }
+     */
     getById: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -108,6 +220,52 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {put} /api/houses/:id Edit house
+     * @apiVersion 0.0.1
+     * @apiName EditHouse
+     * @apiDescription Edit a house.
+     * @apiGroup Houses
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Stark"}
+     *
+     * @apiSuccessExample {json} Success
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message": "Success",
+     *       "data": {
+     *         "__v": 0,
+     *         "name": "Stark",
+     *         "_id": "56d5f1e8756d3131130e5424",
+     *         "updatedAt": "2016-03-01T19:47:52.153Z",
+     *         "createdAt": "2016-03-01T19:47:52.153Z",
+     *         "ancestralWeapon": [],
+     *         "title": []
+     *       }
+     *     }
+     *
+     * @apiErrorExample {json} NotFound
+     *     HTTP/1.1 404
+     *     {
+     *          "message": "Error. No house exsiting with that id.",
+     *          "id": "SFDS234W"
+     *     }
+     *
+     * @apiErrorExample {json} ValidationError
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error.",
+     *          "error": mongooseError
+     *     }
+     *
+     * @apiErrorExample {json} BadRequest
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error: Bad request. No such property.",
+     *          "errorProperty": prop
+     *     }
+     */
     edit: function(req, res) {
         var housesStore = require('../stores/houses');
 
@@ -123,6 +281,26 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {delete} /api/houses/:id Remove house
+     * @apiVersion 0.0.1
+     * @apiName RemoveHouse
+     * @apiDescription Remove house by id.
+     * @apiGroup Houses
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * {
+     *    "message": "Success"
+     * }
+     *
+     * @apiErrorExample {json} NotFound
+     * HTTP/1.1 404
+     * {
+     *     "message": "Failure: No house with that id is existing.",
+     *     "id": "56d5f1e8756d3131130e5424"
+     * }
+     */
     remove: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.remove(req.params.houseId,function(success) {
@@ -133,6 +311,40 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {post} /api/houseTypes/ Add houseType
+     * @apiVersion 0.0.1
+     * @apiName AddHouseType
+     * @apiDescription Add a houseType to the collection.
+     * @apiGroup HouseTypes
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Distinct House"}
+     *
+     * @apiSuccessExample {json} Success
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message": "Success",
+     *       "data": newDbEntry
+     *     }
+     *
+     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
+     * @apiErrorExample {json} PropertyInvalid
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error. Property not valid to schema.",
+     *          "errorProperty": prop
+     *     }
+     *
+     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
+     * @apiErrorExample {json} ValidationError
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error.",
+     *          "error": mongooseError
+     *     }
+     *
+     */
     addType: function (req, res) {
         var housesStore = require('../stores/houses');
         housesStore.addType(req.body,function(success, message) {
@@ -145,6 +357,28 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {get} /api/houseTypes/ Get all houseTypes
+     * @apiVersion 0.0.1
+     * @apiName GetAllHouseTypes
+     * @apiDescription Get all houseTypes.
+     * @apiGroup HouseTypes
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * [
+     *   {
+     *     "_id": "56d20199979b3caaff90f182",
+     *     "name": "Exiled Great house",
+     *     "__v": 0
+     *   }
+     * ]
+     *
+     * @apiSuccessExample {json} No db-entries:
+     * HTTP/1.1 200 OK
+     * [
+     * ]
+     */
     getAllTypes: function (req, res) {
         var housesStore = require('../stores/houses');
 
@@ -153,6 +387,26 @@ module.exports = {
         });
     },
 
+    /**
+     * @api {delete} /api/houseTypes/:id Remove houseType
+     * @apiVersion 0.0.1
+     * @apiName RemoveHouseType
+     * @apiDescription Remove houseType by id.
+     * @apiGroup HouseTypes
+     *
+     * @apiSuccessExample {json} Success
+     * HTTP/1.1 200 OK
+     * {
+     *    "message": "Success"
+     * }
+     *
+     * @apiErrorExample {json} NotFound
+     * HTTP/1.1 404
+     * {
+     *     "message": "Failure: No houseType with that id is existing.",
+     *     "id": "56d5f1e8756d3131130e5424"
+     * }
+     */
     removeType: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.removeType(req.params.houseTypeId,function(success) {
