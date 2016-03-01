@@ -75,7 +75,6 @@ module.exports = {
     },
 
     edit: function (id, data, callback) {
-        var house = new House();
 
         // check if POST data matches Schema
         for (var key in data) {
@@ -93,6 +92,8 @@ module.exports = {
                         house[key] = data[key];
                     }
                 }
+
+                var house = new House();
                 house.save(function(err) {
                     if (err){
                         callback(3,err);
