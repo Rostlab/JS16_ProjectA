@@ -47,11 +47,25 @@ module.exports = {
     },
 
     getByName: function(name, callback) {
-        this.get({'name':name},callback);
+        this.get({'name':name},function(success,message){
+            if(success == 1) {
+                callback(success,message[0])
+            }
+            else {
+                callback(success,message);
+            }
+        });
     },
 
     getById: function(id, callback) {
-        this.get({'_id': id},callback);
+        this.get({'_id': id},function(success,message){
+            if(success == 1) {
+                callback(success,message[0])
+            }
+            else {
+                callback(success,message);
+            }
+        });
     },
 
     getAll: function (callback) {
@@ -87,9 +101,7 @@ module.exports = {
         this.getById(id,function(success, house) {
             // house exists
             if(success == 1) {
-
-                var house = new House();
-
+                house = house[0];
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
                         house[key] = data[key];
@@ -149,7 +161,6 @@ module.exports = {
 
     removeType: function (id, callback) {
         HouseType.remove({_id: id},function(err, resp) {
-            console.log(id);
             // more than zero entries removed?
             if (resp.result.n > 0)
                 callback(true);
