@@ -8,7 +8,7 @@ global.__appbase = __dirname + '/app/';
 
 //Create the DB connection string
 var databaseParams = config.database;
-var dbConnection = "mongodb://"
+var dbConnection = "mongodb://";
 if (databaseParams.username.length > 0 && databaseParams.password.length > 0) {
     dbConnection += databaseParams.username + ":" + databaseParams.password + "@";
 }
