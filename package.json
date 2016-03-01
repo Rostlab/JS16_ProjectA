@@ -1,23 +1,39 @@
 {
-  "name": "got",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "got-api",
+  "version": "0.0.1",
+  "description": "This package provides and api that scrapes data from a wiki",
+  "main": "app.js",
   "author": "",
   "license": "ISC",
   "private": true,
+  "homepage": "https://github.com/Rostlab/JS16_ProjectA",
+  "bugs": { 
+    "url" : "https://github.com/Rostlab/JS16_ProjectA/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rostlab/JS16_ProjectA.git"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "dependencies": {
     "express": "latest",
-    "mongoose": "~4.2.5",
-    "body-parser": "~1.0.1",
+    "mongoose": "~4.4.5",
+    "body-parser": "~1.15.0",
     "kerberos": "~0.0.17",
     "twitter": "latest",
     "nodemw": "0.8.1"
   },
   "devDependencies": {
-    "apidoc": "^0.15.1"
+    "grunt": "~0.4.1",
+    "grunt-apidoc": "^0.11.0",
+    "grunt-contrib-clean": "~1.0.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-contrib-nodeunit": "~0.4.1"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "check-updates": "npm-check-updates"
   }
 }

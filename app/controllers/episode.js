@@ -127,7 +127,7 @@ module.exports = {
     remove: function(req,res) {
         var episodesStore = require('../stores/episodes');
         episodesStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No episode with that id is existing.', id: req.params.id });

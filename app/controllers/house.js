@@ -85,7 +85,7 @@ module.exports = {
     remove: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.remove(req.params.houseId,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No house with that id is existing.', id: req.params.houseId });
@@ -115,7 +115,7 @@ module.exports = {
     removeType: function(req,res) {
         var housesStore = require('../stores/houses');
         housesStore.removeType(req.params.houseTypeId,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No houseType with that id is existing.', id: req.params.houseTypeId });

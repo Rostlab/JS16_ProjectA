@@ -73,4 +73,4 @@ module.exports = function (app, router) {
     var twitterController = require('./app/controllers/twitter');
     router.get('/twitter/search/:byKeywords', twitterController.searchTwitter);
 
-}
+};
