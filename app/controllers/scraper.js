@@ -1,6 +1,6 @@
 module.exports = {
 
-    getAllHouses: function (req, res) {
+    getAllHouses: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -34,15 +34,45 @@ module.exports = {
                     if (title == null) {
                         break;
                     }
+					console.log("Getting details for house " + title);
+					
+					
+					this.getHouseDetails(title, function(result) {
+						
+					});
+					
                     houses.push(title);
                 }
                 if (houses.length == data["query"]["searchinfo"]["totalhits"]) {
-                    res.status(200).json(houses);
+					callback(houses);
                 }
             });
         }
-        res.status(400).json({message: 'Error', error: "something went wrong"});
     },
+	
+	getHouseDetails : function(houseName, callback) {
+		
+		houseName.replace(" ", "_");
+		pageName = "House_".append(title);
+		var bot = require("nodemw");
+		var client = new bot({
+			server: "awoiaf.westeros.org",
+			path: "/api.php"
+		});
+		var params = {
+			action: "parse",
+			page: pageName,
+			format: "json"
+		};
+		fields = [];
+		subClient.api.call(params, function (err, info, next, data) {
+			var arr = data["parse"]["text"]["*"].match(/<th scope="row" style="text-align:left;">(.*?)<\/th>/g);
+			for(i = 0; i < arr.length; i++) {
+				subArr = arr[i].match(/>(.*?)</g);
+				fields.push(subArr[1].substring(1,subArr[1].length-1));
+			}
+		});
+	},
 
     getAllCharacters: function (req, res) {
 
