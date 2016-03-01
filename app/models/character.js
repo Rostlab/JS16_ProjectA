@@ -30,7 +30,6 @@ var CharacterSchema = new Schema({
     placeOfDeath: String,                                                 // Trident
     house: {type: Schema.Types.ObjectId, ref: "House"},                   // House Targaryen
     skills: [{type: Schema.Types.ObjectId, ref: "Skill"}],                // one to many - talented musician and skilled knight
-    eventName: String,                                                   // A game of thrones, A clash with kings
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now}
 
