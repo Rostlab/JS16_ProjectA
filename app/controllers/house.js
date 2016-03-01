@@ -109,6 +109,7 @@ module.exports = {
      *    ]
      * }
      *
+     * @apiError (404) NotFound No house with that data existing!
      * @apiErrorExample {json} NotFound
      *     HTTP/1.1 404
      *     {
@@ -116,11 +117,12 @@ module.exports = {
      *          "data": {"words": "Hear Me Laugh!"}
      *     }
      *
-     * @apiErrorExample {json} BadRequest
+     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
+     * @apiErrorExample {json} PropertyInvalid
      *     HTTP/1.1 400
      *     {
      *          "message": "Error: Bad request. Usage of non existing schema property!",
-     *          "errorProperty": 'sdfn'
+     *          "errorProperty": prop
      *     }
      */
     get: function(req,res) {
@@ -159,6 +161,7 @@ module.exports = {
      *    ]
      * }
      *
+     * @apiError (404) NotFound No house with that data existing!
      * @apiErrorExample {json} NotFound
      *     HTTP/1.1 404
      *     {
@@ -202,6 +205,7 @@ module.exports = {
      *    ]
      * }
      *
+     * @apiError (404) NotFound No house with that data existing!
      * @apiErrorExample {json} NotFound
      *     HTTP/1.1 404
      *     {
@@ -245,13 +249,15 @@ module.exports = {
      *       }
      *     }
      *
+     * @apiError (404) NotFound No house with that id existing!
      * @apiErrorExample {json} NotFound
      *     HTTP/1.1 404
      *     {
-     *          "message": "Error. No house exsiting with that id.",
-     *          "id": "SFDS234W"
+     *          "message": "Error. No house existing with that id.",
+     *          "id": id
      *     }
      *
+     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
      * @apiErrorExample {json} ValidationError
      *     HTTP/1.1 400
      *     {
@@ -259,7 +265,8 @@ module.exports = {
      *          "error": mongooseError
      *     }
      *
-     * @apiErrorExample {json} BadRequest
+     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
+     * @apiErrorExample {json} PropertyInvalid
      *     HTTP/1.1 400
      *     {
      *          "message": "Error: Bad request. No such property.",
@@ -273,7 +280,7 @@ module.exports = {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if(success == 2)
-                res.status(404).json({ message: 'Error. No house exsiting with that id', id: req.params.houseId });
+                res.status(404).json({ message: 'Error. No house existing with that id', id: req.params.houseId });
             else if(success == 4)
                 res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
             else
@@ -294,6 +301,7 @@ module.exports = {
      *    "message": "Success"
      * }
      *
+     * @apiError (404) NotFound No house with that id existing!
      * @apiErrorExample {json} NotFound
      * HTTP/1.1 404
      * {
@@ -400,6 +408,7 @@ module.exports = {
      *    "message": "Success"
      * }
      *
+     * @apiError (404) NotFound No houseType with that data existing!
      * @apiErrorExample {json} NotFound
      * HTTP/1.1 404
      * {
