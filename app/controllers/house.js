@@ -1,4 +1,18 @@
 module.exports = {
+    /**
+     * @api {post} /api/houses/ Add an house
+     * @apiVersion 0.0.1
+     * @apiName AddHouse
+     * @apiGroup Houses
+     *
+     * @apiSuccess (200) {String} name Name of the house.
+     * @apiSuccess (200) {HouseType} type Id of the houseType.
+     *
+     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
+     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
+     *
+     * @apiDescription Add an house to the collection with all the required fields
+     */
     add: function (req, res) {
         var housesStore = require('../stores/houses');
         housesStore.add(req.body,function(success, message) {
