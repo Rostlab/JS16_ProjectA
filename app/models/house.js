@@ -9,10 +9,10 @@ var HouseSchema   = new Schema({
     currentLord: {type: Schema.Types.ObjectId, ref: "Character"},         // Queen Daenerys Targaryen
     overlord: {type: Schema.Types.ObjectId, ref: "Character"},            // None
     title: [String],                                                      // King of the Andals, the Rhoynar, and the First Men,Lord of the Seven Kingdoms
-    region: String,                                                       // Crownlands (formerly Valyria)
+    region: {type: Schema.Types.ObjectId, ref: "Region"},                 // Crownlands (formerly Valyria)
     cadetBranch: String,                                                  // House Blackfyre is the cadet branch of House Targaryen
     ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
-    founded: String,                                                      // > 126 BC, Age of Heroes
+    founded: Number,                                                      // > 126 BC, Age of Heroes
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now}
 });

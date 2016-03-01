@@ -7,7 +7,7 @@ var CharacterSchema = new Schema({
     name: {type: String, required: true},                                // Rhaegar
     title: String,                                                        // Prince of Dragonstone Ser
     male: Boolean,                                                       // Male
-    culture: String,                                                      // Valyrian
+    culture: {type: Schema.Types.ObjectId, ref: 'Culture'},             // Valyrian
     age: {type: Number, min: 1, max: 200},                              // ??
     dateOfBirth: Number,                                                        // 259 AC
     dateOfDeath: Number,  	                                                     // 283 AC
