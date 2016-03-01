@@ -1,17 +1,34 @@
 module.exports = {
     /**
-     * @api {post} /api/houses/ Add an house
+     * @api {post} /api/houses/ Add house
      * @apiVersion 0.0.1
      * @apiName AddHouse
      * @apiGroup Houses
      *
-     * @apiSuccess (200) {String} name Name of the house.
-     * @apiSuccess (200) {HouseType} type Id of the houseType.
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message": "Success",
+     *       "data": newDbEntry
+     *     }
      *
      * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
-     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
+     * @apiErrorExample {json} PropertyInvalid:
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error. Property not valid to schema.",
+     *          "errorProperty": prop
+     *     }
      *
-     * @apiDescription Add an house to the collection with all the required fields
+     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
+     * @apiErrorExample {json} ValidationError:
+     *     HTTP/1.1 400
+     *     {
+     *          "message": "Error. A value for a property is not valid to the underlying schema.",
+     *          "error": mongooseError
+     *     }
+     *
+     * @apiDescription Get all houses of the collection.
      */
     add: function (req, res) {
         var housesStore = require('../stores/houses');
@@ -21,10 +38,18 @@ module.exports = {
             else if(success == 2)
                 res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error.', error: message });
+                res.status(400).json({ message: 'Error. A value for a property is not valid to the underlying schema.', error: message });
         });
     },
 
+    /**
+     * @api {get} /api/houses/ Get all houses
+     * @apiVersion 0.0.1
+     * @apiName GetAllHouses
+     * @apiGroup Houses
+     *
+     * @apiSuccess (200) {Array} houses Array of houses.
+     */
     getAll: function (req, res) {
         var housesStore = require('../stores/houses');
 
