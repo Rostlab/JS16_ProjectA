@@ -74,7 +74,7 @@ module.exports = {
     removeContinent: function(req,res) {
         var continentsStore = require('../stores/continents');
         continentsStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No continent with that id is existing.', id: req.params.id });
@@ -155,7 +155,7 @@ module.exports = {
     removeRegion: function(req,res) {
         var regionsStore = require('../stores/regions');
         regionsStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No region with that id is existing.', id: req.params.id });
@@ -236,7 +236,7 @@ module.exports = {
     removeCulture: function(req,res) {
         var culturesStore = require('../stores/cultures');
         culturesStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No culture with that id is existing.', id: req.params.id });

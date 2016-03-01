@@ -71,7 +71,7 @@ module.exports = {
     remove: function(req,res) {
         var charactersStore = require('../stores/characters');
         charactersStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No character with that id is existing.', id: req.params.id });
@@ -150,7 +150,7 @@ module.exports = {
     removeSkill: function(req,res) {
         var skillsStore = require('../stores/skills');
         skillsStore.remove(req.params.id,function(success) {
-            if(success == true)
+            if(success === true)
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No skill with that id is existing.', id: req.params.id });

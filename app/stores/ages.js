@@ -38,7 +38,7 @@ module.exports = {
 
         Age.find(data, function(err,obj)
         {
-            if(obj.length == 0)
+            if(obj.length === 0)
                 callback(3,data);
             else
                 callback(1, obj);
