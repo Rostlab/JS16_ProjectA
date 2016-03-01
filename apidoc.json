@@ -3,5 +3,5 @@
   "version": "0.0.1",
   "description": "This API supplies any and all information one would want to know about the TV show Game of Thrones",
   "title": "GOT API",
-  "url" : "https://got-api.bruck.me/"
+  "url" : "https://got-api.bruck.me"
 }
