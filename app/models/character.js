@@ -13,12 +13,15 @@ var CharacterSchema = new Schema({
     dateOfDeath: Number,  	                                                     // 283 AC
     actor: String,
 
-    brothers: [{type: Schema.Types.ObjectId, ref: 'Character'}],
-    sisters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
     mother: {type: Schema.Types.ObjectId, ref: 'Character'},
     father: {type: Schema.Types.ObjectId, ref: 'Character'},
-    children: [{type: Schema.Types.ObjectId, ref: 'Character'}],
     heir: {type: Schema.Types.ObjectId, ref: 'Character'},
+
+    //Deal with these when we have the main system up and running
+    //brothers: [{type: Schema.Types.ObjectId, ref: 'Character'}],
+    //sisters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
+    //children: [{type: Schema.Types.ObjectId, ref: 'Character'}],
+    //spouses: [{type: Schema.Types.ObjectId, ref: 'Character'}],            // Princess Elia Martell
 
     //Omit for now till we know what exactly is needed from other projects.
     //battles: [{type: Schema.Types.ObjectId, ref: 'Battle'}],
@@ -26,7 +29,6 @@ var CharacterSchema = new Schema({
     placeOfBirth: String,                                                 // Summerhall
     placeOfDeath: String,                                                 // Trident
     house: {type: Schema.Types.ObjectId, ref: "House"},                   // House Targaryen
-    spouses: [{type: Schema.Types.ObjectId, ref: 'Character'}],            // Princess Elia Martell
     skills: [{type: Schema.Types.ObjectId, ref: "Skill"}],                // one to many - talented musician and skilled knight
     eventName: String,                                                   // A game of thrones, A clash with kings
     createdAt: {type: Date, default: Date.now},
