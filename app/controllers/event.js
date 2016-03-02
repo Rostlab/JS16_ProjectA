@@ -63,12 +63,12 @@ module.exports = {
         var eventsStore = require('../stores/events');
 
         eventsStore.getAll(function(success,events) {
-            if (success == true){
-              res.status(200).json(events);
+            if (success == true) {
+                res.status(200).json(events);
             }
-            else{
-              res.status(400).json({ message: 'Error.', error: message});
-            
+            else {
+                res.status(400).json({message: 'Error.', error: message});
+            }
         });
     },
 
