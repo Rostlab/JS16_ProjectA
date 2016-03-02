@@ -231,5 +231,38 @@ module.exports = {
                 res.status(404).json({message: 'Failure: No episode with that id is existing.', id: req.params.id});
             }
         });
+    },
+
+
+     /**
+     * @api {delete} /api/episodes/:id Get episode by character
+     * @apiVersion 0.0.1
+     * @apiName GetEpisodeByCharacter
+     * @apiGroup Episodes
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No episode with that character existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No episode with that character existing!", "data": err };
+     *
+     * @apiDescription Search the episode with the characterName
+     */
+    getByCharacter: function (req, res) {
+        var episodesStore = require('../stores/episodes');
+        episodesStore.getByCharacter(req.params.name , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+            }else{
+		res.status(404).json({message: 'Failure: No episode with that character is existing.', data: message});
+	    } 
+        });
     }
+
+
 };

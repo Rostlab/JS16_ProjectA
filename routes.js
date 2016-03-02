@@ -30,6 +30,7 @@ module.exports = function (app, router) {
     router.get('/events', eventsController.getAll);
     router.get('/events/:name', eventsController.getByName);
     router.get('/events/byId/:id', eventsController.getById);
+    router.get('/episodes/byCharacter/:name', episodeController.getByCharacter);
     router.delete('/events/:id', eventsController.remove);
     router.put('/events/:id', eventsController.edit);
 
