@@ -1,6 +1,6 @@
 module.exports = {
     /**
-     * @api {post} /api/event/ Add event
+     * @api {post} /api/events/ Add event
      * @apiVersion 0.0.1
      * @apiName AddEvent
      * @apiDescription Add a event to the collection.
@@ -45,7 +45,7 @@ module.exports = {
         });
     },
     /**
-     * @api {get} /api/event/ Get all events
+     * @api {get} /api/events/ Get all events
      * @apiVersion 0.0.1
      * @apiName GetAllEvents
      * @apiGroup Events
