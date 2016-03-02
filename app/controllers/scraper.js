@@ -88,10 +88,10 @@ module.exports = {
 			});
 			var housesCollection = [];
 			var scraper = require("./scraper");
-			for(i = 0; i < houses.length; i++) {
+			for(i = 0; i < 5; i++) {
 				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
-					if(housesCollection.length == houses.length) {
+					if(housesCollection.length == 5) {
 						callback(housesCollection);
 					}
 				});
@@ -163,13 +163,13 @@ module.exports = {
 										house["current lord"] = characterDetails;
 									});
 								}
-								/*
+								
 								else if(name == "Region") {
-									getRegionDetails(value, function(regionDetails) {
-										house[name] = regionDetails;
+									sc.getSingleRegion(value, function(regionDetails) {
+										house["region"] = regionDetails;
 									});
 								}
-								*/
+								
 								else if(name == "Founder") {
 									sc.getSingleCharacter(value, function(characterDetails) {
 										house["founder"] = characterDetails;
@@ -261,13 +261,13 @@ module.exports = {
 									});
 								}
 								
-								/*
+								
 								else if(name == "Region") {
-									getRegionDetails(value, function(regionDetails) {
-										character[name] = regionDetails;
+									sc.getSingleRegion(value, function(regionDetails) {
+										character["region"] = regionDetails;
 									});
 								}
-								*/
+								
 								else {
 									character[name.toLowerCase()] = value;
 								}
@@ -280,6 +280,7 @@ module.exports = {
 						}
 					}
 				}
+				
 				//console.log(character);
 				callback(character);
 			});
@@ -421,7 +422,18 @@ module.exports = {
         res.status(400).json({message: 'Error', error: "something went wrong"});
     },
 
-    getAllRegions: function () {
+	getSingleRegion: function(regionName, callback) {
+		var sc = require("./scraper");
+		sc.getRegions(function(regions) {
+			for(i = 0; i < regions.length; i++) {
+				if(regions[i].name == regionName) {
+					callback(regions[i]);
+				}
+			}
+		});
+	},
+	
+    getRegions: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -442,8 +454,21 @@ module.exports = {
 
         console.log("Loading all regions from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
-            var arr = data["parse"]["text"]["*"].split("Regions");
-			console.log(arr[1]);
+
+			var section = data["parse"]["text"]["*"].split("Regions");
+			for(i = 1; i < 4; i++) {
+				var continents = section[i].split("<\/li><\/ul>");
+				
+				var str = continents[0].match(/\">(.*?)<\/a>/g);
+				for(j = 0; j < str.length; j++) {
+					str[j] = str[j].substring(2, str[j].length-4);
+					var region = [];
+					region["name"] = str[j];
+					regions.push(region);
+				}
+			}
+			callback(regions);
+
         });
     },
 
