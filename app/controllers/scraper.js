@@ -3,7 +3,7 @@ module.exports = {
 	/*
 	* Returns a list of house names
 	*/
-    getAllHouseNames: function (callback) {
+    getHouseNames: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -59,11 +59,11 @@ module.exports = {
 	/*
 	* Call when you want to fetch all house information
 	*/
-	getAllHousesAndDetails : function(callback) {
+	getHouses : function(callback) {
 		
 		
 		sc = require("./scraper");
-		sc.getAllHouseNames(function(houses) {
+		sc.getHouseNames(function(houses) {
 		
 		/*
 		* For testing purposes(and faster results) uncomment this section and comment the above code section.
@@ -89,7 +89,7 @@ module.exports = {
 			var housesCollection = [];
 			var scraper = require("./scraper");
 			for(i = 0; i < 20; i++) {
-				scraper.getHouseDetails(houses[i], function(house) {
+				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
 					if(housesCollection.length == 20) {
 						callback(housesCollection);
@@ -102,7 +102,7 @@ module.exports = {
 	/*
 	* Fetches details for one house
 	*/
-	getHouseDetails : function(houseName, callback) {
+	getSingleHouse : function(houseName, callback) {
 		var bot = require("nodemw");
 		var client = new bot({
 			server: "awoiaf.westeros.org",
@@ -159,7 +159,7 @@ module.exports = {
 							if(value != null) {
 								
 								if(name == "Current Lord") {
-									sc.getCharacterDetails(value, function(characterDetails) {
+									sc.getSingleCharacter(value, function(characterDetails) {
 										house["Current Lord"] = characterDetails;
 									});
 								}
@@ -171,13 +171,13 @@ module.exports = {
 								}
 								*/
 								else if(name == "Founder") {
-									sc.getCharacterDetails(value, function(characterDetails) {
+									sc.getSingleCharacter(value, function(characterDetails) {
 										house["Founder"] = characterDetails;
 									});
 								}
 								
 								else if(name == "Overlord") {
-									sc.getHouseDetails(value, function(houseDetails) {
+									sc.getSingleHouse(value, function(houseDetails) {
 										house["Overlord"] = houseDetails;
 									});
 								}
@@ -204,7 +204,7 @@ module.exports = {
 	/*
 	* Fetches details for one character
 	*/
-	getCharacterDetails : function(characterName, callback) {
+	getSingleCharacter : function(characterName, callback) {
 		//console.log("start getCharacterDetails");
 		var bot = require("nodemw");
 		var client = new bot({
@@ -256,7 +256,7 @@ module.exports = {
 								
 								
 								if(name == "Allegiance") {
-									sc.getHouseDetails(value, function(houseDetails) {
+									sc.getSingleHouse(value, function(houseDetails) {
 										character["Allegiance"] = houseDetails;
 									});
 								}
@@ -289,11 +289,11 @@ module.exports = {
 	/*
 	* Call when you want to fetch all house information
 	*/
-	getAllCharactersAndDetails : function(callback) {
+	getCharacters : function(callback) {
 		
 		
 		var sc = require("./scraper");
-		sc.getAllCharacterNames(function(characters) {
+		sc.getCharacterNames(function(characters) {
 		
 			var charactersCollection = [];
 			var scraper = require("./scraper");
@@ -301,7 +301,7 @@ module.exports = {
 			console.log(characters.length);
 			
 			for(i = 0; i < 20; i++) {
-				scraper.getCharacterDetails(characters[i], function(character) {
+				scraper.getSingleCharacter(characters[i], function(character) {
 					charactersCollection.push(character);
 					if(charactersCollection.length == 20) {
 						callback(charactersCollection);
@@ -314,7 +314,7 @@ module.exports = {
 	/*
 	* Returns a list of character names
 	*/
-    getAllCharacterNames: function (callback) {
+    getCharacterNames: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
