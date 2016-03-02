@@ -24,6 +24,15 @@ module.exports = function (app, router) {
     router.delete('/episodes/:id', episodeController.remove);
     router.put('/episodes/:id', episodeController.edit);
 
+    var eventsController = require(__appbase + 'controllers/event');
+    router.post('/events', eventsController.add);
+    router.post('/events/find', eventsController.get);
+    router.get('/events', eventsController.getAll);
+    router.get('/events/:name', eventsController.getByName);
+    router.get('/events/byId/:id', eventsController.getById);
+    router.delete('/events/:id', eventsController.remove);
+    router.put('/events/:id', eventsController.edit);
+
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters', characterController.add);
     router.post('/characters/find', characterController.get);
