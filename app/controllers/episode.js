@@ -71,7 +71,7 @@ module.exports = {
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : episode}
+     *     {"message" : "Success", "data" : episodes}
      *
      * @apiError (404) NotFound No episode with that data existing!
      * @apiErrorExample {json} NotFound
@@ -235,25 +235,25 @@ module.exports = {
 
 
      /**
-     * @api {delete} /api/episodes/:id Get episode by character
+     * @api {delete} /api/episodes/byCharacter/:id Get episodes by character
      * @apiVersion 0.0.1
-     * @apiName GetEpisodeByCharacter
+     * @apiName GetEpisodesByCharacter
      * @apiGroup Episodes
      *
-     * @apiSuccessExample {json} Success-Response
-     *     HTTP/1.1 200 OK
-     *     {"message" : "Success"}
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : episodes}
      *
      * @apiError (404) NotFound No episode with that character existing!
      * @apiErrorExample {json} NotFound
      *      HTTP/1.1 404
      *      { "message": "Failure. No episode with that character existing!", "data": err };
      *
-     * @apiDescription Search the episode with the characterName
+     * @apiDescription Search episodes in which the characterId
      */
     getByCharacter: function (req, res) {
         var episodesStore = require('../stores/episodes');
-        episodesStore.getByCharacter(req.params.name , function (success, message) {
+        episodesStore.getByCharacter(req.params.id , function (success, message) {
             if (success === 1) {
                 res.status(200).json({message: 'Success', data: obj});
             }else if (success === 2){
