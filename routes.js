@@ -33,6 +33,15 @@ module.exports = function (app, router) {
     router.delete('/events/:id', eventsController.remove);
     router.put('/events/:id', eventsController.edit);
 
+    var ageController = require(__appbase + 'controllers/age');
+    router.post('/ages', ageController.add);
+    router.post('/ages/find', ageController.get);
+    router.get('/ages', ageController.getAll);
+    router.get('/ages/:name', ageController.getByName);
+    router.get('/ages/byId/:id', ageController.getById);
+    router.delete('/ages/:id', ageController.remove);
+    router.put('/ages/:id', ageController.edit);
+
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters', characterController.add);
     router.post('/characters/find', characterController.get);
