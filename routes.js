@@ -86,7 +86,7 @@ module.exports = function (app, router) {
 
 
     var scraperController = require('./app/controllers/scraper');
-    router.get('/scrapper/houses', scraperController.getAllHouses);
+    router.get('/scrapper/houses', scraperController.getAllHouseDetails);
     router.get('/scrapper/characters', scraperController.getAllCharacters);
 
     var twitterController = require('./app/controllers/twitter');
