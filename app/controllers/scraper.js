@@ -197,13 +197,15 @@ module.exports = {
 			
 		}	
 		*/
-		for(i = 0; i < houses.length; i++) {
+		for(i = 0; i < 5; i++) {
 			sc.getHouseDetails(houses[i], function(house) {
 				housesCollection.push(house);
+				//console.log(housesCollection.length);
+				if(housesCollection.length == 5) {
+					callback(housesCollection);
+				}
 			});
-			if(housesCollection.length == houses.length) {
-				callback(housesCollection);
-			}
+			
 		}
 		});
 	},
@@ -226,7 +228,7 @@ module.exports = {
 			fields = JSON.parse(string_array[1]);
 		
 		
-		
+			//console.log(houseName);
 			pageName = houseName.replace(" ", "_");
 			
 			var params = {
@@ -265,9 +267,12 @@ module.exports = {
 							*/
 							
 							if(value != null) {
-								if(name.indexOf("Current Lord") != -1) {
+								
+								if(name == "Current Lord") {
+									var name1 = name;
+									var value1 = value;
 									sc.getCharacterDetails(value, function(characterDetails) {
-										house[name] = characterDetails;
+										house[name1] = characterDetails;
 									});
 								}
 								/*
@@ -276,7 +281,7 @@ module.exports = {
 										house[name] = regionDetails;
 									});
 								}
-								*/
+								
 								else if(name == "Founder") {
 									sc.getCharacterDetails(value, function(characterDetails) {
 										house[name] = characterDetails;
@@ -287,9 +292,10 @@ module.exports = {
 										house[name] = houseDetails;
 									});
 								}
+								*/
 								
 								else {
-									house[name] = value;
+									house[name.toString()] = value;
 								}
 								
 							}
@@ -333,10 +339,7 @@ module.exports = {
 
 			character = [];			
 			client.api.call(params, function (err, info, next, data) {
-				console.log(err);
-				console.log(data);
 				if(data != null) {
-					console.log("data null");
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
 						character["Name"] = characterName;
@@ -362,12 +365,13 @@ module.exports = {
 							
 							if(value != null) {
 								
+								/*
 								if(name == "Allegiance") {
 									getHouseDetails(value, function(houseDetails) {
 										character[name] = houseDetails;
 									});
 								}
-								
+								*/
 								/*
 								else if(name == "Region") {
 									getRegionDetails(value, function(regionDetails) {
@@ -375,9 +379,9 @@ module.exports = {
 									});
 								}
 								*/
-								else {
+								//else {
 									character[name] = value;
-								}
+								//}
 								
 							}
 							
@@ -387,6 +391,7 @@ module.exports = {
 						}
 					}
 				}
+				//console.log(character);
 				callback(character);
 			});
 		});
