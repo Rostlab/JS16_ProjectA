@@ -61,14 +61,14 @@ module.exports = {
 	*/
 	getHouses : function(callback) {
 		
-		
+		/*
 		sc = require("./scraper");
 		sc.getHouseNames(function(houses) {
-		
+			*/
 		/*
 		* For testing purposes(and faster results) uncomment this section and comment the above code section.
 		*/
-		/*
+		
 		var fs = require("fs");
 		fs.readFile('./sample data/houses.txt', function (err, data) {
 			if (err) {
@@ -77,7 +77,7 @@ module.exports = {
 			string_array = data.toString().split("**");
 			houses = JSON.parse(string_array[0]);
 			fields = JSON.parse(string_array[1]);
-		*/
+		
 				
 					
 			var bot = require("nodemw");
@@ -88,10 +88,10 @@ module.exports = {
 			});
 			var housesCollection = [];
 			var scraper = require("./scraper");
-			for(i = 0; i < 20; i++) {
+			for(i = 0; i < houses.length; i++) {
 				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
-					if(housesCollection.length == 20) {
+					if(housesCollection.length == houses.length) {
 						callback(housesCollection);
 					}
 				});
