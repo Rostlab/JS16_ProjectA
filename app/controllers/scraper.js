@@ -224,12 +224,12 @@ module.exports = {
 			   return console.error(err);
 			}
 			string_array = data.toString().split("**");
-			houses = JSON.parse(string_array[0]);
-			fields = JSON.parse(string_array[1]);
+			var houses = JSON.parse(string_array[0]);
+			var fields = JSON.parse(string_array[1]);
 		
 		
 			//console.log(houseName);
-			pageName = houseName.replace(" ", "_");
+			var pageName = houseName.replace(" ", "_");
 			
 			var params = {
 				action: "parse",
@@ -239,7 +239,7 @@ module.exports = {
 
 			sc = require("./scraper");
 			
-			house = [];			
+			var house = [];			
 				
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
@@ -250,10 +250,10 @@ module.exports = {
 							house[fields[j].toString()] = null;
 						}
 						for(i = 0; i < arr.length; i++) {
-							tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-							name = tempName[0].substring(1, tempName[0].length-1);
-							tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
-							value = tempValue[0].substring(1, tempValue[0].length-1);
+							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+							var name = tempName[0].substring(1, tempName[0].length-1);
+							var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+							var value = tempValue[0].substring(1, tempValue[0].length-1);
 							newValue = [];
 							if(value.indexOf("href") != -1) {
 								value = value.match(/\">(.*?)<\/a>/)[0];
@@ -269,10 +269,8 @@ module.exports = {
 							if(value != null) {
 								
 								if(name == "Current Lord") {
-									var name1 = name;
-									var value1 = value;
 									sc.getCharacterDetails(value, function(characterDetails) {
-										house[name1] = characterDetails;
+										house["Current Lord"] = characterDetails;
 									});
 								}
 								/*
@@ -281,15 +279,16 @@ module.exports = {
 										house[name] = regionDetails;
 									});
 								}
-								
+								*/
 								else if(name == "Founder") {
 									sc.getCharacterDetails(value, function(characterDetails) {
-										house[name] = characterDetails;
+										house["Founder"] = characterDetails;
 									});
 								}
+								/*
 								else if(name == "Overlord") {
 									sc.getHouseDetails(value, function(houseDetails) {
-										house[name] = houseDetails;
+										house["Overlord"] = houseDetails;
 									});
 								}
 								*/
@@ -306,7 +305,7 @@ module.exports = {
 						}
 					}
 				}
-				console.log(house);
+				//console.log(house);
 				callback(house);
 			});
 		});
@@ -326,10 +325,10 @@ module.exports = {
 			   return console.error(err);
 			}
 			string_array = data.toString().split("**");
-			characters = JSON.parse(string_array[0]);
-			fields = JSON.parse(string_array[1]);
+			var characters = JSON.parse(string_array[0]);
+			var fields = JSON.parse(string_array[1]);
 
-			pageName = characterName.replace(" ", "_");
+			var pageName = characterName.replace(" ", "_");
 
 			var params = {
 				action: "parse",
@@ -337,7 +336,7 @@ module.exports = {
 				format: "json"
 			};	
 
-			character = [];			
+			var character = [];			
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
@@ -347,10 +346,10 @@ module.exports = {
 							character[fields[j].toString()] = null;
 						}
 						for(i = 0; i < arr.length; i++) {
-							tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-							name = tempName[0].substring(1, tempName[0].length-1);
-							tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
-							value = tempValue[0].substring(1, tempValue[0].length-1);
+							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+							var name = tempName[0].substring(1, tempName[0].length-1);
+							var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+							var value = tempValue[0].substring(1, tempValue[0].length-1);
 							newValue = [];
 							if(value.indexOf("href") != -1) {
 								value = value.match(/\">(.*?)<\/a>/)[0];
