@@ -137,7 +137,7 @@ module.exports = {
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
-						house["Name"] = houseName;
+						house["name"] = houseName;
 
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
@@ -160,7 +160,7 @@ module.exports = {
 								
 								if(name == "Current Lord") {
 									sc.getSingleCharacter(value, function(characterDetails) {
-										house["Current Lord"] = characterDetails;
+										house["current lord"] = characterDetails;
 									});
 								}
 								/*
@@ -172,19 +172,19 @@ module.exports = {
 								*/
 								else if(name == "Founder") {
 									sc.getSingleCharacter(value, function(characterDetails) {
-										house["Founder"] = characterDetails;
+										house["founder"] = characterDetails;
 									});
 								}
 								
 								else if(name == "Overlord") {
 									sc.getSingleHouse(value, function(houseDetails) {
-										house["Overlord"] = houseDetails;
+										house["overlord"] = houseDetails;
 									});
 								}
 								
 								
 								else {
-									house[name.toString()] = value;
+									house[name.toString().toLowerCase()] = value;
 								}
 								
 							}
@@ -234,7 +234,7 @@ module.exports = {
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
-						character["Name"] = characterName;
+						character["name"] = characterName;
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
 							var name = tempName[0].substring(1, tempName[0].length-1);
@@ -257,7 +257,7 @@ module.exports = {
 								
 								if(name == "Allegiance") {
 									sc.getSingleHouse(value, function(houseDetails) {
-										character["Allegiance"] = houseDetails;
+										character["allegiance"] = houseDetails;
 									});
 								}
 								
@@ -269,7 +269,7 @@ module.exports = {
 								}
 								*/
 								else {
-									character[name] = value;
+									character[name.toLowerCase()] = value;
 								}
 								
 							}
@@ -421,7 +421,7 @@ module.exports = {
         res.status(400).json({message: 'Error', error: "something went wrong"});
     },
 
-    getAllGeography: function (req, res) {
+    getAllRegions: function () {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -432,24 +432,19 @@ module.exports = {
         });
         var params = {
             action: "parse",
-            page: "List_of_characters",
-            prop: "links",
+            page: "Portal:Geography",
             format: "json"
         };
 
-        geography = [];
+        var regions = [];
 
-        //Iterate through all Geography
+        //Iterate through all Regions
 
-        console.log("Loading all geography from the wiki. This might take a while");
+        console.log("Loading all regions from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
-            for (i = 0; i < data[""][""].length; i++) {
-                characters.push(data[""][""][i]["*"]);
-            }
-            res.status(200).json(geography);
+            var arr = data["parse"]["text"]["*"].split("Regions");
+			console.log(arr[1]);
         });
-
-        res.status(400).json({message: 'Error', error: "something went wrong"});
     },
 
     getAllTVEpisodes: function (req, res) {
