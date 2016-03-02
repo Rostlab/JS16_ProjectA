@@ -1,9 +1,8 @@
 module.exports = {
 
 	/*
-	* Returns a list of houses and a list of keywords from the info box
+	* Returns a list of house names
 	*/
-
     getAllHouseNames: function (callback) {
 
         //Setup the mediawiki bot
@@ -60,7 +59,7 @@ module.exports = {
 	/*
 	* Call when you want to fetch all house information
 	*/
-	getAllHouseDetails : function(callback) {
+	getAllHousesAndDetails : function(callback) {
 		
 		
 		sc = require("./scraper");
@@ -81,28 +80,27 @@ module.exports = {
 		*/
 				
 					
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "5"
-		});
-		var housesCollection = [];
-		var scraper = require("./scraper");
-		for(i = 0; i < 20; i++) {
-			scraper.getHouseDetails(houses[i], function(house) {
-				housesCollection.push(house);
-				if(housesCollection.length == 20) {
-					callback(housesCollection);
-				}
+			var bot = require("nodemw");
+			var client = new bot({
+				server: "awoiaf.westeros.org",
+				path: "/api.php",
+				concurrency: "5"
 			});
-			
-		}
+			var housesCollection = [];
+			var scraper = require("./scraper");
+			for(i = 0; i < 20; i++) {
+				scraper.getHouseDetails(houses[i], function(house) {
+					housesCollection.push(house);
+					if(housesCollection.length == 20) {
+						callback(housesCollection);
+					}
+				});
+			}
 		});
 	},
 	
 	/*
-	* 
+	* Fetches details for one house
 	*/
 	getHouseDetails : function(houseName, callback) {
 		var bot = require("nodemw");
@@ -203,6 +201,9 @@ module.exports = {
 		});
 	},
 	
+	/*
+	* Fetches details for one character
+	*/
 	getCharacterDetails : function(characterName, callback) {
 		//console.log("start getCharacterDetails");
 		var bot = require("nodemw");
@@ -284,100 +285,36 @@ module.exports = {
 			});
 		});
 	},
-	
-	getAllCharactersAndFields : function(regionName, callback) {
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "1"
-		});
-		var fs = require("fs");
-		fs.readFile('./sample data/characters.txt', function (err, data) {
-			if (err) {
-			   return console.error(err);
-			}
-			string_array = data.toString().split("**");
-			characters = JSON.parse(string_array[0]);
-			fields = JSON.parse(string_array[1]);
-		
-		
-		
-			pageName = regionName.replace(" ", "_");
-			
-			var params = {
-				action: "parse",
-				page: pageName,
-				format: "json"
-			};	
 
-			region = [];			
-				
-			client.api.call(params, function (err, info, next, data) {
-				if(data != null) {
-					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr != null) {	
-						region["Name"] = regionName;
-						for(j = 0; j < fields.length; j++) {
-							region[fields[j].toString()] = null;
-						}
-						for(i = 0; i < arr.length; i++) {
-							tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-							name = tempName[0].substring(1, tempName[0].length-1);
-							tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
-							value = tempValue[0].substring(1, tempValue[0].length-1);
-							newValue = [];
-							if(value.indexOf("href") != -1) {
-								value = value.match(/\">(.*?)<\/a>/)[0];
-								value = value.substring(2, value.length-4);
-							}
-							else {
-								value = value.substring(1, value.length-4);
-							}
-							/*
-							* Get the other information
-							*/
-							
-							if(value != null) {
-								if(name == "Current Lord") {
-									getCharacterDetails(value, function(characterDetails) {
-										region[name] = characterDetails;
-									});
-								}
-								else if(name == "Region") {
-									getRegionDetails(value, function(regionDetails) {
-										region[name] = regionDetails;
-									});
-								}
-								else if(name == "Founder") {
-									getCharacterDetails(value, function(characterDetails) {
-										region[name] = characterDetails;
-									});
-								}
-								else if(name == "Overlord") {
-									getHouseDetails(value, function(houseDetails) {
-										region[name] = houseDetails;
-									});
-								}
-								else {
-									region[name] = value;
-								}
-								
-							}
-							
-							/*
-							*
-							*/
-						}
+	/*
+	* Call when you want to fetch all house information
+	*/
+	getAllCharactersAndDetails : function(callback) {
+		
+		
+		var sc = require("./scraper");
+		sc.getAllCharacterNames(function(characters) {
+		
+			var charactersCollection = [];
+			var scraper = require("./scraper");
+			
+			console.log(characters.length);
+			
+			for(i = 0; i < 20; i++) {
+				scraper.getCharacterDetails(characters[i], function(character) {
+					charactersCollection.push(character);
+					if(charactersCollection.length == 20) {
+						callback(charactersCollection);
 					}
-				}
-				//console.log(house);
-				callback(region);
-			});
+				});
+			}
 		});
 	},
 
-    getAllCharacters: function (callback) {
+	/*
+	* Returns a list of character names
+	*/
+    getAllCharacterNames: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -393,12 +330,10 @@ module.exports = {
             format: "json"
         };
 
-        characters = [];
-		fields = [];
-		tmp = 0;
+        var characters = [];
         //Iterate through all the Characters
 
-        console.log("Loading all characters from the wiki. This might take a while");
+        console.log("Loading all character names from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
             for (i = 0; i < data.parse.links.length; i++) {
 				
@@ -407,70 +342,22 @@ module.exports = {
 						break;
 					}
 				characters.push(title);
-				console.log(characters.length);
             }
-			sc = require("./scraper");
-			len = 100 //characters.length; //Too long for all the characters
-			for(i = 0; i < len; i++) {
-				sc.getCharacterFieldKeyWords(characters[i], function(result) {
-					if(result.length == 0) {
-						console.log("null");
-						len--;
-					}
-					else {
-						for(j = 0; j < result.length; j++) {
-							if(fields.indexOf(result[j]) == -1 && result[j] != "") {
-								fields.push(result[j]);
-							}
-						}
-						if(tmp == len) {
-							callback(characters, fields);
-						}	
-					}
-					tmp++;
-				});	
-			}
+			console.log("All character names loaded");
+			callback(characters);
         });
     },
 	
-	getCharacterFieldKeyWords : function(characterName, callback) {
-		
-		pageName = characterName.replace(" ", "_");
-		
-		
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "5"
-		});
-		var params = {
-			action: "parse",
-			page: pageName,
-			format: "json"
-		};
-		keywords = [];
-		client.api.call(params, function (err, info, next, data) {
-			if(data != null) {
-				var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/th>/g);
-				if(arr != null) {
-					//console.log(arr);
-					for(i = 0; i < arr.length; i++) {
-						subArr = arr[i].match(/>(.*?)</g);
-						keywords.push(subArr[0].substring(1,subArr[0].length-1));
-					}
-					callback(keywords);
-				}
-				else {
-					callback([]);
-				}
-			}
-			else {
-				callback([]);
-			}
-		});
-	},
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
     getAllHistory: function (req, res) {
 
         //Setup the mediawiki bot
