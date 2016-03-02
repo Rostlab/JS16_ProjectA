@@ -26,8 +26,8 @@ var CharacterSchema = new Schema({
     //Omit for now till we know what exactly is needed from other projects.
     //battles: [{type: Schema.Types.ObjectId, ref: 'Battle'}],
 
-    placeOfBirth: String,                                                 // Summerhall
-    placeOfDeath: String,                                                 // Trident
+    placeOfBirth: {type: Schema.Types.ObjectId, ref: "Region"},                                                 // Summerhall
+    placeOfDeath: {type: Schema.Types.ObjectId, ref: "Region"},                                                 // Trident
     house: {type: Schema.Types.ObjectId, ref: "House"},                   // House Targaryen
     skills: [{type: Schema.Types.ObjectId, ref: "Skill"}],                // one to many - talented musician and skilled knight
     createdAt: {type: Date, default: Date.now},
