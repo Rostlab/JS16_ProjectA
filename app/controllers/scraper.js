@@ -4,7 +4,7 @@ module.exports = {
 	* Returns a list of houses and a list of keywords from the info box
 	*/
 
-    getAllHouseNamesAndKeywords: function (callback) {
+    getAllHouseNames: function (callback) {
 
         //Setup the mediawiki bot
         var bot = require("nodemw");
@@ -15,8 +15,7 @@ module.exports = {
 			concurrency: "5"
         });
 
-        houses = [];
-		fields = [];
+        var houses = [];
 		
         //Iterate through all the houses
 
@@ -26,27 +25,17 @@ module.exports = {
 			if(data != null) {
 				for (j = 0; j < data.query.search.length; j++) {
 					//console.log(info);
-					title = String(data.query.search[j].title);
+					var title = String(data.query.search[j].title);
 					if (title === null) {
 						break;
 					}
 					
 					console.log("House " + title);
 
-					
-					sc = require("./scraper");
-					sc.getIndividualHouseKeywords(title, function(result) {
-						for(i = 0; i < result.length; i++) {
-							if(fields.indexOf(result[i]) == -1) {
-								fields.push(result[i]);
-							}
-						}
-					});
-					
 					houses.push(title);
 				}
 				if (houses.length == data.query.searchinfo.totalhits) {
-					callback(houses, fields);
+					callback(houses);
 				}
 			}
         };
@@ -67,53 +56,20 @@ module.exports = {
         }
     },
 	
-	/*
-	* Return a list of keywords for an indivisual house
-	*/
-	getIndividualHouseKeywords : function(houseName, callback) {
-		
-		pageName = houseName.replace(" ", "_");
-		
-		
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "1"
-		});
-		var params = {
-			action: "parse",
-			page: pageName,
-			format: "json"
-		};
-		keywords = [];
-		client.api.call(params, function (err, info, next, data) {
-			if(data != null) {
-				var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/th>/g);
-				if(arr != null) {
-					
-					for(i = 0; i < arr.length; i++) {
-						subArr = arr[i].match(/>(.*?)</g);
-						keywords.push(subArr[0].substring(1,subArr[0].length-1));
-					}
-					callback(keywords);
-				}
-			}
-		});
-	},
+	
 	/*
 	* Call when you want to fetch all house information
 	*/
 	getAllHouseDetails : function(callback) {
 		
-		/*
+		
 		sc = require("./scraper");
-		sc.getAllHouses(function(houses, fields) {
-		*/
+		sc.getAllHouseNames(function(houses) {
+		
 		/*
 		* For testing purposes(and faster results) uncomment this section and comment the above code section.
 		*/
-		
+		/*
 		var fs = require("fs");
 		fs.readFile('./sample data/houses.txt', function (err, data) {
 			if (err) {
@@ -122,7 +78,7 @@ module.exports = {
 			string_array = data.toString().split("**");
 			houses = JSON.parse(string_array[0]);
 			fields = JSON.parse(string_array[1]);
-		
+		*/
 				
 					
 		var bot = require("nodemw");
@@ -131,77 +87,12 @@ module.exports = {
 			path: "/api.php",
 			concurrency: "5"
 		});
-		console.log(houses.length);
-		housesCollection = [];
-		sc = require("./scraper");
-		/*
-		for(i = 0; i < houses.length; i++) {
-		
-		
-		
-		
-		
-			pageName = houses[i].replace(" ", "_");
-		
-			var params = {
-				action: "parse",
-				page: pageName,
-				format: "json"
-			};
-			
-			
-			
-			client.api.call(params, function (err, info, next, data) {
-				
-				
-				
-				if(data != null) {
-					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr != null) {
-						
-						house = [];
-							
-						for(j = 0; j < fields.length; j++) {
-							house[fields[j].toString()] = null;
-						}
-						
-						for(i = 0; i < arr.length; i++) {
-
-							tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-							name = tempName[0].substring(1, tempName[0].length-1);
-							tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
-							value = tempValue[0].substring(1, tempValue[0].length-1);
-							newValue = [];
-							if(value.indexOf("href") != -1) {
-								value = value.match(/\">(.*?)<\/a>/)[0];
-								value = value.substring(2, value.length-4);
-							}
-							else {
-								value = value.substring(1, value.length-4);
-							}
-							
-							house[name] = value;		
-							
-							
-						}
-						housesCollection.push(house);
-						console.log(housesCollection.length);
-					}
-				}
-				
-				if(housesCollection.length == houses.length) {
-					callback(housesCollection);
-				}
-				
-			});
-			
-		}	
-		*/
-		for(i = 0; i < 5; i++) {
-			sc.getHouseDetails(houses[i], function(house) {
+		var housesCollection = [];
+		var scraper = require("./scraper");
+		for(i = 0; i < 20; i++) {
+			scraper.getHouseDetails(houses[i], function(house) {
 				housesCollection.push(house);
-				//console.log(housesCollection.length);
-				if(housesCollection.length == 5) {
+				if(housesCollection.length == 20) {
 					callback(housesCollection);
 				}
 			});
@@ -210,6 +101,9 @@ module.exports = {
 		});
 	},
 	
+	/*
+	* 
+	*/
 	getHouseDetails : function(houseName, callback) {
 		var bot = require("nodemw");
 		var client = new bot({
@@ -225,7 +119,7 @@ module.exports = {
 			}
 			string_array = data.toString().split("**");
 			var houses = JSON.parse(string_array[0]);
-			var fields = JSON.parse(string_array[1]);
+			//var fields = JSON.parse(string_array[1]);
 		
 		
 			//console.log(houseName);
@@ -237,7 +131,7 @@ module.exports = {
 				format: "json"
 			};	
 
-			sc = require("./scraper");
+			var sc = require("./scraper");
 			
 			var house = [];			
 				
@@ -246,9 +140,7 @@ module.exports = {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
 						house["Name"] = houseName;
-						for(j = 0; j < fields.length; j++) {
-							house[fields[j].toString()] = null;
-						}
+
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
 							var name = tempName[0].substring(1, tempName[0].length-1);
@@ -285,13 +177,13 @@ module.exports = {
 										house["Founder"] = characterDetails;
 									});
 								}
-								/*
+								
 								else if(name == "Overlord") {
 									sc.getHouseDetails(value, function(houseDetails) {
 										house["Overlord"] = houseDetails;
 									});
 								}
-								*/
+								
 								
 								else {
 									house[name.toString()] = value;
@@ -326,7 +218,7 @@ module.exports = {
 			}
 			string_array = data.toString().split("**");
 			var characters = JSON.parse(string_array[0]);
-			var fields = JSON.parse(string_array[1]);
+			//var fields = JSON.parse(string_array[1]);
 
 			var pageName = characterName.replace(" ", "_");
 
@@ -335,16 +227,13 @@ module.exports = {
 				page: pageName,
 				format: "json"
 			};	
-
+			var sc = require("./scraper");
 			var character = [];			
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
 						character["Name"] = characterName;
-						for(j = 0; j < fields.length; j++) {
-							character[fields[j].toString()] = null;
-						}
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
 							var name = tempName[0].substring(1, tempName[0].length-1);
@@ -364,13 +253,13 @@ module.exports = {
 							
 							if(value != null) {
 								
-								/*
+								
 								if(name == "Allegiance") {
-									getHouseDetails(value, function(houseDetails) {
-										character[name] = houseDetails;
+									sc.getHouseDetails(value, function(houseDetails) {
+										character["Allegiance"] = houseDetails;
 									});
 								}
-								*/
+								
 								/*
 								else if(name == "Region") {
 									getRegionDetails(value, function(regionDetails) {
@@ -378,9 +267,9 @@ module.exports = {
 									});
 								}
 								*/
-								//else {
+								else {
 									character[name] = value;
-								//}
+								}
 								
 							}
 							
