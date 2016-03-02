@@ -163,7 +163,7 @@ module.exports = {
     },
 
     /**
-     * @api {put} /api/episodes/:id Get episodes by id
+     * @api {put} /api/episodes/:id Edit episode
      * @apiVersion 0.0.1
      * @apiName EditEpisode
      * @apiGroup Episodes
@@ -182,12 +182,12 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Error: Bad request. No such property", "errorProperty": property };
      *
-     * @apiError (400) GeneralError No episode with that data existing!
+     * @apiError (400) GeneralError Mongoose error.
      * @apiErrorExample {json} GeneralError
      *      HTTP/1.1 404
      *      { "message": "Error", "error": err };
      *
-     * @apiDescription Update an episode with some new information
+     * @apiDescription Update an episode with the id :id with some new information.
      */
     edit: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -206,9 +206,9 @@ module.exports = {
     },
 
     /**
-     * @api {delete} /api/episodes/:id Get episodes by id
+     * @api {delete} /api/episodes/:id Remove episode
      * @apiVersion 0.0.1
-     * @apiName DeleteEpisode
+     * @apiName RemoveEpisode
      * @apiGroup Episodes
      *
      * @apiSuccessExample {json} Success-Response
