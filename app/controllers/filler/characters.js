@@ -1,6 +1,6 @@
 var Scraper = require(__appbase + 'controllers/scraper');
-var House = require(__appbase + 'models/house');
-var Houses = require(__appbase + 'stores/houses');
+var Character = require(__appbase + 'models/character');
+var Characters = require(__appbase + 'stores/characters');
 var jsonfile = require('jsonfile');
 var async = require('async');
 
@@ -13,9 +13,9 @@ module.exports = {
             console.log('Filling done =).');
         }
 
-        var file = __appbase + '../wikiData/houses.json';
+        var file = __appbase + '../wikiData/characters.json';
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/houses');
+            var filler = require(__appbase + 'controllers/filler/characters');
             if(obj != undefined)
                 var cacheAge = ((new Date) - new Date(obj.createdAt));
 
@@ -26,7 +26,7 @@ module.exports = {
                 if(obj != undefined && cacheAge > ttl)
                     console.log('Cache file outdated.');
 
-                Scraper.scrapToFile(file, Scraper.getHouses, function (err, obj) {
+                Scraper.scrapToFile(file, Scraper.getCharacters, function (err, obj) {
                     if (err != null) {
                         console.log(err)
                     }
@@ -36,63 +36,62 @@ module.exports = {
                 });
             }
             else {
-                console.log('Houses from cache file "'+file+'". Not scrapped from wiki.');
+                console.log('Characters from cache file "'+file+'". Not scrapped from wiki.');
                 filler.insertToDb(obj.data,afterInsertion);
             }
         });
     },
     clearAll: function(req,res) {
-        House.remove({}, function(err) {
-            console.log('collection removed');
+        Character.remove({}, function(err) {
+            console.log('Characters collection removed');
         });
     },
-    matchToModel: function(house) {
+    matchToModel: function(character) {
         // go through the properties of the house
-        for(var z in house) {
+        for(var z in character) {
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'overlord' || z == 'region' || z == 'type' || z == 'currentLord' || !House.schema.paths.hasOwnProperty(z)) {
-                delete house[z];
+            if (z == 'culture' || z == 'mother' || z == 'father' || z == 'heir'|| z == 'placeOfBirth' || z == 'placeOfDeath'|| z == 'house'|| z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
+                delete character[z];
             }
 
             // remove spaces and html tags
-            if (typeof house[z] == 'string') {
-                house[z] = house[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
+            if (typeof character[z] == 'string') {
+                character[z] = character[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
             }
-
-            // translate founded to a number
-            if (z == 'founded') {
-                if (house[z].indexOf('AC') > -1 || house[z].indexOf('ac') > -1) {
-                    house[z] = Math.abs(house[z].replace(/\D/g, ''));
+            // translate to a number
+            if (z == 'dateOfBirth' || z == 'dateOfDeath') {
+                if (character[z].indexOf('AC') > -1 || character[z].indexOf('ac') > -1) {
+                    character[z] = Math.abs(character[z].replace(/\D/g, ''));
                 }
-                else if (house[z].indexOf('BC') > -1 || house[z].indexOf('bc') > -1) {
-                    house[z] = 0 - Math.abs(house[z].replace(/\D/g, ''));
+                else if (character[z].indexOf('BC') > -1 || character[z].indexOf('bc') > -1) {
+                    character[z] = 0 - Math.abs(character[z].replace(/\D/g, ''));
                 }
                 else {
                     // TODO: it is the name of an age, which has to be transformed into a date
 
-                    delete house[z]; // ignore it for now
+                    delete character[z]; // ignore it for now
                 }
             }
         }
 
-        return house;
+        return character;
     },
-    insertToDb: function(houses, callback) {
+    insertToDb: function(characters, callback) {
         console.log('Inserting into db..');
         var i = 0;
 
         // iterate through houses
-        async.forEach(houses, function (house, _callback) {
+        async.forEach(characters, function (character, _callback) {
                 // name is required
-                if (!house.hasOwnProperty('name')) {
+                if (!character.hasOwnProperty('name')) {
                     _callback();
                     return;
                 }
 
-                var filler = require(__appbase + 'controllers/filler/houses');
-                house = filler.matchToModel(house);
+                var filler = require(__appbase + 'controllers/filler/characters');
+                character = filler.matchToModel(character);
                 // add house to db
-                Houses.add(house, function (success, data) {
+                Characters.add(character, function (success, data) {
                     if (success != 1) {
                         console.log('Problem:' + data);
                     }

@@ -1,6 +1,6 @@
 var Scraper = require(__appbase + 'controllers/scraper');
-var House = require(__appbase + 'models/house');
-var Houses = require(__appbase + 'stores/houses');
+var Region = require(__appbase + 'models/region');
+var Regions = require(__appbase + 'stores/regions');
 var jsonfile = require('jsonfile');
 var async = require('async');
 
@@ -13,9 +13,9 @@ module.exports = {
             console.log('Filling done =).');
         }
 
-        var file = __appbase + '../wikiData/houses.json';
+        var file = __appbase + '../wikiData/regions.json';
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/houses');
+            var filler = require(__appbase + 'controllers/filler/regions');
             if(obj != undefined)
                 var cacheAge = ((new Date) - new Date(obj.createdAt));
 
@@ -26,7 +26,7 @@ module.exports = {
                 if(obj != undefined && cacheAge > ttl)
                     console.log('Cache file outdated.');
 
-                Scraper.scrapToFile(file, Scraper.getHouses, function (err, obj) {
+                Scraper.scrapToFile(file, Scraper.getRegions, function (err, obj) {
                     if (err != null) {
                         console.log(err)
                     }
@@ -36,63 +36,48 @@ module.exports = {
                 });
             }
             else {
-                console.log('Houses from cache file "'+file+'". Not scrapped from wiki.');
+                console.log('Regions from cache file "'+file+'". Not scrapped from wiki.');
                 filler.insertToDb(obj.data,afterInsertion);
             }
         });
     },
     clearAll: function(req,res) {
-        House.remove({}, function(err) {
+        Region.remove({}, function(err) {
             console.log('collection removed');
         });
     },
-    matchToModel: function(house) {
+    matchToModel: function(region) {
         // go through the properties of the house
-        for(var z in house) {
+        for(var z in region) {
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'overlord' || z == 'region' || z == 'type' || z == 'currentLord' || !House.schema.paths.hasOwnProperty(z)) {
-                delete house[z];
+            if (z == 'continent' || z == 'neighbours' || z == 'events' || z == 'cultures' || !Region.schema.paths.hasOwnProperty(z)) {
+                delete region[z];
             }
 
             // remove spaces and html tags
-            if (typeof house[z] == 'string') {
-                house[z] = house[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
-            }
-
-            // translate founded to a number
-            if (z == 'founded') {
-                if (house[z].indexOf('AC') > -1 || house[z].indexOf('ac') > -1) {
-                    house[z] = Math.abs(house[z].replace(/\D/g, ''));
-                }
-                else if (house[z].indexOf('BC') > -1 || house[z].indexOf('bc') > -1) {
-                    house[z] = 0 - Math.abs(house[z].replace(/\D/g, ''));
-                }
-                else {
-                    // TODO: it is the name of an age, which has to be transformed into a date
-
-                    delete house[z]; // ignore it for now
-                }
+            if (typeof region[z] == 'string') {
+                region[z] = region[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
             }
         }
 
-        return house;
+        return region;
     },
-    insertToDb: function(houses, callback) {
+    insertToDb: function(regions, callback) {
         console.log('Inserting into db..');
         var i = 0;
 
         // iterate through houses
-        async.forEach(houses, function (house, _callback) {
+        async.forEach(regions, function (region, _callback) {
                 // name is required
-                if (!house.hasOwnProperty('name')) {
+                if (!region.hasOwnProperty('name')) {
                     _callback();
                     return;
                 }
 
-                var filler = require(__appbase + 'controllers/filler/houses');
-                house = filler.matchToModel(house);
+                var filler = require(__appbase + 'controllers/filler/regions');
+                region = filler.matchToModel(region);
                 // add house to db
-                Houses.add(house, function (success, data) {
+                Regions.add(region, function (success, data) {
                     if (success != 1) {
                         console.log('Problem:' + data);
                     }

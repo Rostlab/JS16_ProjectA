@@ -7,6 +7,18 @@ module.exports = function (app, router) {
     router.get('/houses/filler', housesFiller.fill);
     router.delete('/houses/filler', housesFiller.clearAll);
 
+    var regionsFiller = require(__appbase + 'controllers/filler/regions');
+    router.get('/regions/filler', regionsFiller.fill);
+    router.delete('/regions/filler', regionsFiller.clearAll);
+
+    var episodesFiller = require(__appbase + 'controllers/filler/episodes');
+    router.get('/episodes/filler', episodesFiller.fill);
+    router.delete('/episodes/filler', episodesFiller.clearAll);
+
+    var charactersFiller = require(__appbase + 'controllers/filler/characters');
+    router.get('/characters/filler', charactersFiller.fill);
+    router.delete('/characters/filler', charactersFiller.clearAll);
+
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
     router.post('/houses/find', housesController.get);
@@ -93,7 +105,6 @@ module.exports = function (app, router) {
     router.get('/regions/byCulture/:id', geographyController.getRegionsByCulture);
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
-
 
 
     var twitterController = require('./app/controllers/twitter');
