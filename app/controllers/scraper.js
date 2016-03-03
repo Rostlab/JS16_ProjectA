@@ -88,10 +88,10 @@ module.exports = {
 
 			var housesCollection = [];
 			var scraper = require("./scraper");
-			for(i = 0; i <20; i++) {
+			for(i = 0; i <houses.length; i++) {
 				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
-					if(housesCollection.length == 20) {
+					if(housesCollection.length == houses.length) {
 						callback(housesCollection);
 					}
 				});
