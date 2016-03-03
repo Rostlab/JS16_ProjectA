@@ -142,4 +142,22 @@ module.exports = {
 
     },
 
+
+    //returns all regions of one culture
+    getRegionsByCulture: function(cultureName, callback){
+	Region.find({'cultures' : cultureName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, cultureName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
+
 };

@@ -498,6 +498,37 @@ module.exports = {
     },
 
 
+    /**
+     * @api {delete} /api/geography/regions/byCulture/:id Get regions by culture
+     * @apiVersion 0.0.1
+     * @apiName GetRegionsByCulture
+     * @apiGroup Regions
+     *
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : region}
+     *
+     * @apiError (404) NotFound No regions within that culture existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No regions within that culture existing!", "data": err };
+     *
+     * @apiDescription Get all regions which have the same culture
+     */
+    getRegionsByCulture: function (req, res) {
+        var regionsStore = require('../stores/regions');
+        regionsStore.getRegionsByCulture(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+	    }else{
+		res.status(404).json({message: 'Failure: No regions within that culture are existing.', data: message});
+	    } 
+        });
+    },
+
+
 
 
 /*

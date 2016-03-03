@@ -90,6 +90,7 @@ module.exports = function (app, router) {
     router.get('/regions/:name', geographyController.getRegionByName);
     router.get('/regions/byId/:id', geographyController.getRegionById);
     router.get('/regions/byContinent/:id', geographyController.getRegionsByContinent);
+    router.get('/regions/byCulture/:id', geographyController.getRegionsByCulture);
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
 
