@@ -5,6 +5,7 @@ var client = new bot({
 	path: "/api.php",
 	concurrency: "5"
 });
+var jsonfile = require('jsonfile');
 
 module.exports = {
 
@@ -460,5 +461,13 @@ module.exports = {
 			}
 			callback(episodes);
         });
-    }
+    },
+
+	scrapToFile: function(cacheFile,scraperFunction,callback) {
+		console.log('Scrapping from wiki. May take a while..');
+		scraperFunction(function(data) {
+			console.log('Writing results into cache file "'+cacheFile+'"..');
+			jsonfile.writeFile(cacheFile, data, function (err) { callback(err,data); })
+		});
+	},
 };
