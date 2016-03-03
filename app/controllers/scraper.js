@@ -1,3 +1,11 @@
+var House = require("../models/house");
+var bot = require("nodemw");
+var client = new bot({
+	server: "awoiaf.westeros.org",
+	path: "/api.php",
+	concurrency: "5"
+});
+
 module.exports = {
 
 	/*
@@ -6,13 +14,9 @@ module.exports = {
     getHouseNames: function (callback) {
 
         //Setup the mediawiki bot
-        var bot = require("nodemw");
+        
 
-        var client = new bot({
-            server: "awoiaf.westeros.org",
-            path: "/api.php",
-			concurrency: "5"
-        });
+
 
         var houses = [];
 		
@@ -80,18 +84,13 @@ module.exports = {
 		
 				
 					
-			var bot = require("nodemw");
-			var client = new bot({
-				server: "awoiaf.westeros.org",
-				path: "/api.php",
-				concurrency: "5"
-			});
+
 			var housesCollection = [];
 			var scraper = require("./scraper");
-			for(i = 0; i < 5; i++) {
+			for(i = 0; i < 20; i++) {
 				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
-					if(housesCollection.length == 5) {
+					if(housesCollection.length == 20) {
 						callback(housesCollection);
 					}
 				});
@@ -103,12 +102,8 @@ module.exports = {
 	* Fetches details for one house
 	*/
 	getSingleHouse : function(houseName, callback) {
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "1"
-		});
+		console.log("start getSingleHouse");
+
 		
 		var fs = require("fs");
 		fs.readFile('./sample data/houses.txt', function (err, data) {
@@ -131,7 +126,7 @@ module.exports = {
 
 			var sc = require("./scraper");
 			
-			var house = [];			
+			var house = {};			
 				
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
@@ -157,36 +152,20 @@ module.exports = {
 							*/
 							
 							if(value != null) {
-								
-								if(name == "Current Lord") {
-									sc.getSingleCharacter(value, function(characterDetails) {
-										house["current lord"] = characterDetails;
-									});
+								name = name.toLowerCase();
+								if(name == "coat of arms") {
+									name = "coatOfArms";
 								}
-								
-								else if(name == "Region") {
-									sc.getSingleRegion(value, function(regionDetails) {
-										house["region"] = regionDetails;
-									});
+								else if(name == "current lord") {
+									name = "currentLord";
 								}
-								
-								else if(name == "Founder") {
-									sc.getSingleCharacter(value, function(characterDetails) {
-										house["founder"] = characterDetails;
-									});
+								else if(name == "cadet branch") {
+									name = "cadetBranch";
 								}
-								
-								else if(name == "Overlord") {
-									sc.getSingleHouse(value, function(houseDetails) {
-										house["overlord"] = houseDetails;
-									});
+								else if(name == "ancestral weapon") {
+									name = "ancestralWeapon";
 								}
-								
-								
-								else {
-									house[name.toString().toLowerCase()] = value;
-								}
-								
+								house[name] = value;
 							}
 							
 							/*
@@ -205,13 +184,8 @@ module.exports = {
 	* Fetches details for one character
 	*/
 	getSingleCharacter : function(characterName, callback) {
-		//console.log("start getCharacterDetails");
-		var bot = require("nodemw");
-		var client = new bot({
-			server: "awoiaf.westeros.org",
-			path: "/api.php",
-			concurrency: "5"
-		});
+		console.log("start getSingleCharacter");
+
 		var fs = require("fs");
 		fs.readFile('./sample data/characters.txt', function (err, data) {
 			if (err) {
@@ -229,7 +203,7 @@ module.exports = {
 				format: "json"
 			};	
 			var sc = require("./scraper");
-			var character = [];			
+			var character = {};			
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
@@ -253,25 +227,20 @@ module.exports = {
 							*/
 							
 							if(value != null) {
-								
-								
-								if(name == "Allegiance") {
-									sc.getSingleHouse(value, function(houseDetails) {
-										character["allegiance"] = houseDetails;
-									});
+								name = name.toLowerCase();
+								if(name == "born") {
+									name = "dateOfBirth";
 								}
-								
-								
-								else if(name == "Region") {
-									sc.getSingleRegion(value, function(regionDetails) {
-										character["region"] = regionDetails;
-									});
+								else if(name == "dies") {
+									name = "dateOfDeath";
 								}
-								
-								else {
-									character[name.toLowerCase()] = value;
+								else if(name == "played by") {
+									name = "actor";
 								}
-								
+								else if(name == "allegiance") {
+									name = "house";
+								}
+								character[name] = value;
 							}
 							
 							/*
@@ -434,14 +403,9 @@ module.exports = {
 	},
 	
     getRegions: function (callback) {
-
+		console.log("start getRegions");
         //Setup the mediawiki bot
-        var bot = require("nodemw");
 
-        var client = new bot({
-            server: "awoiaf.westeros.org",
-            path: "/api.php"
-        });
         var params = {
             action: "parse",
             page: "Portal:Geography",
@@ -452,7 +416,7 @@ module.exports = {
 
         //Iterate through all Regions
 
-        console.log("Loading all regions from the wiki. This might take a while");
+        //console.log("Loading all regions from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
 
 			var section = data["parse"]["text"]["*"].split("Regions");
@@ -475,19 +439,14 @@ module.exports = {
     getAllTVEpisodes: function (req, res) {
 
         //Setup the mediawiki bot
-        var bot = require("nodemw");
 
-        var client = new bot({
-            server: "awoiaf.westeros.org",
-            path: "/api.php"
-        });
         var params = {
             action: "parse",
             page: "Portal:TV_Show",
             format: "json"
         };
 
-        episodes = [];
+        var episodes = [];
 
         //Iterate through all the episodes
 
