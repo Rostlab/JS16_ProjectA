@@ -25,7 +25,7 @@ module.exports = {
         console.log("Loading all houses from the wiki. This might take a while");
 
         var apiCallback = function (err, info, next, data) {
-			if(data !== null) {
+			if(data != null) {
 				for (j = 0; j < data.query.search.length; j++) {
 					//console.log(info);
 					var title = String(data.query.search[j].title);
@@ -81,19 +81,19 @@ module.exports = {
 			string_array = data.toString().split("**");
 			houses = JSON.parse(string_array[0]);
 			fields = JSON.parse(string_array[1]);
-
-            var callback = function(house) {
-                housesCollection.push(house);
-                if(housesCollection.length == houses.length) {
-                    callback(housesCollection);
-                }
-            };
+		
+				
 					
 
 			var housesCollection = [];
 			var scraper = require("./scraper");
 			for(i = 0; i < houses.length; i++) {
-				scraper.getSingleHouse(houses[i], callback);
+				scraper.getSingleHouse(houses[i], function(house) {
+					housesCollection.push(house);
+					if(housesCollection.length == houses.length) {
+						callback(housesCollection);
+					}
+				});
 			}
 		});
 	},
@@ -128,10 +128,10 @@ module.exports = {
 			var house = {};			
 				
 			client.api.call(params, function (err, info, next, data) {
-				if(data !== null) {
+				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr !== null) {	
-						house.name = houseName;
+					if(arr != null) {	
+						house["name"] = houseName;
 
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
@@ -150,7 +150,7 @@ module.exports = {
 							* Get the other information
 							*/
 							
-							if(value !== null) {
+							if(value != null) {
 								name = name.toLowerCase();
 								if(name == "coat of arms") {
 									name = "coatOfArms";
@@ -204,10 +204,10 @@ module.exports = {
 			var sc = require("./scraper");
 			var character = {};			
 			client.api.call(params, function (err, info, next, data) {
-				if(data !== null) {
+				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr !== null) {	
-						character.name = characterName;
+					if(arr != null) {	
+						character["name"] = characterName;
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
 							var name = tempName[0].substring(1, tempName[0].length-1);
@@ -225,7 +225,7 @@ module.exports = {
 							* Get the other information
 							*/
 							
-							if(value !== null) {
+							if(value != null) {
 								name = name.toLowerCase();
 								if(name == "born") {
 									name = "dateOfBirth";
@@ -268,16 +268,14 @@ module.exports = {
 			var scraper = require("./scraper");
 			
 			console.log(characters.length);
-
-            var callback = function(character) {
-                charactersCollection.push(character);
-                if(charactersCollection.length == 20) {
-                    callback(charactersCollection);
-                }
-            };
 			
 			for(i = 0; i < 20; i++) {
-				scraper.getSingleCharacter(characters[i], callback);
+				scraper.getSingleCharacter(characters[i], function(character) {
+					charactersCollection.push(character);
+					if(charactersCollection.length == 20) {
+						callback(charactersCollection);
+					}
+				});
 			}
 		});
 	},
@@ -420,7 +418,7 @@ module.exports = {
         //console.log("Loading all regions from the wiki. This might take a while");
         client.api.call(params, function (err, info, next, data) {
 
-			var section = data.parse.text["*"].split("Regions");
+			var section = data["parse"]["text"]["*"].split("Regions");
 			for(i = 1; i < 4; i++) {
 				var continents = section[i].split("<\/li><\/ul>");
 				
@@ -428,7 +426,7 @@ module.exports = {
 				for(j = 0; j < str.length; j++) {
 					str[j] = str[j].substring(2, str[j].length-4);
 					var region = {};
-					region.name = str[j];
+					region["name"] = str[j];
 					regions.push(region);
 				}
 			}
@@ -457,7 +455,7 @@ module.exports = {
 			for(i = 0; i < arr.length; i++) {
 				subArr = arr[i].match(/>(.*?)</g);
 				var episode = {};
-				episode.name = subArr[1].substring(1,subArr[1].length-1);
+				episode["name"] = subArr[1].substring(1,subArr[1].length-1);
 				episodes.push(episode);
 			}
 			callback(episodes);
