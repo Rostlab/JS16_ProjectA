@@ -88,10 +88,10 @@ module.exports = {
 
 			var housesCollection = [];
 			var scraper = require("./scraper");
-			for(i = 0; i < houses.length; i++) {
+			for(i = 0; i <20; i++) {
 				scraper.getSingleHouse(houses[i], function(house) {
 					housesCollection.push(house);
-					if(housesCollection.length == houses.length) {
+					if(housesCollection.length == 20) {
 						callback(housesCollection);
 					}
 				});
@@ -466,6 +466,8 @@ module.exports = {
 	scrapToFile: function(cacheFile,scraperFunction,callback) {
 		console.log('Scrapping from wiki. May take a while..');
 		scraperFunction(function(data) {
+			date = new Date();
+			data = {'data': data, createdAt: new Date()};
 			console.log('Writing results into cache file "'+cacheFile+'"..');
 			jsonfile.writeFile(cacheFile, data, function (err) { callback(err,data); })
 		});

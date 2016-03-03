@@ -16,20 +16,28 @@ module.exports = {
         var file = __appbase + '../wikiData/houses.json';
         jsonfile.readFile(file, function(err, obj) {
             var filler = require(__appbase + 'controllers/filler/houses');
-            // not cached already
-            if(obj == undefined) {
-                Scraper.scrapToFile(file, Scraper.getHouses, function (err, data) {
+            if(obj != undefined)
+                var cacheAge = ((new Date) - new Date(obj.createdAt));
+
+            var ttl = require(__appbase + '../cfg/config.json');
+            ttl = ttl.TTLWikiCache;
+
+            if(obj == undefined || cacheAge > ttl) {
+                if(obj != undefined && cacheAge > ttl)
+                    console.log('Cache file outdated.');
+
+                Scraper.scrapToFile(file, Scraper.getHouses, function (err, obj) {
                     if (err != null) {
                         console.log(err)
                     }
                     else {
-                        filler.insertToDb(data,afterInsertion);
+                        filler.insertToDb(obj.data,afterInsertion);
                     }
                 });
             }
             else {
                 console.log('Houses from cache file "'+file+'". Not scrapped from wiki.');
-                filler.insertToDb(obj,afterInsertion);
+                filler.insertToDb(obj.data,afterInsertion);
             }
         });
     },
