@@ -251,9 +251,9 @@ module.exports = {
      *
      * @apiDescription Search episodes in which the characterId
      */
-    getByCharacter: function (req, res) {
+    getEpisodesByCharacter: function (req, res) {
         var episodesStore = require('../stores/episodes');
-        episodesStore.getByCharacter(req.params.id , function (success, message) {
+        episodesStore.getEpisodesByCharacter(req.params.id , function (success, message) {
             if (success === 1) {
                 res.status(200).json({message: 'Success', data: obj});
             }else if (success === 2){
