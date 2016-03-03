@@ -1,26 +1,16 @@
 var Scraper = require(__appbase + 'controllers/scraper');
 var House = require(__appbase + 'models/house');
 var Houses = require(__appbase + 'stores/houses');
+var jsonfile = require('jsonfile')
 
 module.exports = {
     fillHouses: function(req, res) {
         console.log('Filling started. This may take a while.');
 
-        Scraper.getHouses(function(houses) {
+        var insertToDb = function(houses)
+        {
+            console.log('Inserting into db..');
             var i = 0;
-
-            var callbackDebug =  function(success,data) {
-                if(success != 1)
-                {
-                    console.log('Problem:' + data);
-                }
-                else
-                {
-                    console.log('SUCCESS: ' + data.name);
-
-                }
-
-            };
 
             // go through houses
             for(var k in houses) {
@@ -55,10 +45,51 @@ module.exports = {
                     }
                 }
 
-                Houses.add(houses[k], callbackDebug);
 
+                var callbackDebug =  function(success,data) {
+                    if(success != 1)
+                    {
+                        console.log('Problem:' + data);
+                    }
+                    else
+                    {
+                        console.log('SUCCESS: ' + data.name);
+                    }
+                };
+
+                Houses.add(houses[k], callbackDebug);
             }
+        }
+
+        var file = __appbase + '../wikiData/houses.json';
+        jsonfile.readFile(file, function(err, obj) {
+            // not cached already
+            if(obj == undefined) {
+                console.log('Scrapping houses from wiki..');
+                Scraper.getHouses(function(houses) {
+                    console.log('Writing results into cache file "'+file+'"..');
+                    jsonfile.writeFile(file, houses, function (err) {
+                        if(err != null)
+                        {
+                            console.log(err)
+                        }
+                        else
+                        {
+                            insertToDb(houses);
+                        }
+                    })
+                });
+            }
+            else {
+                console.log('Houses from cache file "'+file+'". Not scrapped from wiki.');
+                insertToDb(obj);
+            }
+        })
+
+        /*
+
         });
+        */
     },
     clearHouses: function(req,res) {
         House.remove({}, function(err) {
