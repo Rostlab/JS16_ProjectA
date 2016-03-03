@@ -25,6 +25,7 @@ module.exports = function (app, router) {
     router.get('/episodes', episodeController.getAll);
     router.get('/episodes/:name', episodeController.getByName);
     router.get('/episodes/byId/:id', episodeController.getById);
+    router.get('/episodes/byCharacter/:name', episodeController.getEpisodesByCharacter);
     router.delete('/episodes/:id', episodeController.remove);
     router.put('/episodes/:id', episodeController.edit);
 
