@@ -7,6 +7,7 @@ var client = new bot({
 });
 var jsonfile = require('jsonfile');
 
+
 module.exports = {
 
 	/*
@@ -124,7 +125,7 @@ module.exports = {
 				format: "json"
 			};	
 
-			var sc = require("./scraper");
+
 			
 			var house = {};			
 				
@@ -202,7 +203,7 @@ module.exports = {
 				page: pageName,
 				format: "json"
 			};	
-			var sc = require("./scraper");
+
 			var character = {};			
 			client.api.call(params, function (err, info, next, data) {
 				if(data != null) {
@@ -262,11 +263,11 @@ module.exports = {
 	getCharacters : function(callback) {
 		
 		
-		var sc = require("./scraper");
-		sc.getCharacterNames(function(characters) {
+		var scraper = require("./scraper");
+		scraper.getCharacterNames(function(characters) {
 		
 			var charactersCollection = [];
-			var scraper = require("./scraper");
+
 			
 			console.log(characters.length);
 			
@@ -317,15 +318,6 @@ module.exports = {
 			callback(characters);
         });
     },
-	
-
-	
-	
-	
-	
-	
-	
-	
 	
 	
     getAllHistory: function (req, res) {
@@ -392,8 +384,8 @@ module.exports = {
     },
 
 	getSingleRegion: function(regionName, callback) {
-		var sc = require("./scraper");
-		sc.getRegions(function(regions) {
+		var scraper = require("./scraper");
+		scraper.getRegions(function(regions) {
 			for(i = 0; i < regions.length; i++) {
 				if(regions[i].name == regionName) {
 					callback(regions[i]);
@@ -436,7 +428,7 @@ module.exports = {
         });
     },
 
-    getEpisodes: function (callback) {
+    getEpisodeNames: function (callback) {
 
         //Setup the mediawiki bot
 
@@ -454,14 +446,97 @@ module.exports = {
         client.api.call(params, function (err, info, next, data) {
 			arr =data.parse.text["*"].match(/<li>(.*?)<\/li>/g);
 			for(i = 0; i < arr.length; i++) {
-				subArr = arr[i].match(/>(.*?)</g);
-				var episode = {};
-				episode["name"] = subArr[1].substring(1,subArr[1].length-1);
-				episodes.push(episode);
+				subArr = arr[i].match(/\stitle=\"(.*?)\"/g);
+				//var episode = {};
+				episodes.push(subArr[0].substring(8,subArr[0].length-1));
+				//episodes.push(episode);
 			}
 			callback(episodes);
         });
     },
+	
+	getEpisodes : function(callback) {
+		var scraper = require("./scraper");
+		scraper.getEpisodeNames(function(episodes) {
+			var episodesCollection = [];
+			var nr = episodes.length;
+			console.log(episodes.length + " episodes to fetch");
+			for(i = 0; i < episodes.length; i++) {
+				scraper.getSingleEpisode(episodes[i], function(episode) {
+					if(episode.name != null) {
+						episodesCollection.push(episode);
+						console.log("Fetched " + episode.name);
+					}
+					else {
+						nr--;
+					}
+					if(episodesCollection.length == nr) {
+						callback(episodesCollection);
+					}
+				});
+			}
+		});
+	},
+	
+	getSingleEpisode : function(episodeName, callback) {
+		//console.log("start getSingleEpisode");
+
+		
+
+			var pageName = episodeName.replace(" ", "_");
+
+			var params = {
+				action: "parse",
+				page: pageName,
+				format: "json"
+			};	
+			
+			var episode = {};			
+			client.api.call(params, function (err, info, next, data) {
+				//console.log(data);
+				if(data != null) {
+					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
+					if(arr != null) {	
+						episode["name"] = episodeName;
+						for(i = 0; i < arr.length; i++) {
+							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+							var name = tempName[0].substring(1, tempName[0].length-1);
+							var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+							var value = tempValue[0].substring(1, tempValue[0].length-1);
+							newValue = [];
+							if(value.indexOf("href") != -1) {
+								value = value.match(/\">(.*?)<\/a>/)[0];
+								value = value.substring(2, value.length-4);
+							}
+							else {
+								value = value.substring(1, value.length-4);
+							}
+							/*
+							* Get the other information
+							*/
+							
+							if(value != null) {
+								name = name.toLowerCase();
+								if(name == "airdate") {
+									name = "airDate";
+								}
+								else if(name == "episode #") {
+									name = "nr";
+								}
+								episode[name] = value;
+							}
+							
+							/*
+							*
+							*/
+						}
+					}
+				}
+				
+				callback(episode);
+			});
+
+	},
 
 	scrapToFile: function(cacheFile,scraperFunction,callback) {
 		console.log('Scrapping from wiki. May take a while..');
