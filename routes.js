@@ -4,7 +4,7 @@ module.exports = function (app, router) {
     router.get('/', defController.init);
 
     var housesFiller = require(__appbase + 'controllers/filler/houses');
-    router.get('/houses/filler', housesFiller.fillHouses);
+    router.get('/houses/filler', housesFiller.fill);
     router.delete('/houses/filler', housesFiller.clearAll);
 
     var housesController = require(__appbase + 'controllers/house');
