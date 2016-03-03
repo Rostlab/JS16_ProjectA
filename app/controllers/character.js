@@ -552,7 +552,7 @@ module.exports = {
             }else if (success === 2){
                 res.status(404).json({message: 'Error', error: message});
             }else if (success == 4){
-	    	res.status(404).json(message);
+	    	res.status(404).json({message: 'No valid gender', error: message});
 	    }else{
 		res.status(404).json({message: 'Failure: No characters with that gender are existing.', data: message});
 	    } 

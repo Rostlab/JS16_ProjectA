@@ -170,7 +170,8 @@ module.exports = {
 	}else if (genderName.toLowerCase() == "female"){
 	   male = false;
 	}else{
-	   callback(4, "No valid gender");	
+	   callback(4, genderName);
+	   return;	
 	}
 
 

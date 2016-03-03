@@ -122,4 +122,24 @@ module.exports = {
             }
         });
     },
+
+
+
+    //returns all regions of one continent
+    getRegionsByContinent: function(continentName, callback){
+	Region.find({'continent' : continentName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, continentName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
+
 };

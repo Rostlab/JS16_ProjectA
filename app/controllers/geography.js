@@ -466,6 +466,40 @@ module.exports = {
                 res.status(404).json({ message: 'Failure: No region with that id is existing.', id: req.params.id });
         });
     },
+
+    /**
+     * @api {delete} /api/geography/regions/byContinent/:id Get regions by continent
+     * @apiVersion 0.0.1
+     * @apiName GetRegionsByContinent
+     * @apiGroup Regions
+     *
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : region}
+     *
+     * @apiError (404) NotFound No regions within that continent existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No regions within that continent existing!", "data": err };
+     *
+     * @apiDescription Get all regions which have the same continent
+     */
+    getRegionsByContinent: function (req, res) {
+        var regionsStore = require('../stores/regions');
+        regionsStore.getRegionsByContinent(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+	    }else{
+		res.status(404).json({message: 'Failure: No regions within that continent are existing.', data: message});
+	    } 
+        });
+    },
+
+
+
+
 /*
  * cultures
  */
