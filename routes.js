@@ -3,6 +3,10 @@ module.exports = function (app, router) {
     var defController = require('./app/controllers/default');
     router.get('/', defController.init);
 
+    var dbFiller = require(__appbase + 'controllers/dbFiller');
+    router.get('/dbFiller/houses', dbFiller.fillHouses);
+    router.delete('/dbFiller/houses', dbFiller.clearHouses);
+
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
     router.post('/houses/find', housesController.get);
@@ -85,9 +89,6 @@ module.exports = function (app, router) {
     router.put('/regions/:id', geographyController.editRegion);
 
 
-    var scraperController = require('./app/controllers/scraper');
-    router.get('/scrapper/houses', scraperController.getAllHouseDetails);
-    router.get('/scrapper/characters', scraperController.getAllCharacters);
 
     var twitterController = require('./app/controllers/twitter');
     router.get('/twitter/search/:byKeywords', twitterController.searchTwitter);
