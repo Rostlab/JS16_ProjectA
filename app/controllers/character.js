@@ -464,9 +464,9 @@ module.exports = {
 
 
     /**
-     * @api {delete} /api/character/byHouse/:id Get character by house
+     * @api {delete} /api/character/byHouse/:id Get characters by house
      * @apiVersion 0.0.1
-     * @apiName GetCharacterByHouse
+     * @apiName GetCharactersByHouse
      * @apiGroup Characters
      *
       * @apiSuccessExample {json} Success-Response
@@ -489,6 +489,38 @@ module.exports = {
                 res.status(404).json({message: 'Error', error: message});
             }else{
 		res.status(404).json({message: 'Failure: No characters with that house are existing.', data: message});
+	    } 
+        });
+    },
+
+
+
+     /**
+     * @api {delete} /api/character/byCulture/:id Get characters by culture
+     * @apiVersion 0.0.1
+     * @apiName GetCharactersByCulture
+     * @apiGroup Characters
+     *
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : characters}
+     *
+     * @apiError (404) NotFound No characters with that culture existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No characters with that culture existing!", "data": err };
+     *
+     * @apiDescription Get all characters which have the same culture
+     */
+    getCharactersByCulture: function (req, res) {
+        var charactersStore = require('../stores/characters');
+        charactersStore.getCharactersByCulture(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+            }else{
+		res.status(404).json({message: 'Failure: No characters with that culture are existing.', data: message});
 	    } 
         });
     }

@@ -55,6 +55,7 @@ module.exports = function (app, router) {
     router.get('/characters/:name', characterController.getByName);
     router.get('/characters/byId/:id', characterController.getById);
     router.get('/characters/byHouses/:id', characterController.getCharactersByHouse);
+    router.get('/characters/byCulture/:id', characterController.getCharactersByCulture);
     router.delete('/characters/:id', characterController.remove);
     router.put('/characters/:id', characterController.edit);
     router.post('/skills', characterController.addSkill);
