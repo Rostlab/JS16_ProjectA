@@ -425,7 +425,7 @@ module.exports = {
 				var str = continents[0].match(/\">(.*?)<\/a>/g);
 				for(j = 0; j < str.length; j++) {
 					str[j] = str[j].substring(2, str[j].length-4);
-					var region = [];
+					var region = {};
 					region["name"] = str[j];
 					regions.push(region);
 				}
@@ -435,7 +435,7 @@ module.exports = {
         });
     },
 
-    getAllTVEpisodes: function (req, res) {
+    getEpisodes: function (callback) {
 
         //Setup the mediawiki bot
 
@@ -454,10 +454,11 @@ module.exports = {
 			arr =data.parse.text["*"].match(/<li>(.*?)<\/li>/g);
 			for(i = 0; i < arr.length; i++) {
 				subArr = arr[i].match(/>(.*?)</g);
-				episodes.push(subArr[1].substring(1,subArr[1].length-1));
+				var episode = {};
+				episode["name"] = subArr[1].substring(1,subArr[1].length-1);
+				episodes.push(episode);
 			}
-			res.status(200).json(episodes);
+			callback(episodes);
         });
-		res.status(400).json({message: 'Error', error: "something went wrong"});
     }
 };
