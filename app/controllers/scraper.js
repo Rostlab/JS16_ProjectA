@@ -106,15 +106,6 @@ module.exports = {
 	getSingleHouse : function(houseName, callback) {
 
 		
-		var fs = require("fs");
-		fs.readFile('./sample data/houses.txt', function (err, data) {
-			if (err) {
-			   return console.error(err);
-			}
-			string_array = data.toString().split("**");
-			var houses = JSON.parse(string_array[0]);
-			//var fields = JSON.parse(string_array[1]);
-		
 		
 			//console.log(houseName);
 			var pageName = houseName.replace(" ", "_");
@@ -178,7 +169,6 @@ module.exports = {
 				//console.log(house);
 				callback(house);
 			});
-		});
 	},
 	
 	/*
@@ -187,73 +177,64 @@ module.exports = {
 	getSingleCharacter : function(characterName, callback) {
 		console.log("start getSingleCharacter");
 
-		var fs = require("fs");
-		fs.readFile('./sample data/characters.txt', function (err, data) {
-			if (err) {
-			   return console.error(err);
-			}
-			string_array = data.toString().split("**");
-			var characters = JSON.parse(string_array[0]);
-			//var fields = JSON.parse(string_array[1]);
 
-			var pageName = characterName.replace(" ", "_");
+		var pageName = characterName.replace(" ", "_");
 
-			var params = {
-				action: "parse",
-				page: pageName,
-				format: "json"
-			};	
+		var params = {
+			action: "parse",
+			page: pageName,
+			format: "json"
+		};	
 
-			var character = {};			
-			client.api.call(params, function (err, info, next, data) {
-				if(data != null) {
-					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr != null) {	
-						character["name"] = characterName;
-						for(i = 0; i < arr.length; i++) {
-							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-							var name = tempName[0].substring(1, tempName[0].length-1);
-							var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
-							var value = tempValue[0].substring(1, tempValue[0].length-1);
-							newValue = [];
-							if(value.indexOf("href") != -1) {
-								value = value.match(/\">(.*?)<\/a>/)[0];
-								value = value.substring(2, value.length-4);
-							}
-							else {
-								value = value.substring(1, value.length-4);
-							}
-							/*
-							* Get the other information
-							*/
-							
-							if(value != null) {
-								name = name.toLowerCase();
-								if(name == "born") {
-									name = "dateOfBirth";
-								}
-								else if(name == "died") {
-									name = "dateOfDeath";
-								}
-								else if(name == "played by") {
-									name = "actor";
-								}
-								else if(name == "allegiance") {
-									name = "house";
-								}
-								character[name] = value;
-							}
-							
-							/*
-							*
-							*/
+		var character = {};			
+		client.api.call(params, function (err, info, next, data) {
+			if(data != null) {
+				var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
+				if(arr != null) {	
+					character["name"] = characterName;
+					for(i = 0; i < arr.length; i++) {
+						var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+						var name = tempName[0].substring(1, tempName[0].length-1);
+						var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+						var value = tempValue[0].substring(1, tempValue[0].length-1);
+						newValue = [];
+						if(value.indexOf("href") != -1) {
+							value = value.match(/\">(.*?)<\/a>/)[0];
+							value = value.substring(2, value.length-4);
 						}
+						else {
+							value = value.substring(1, value.length-4);
+						}
+						/*
+						* Get the other information
+						*/
+						
+						if(value != null) {
+							name = name.toLowerCase();
+							if(name == "born") {
+								name = "dateOfBirth";
+							}
+							else if(name == "died") {
+								name = "dateOfDeath";
+							}
+							else if(name == "played by") {
+								name = "actor";
+							}
+							else if(name == "allegiance") {
+								name = "house";
+							}
+							character[name] = value;
+						}
+						
+						/*
+						*
+						*/
 					}
 				}
-				
-				//console.log(character);
-				callback(character);
-			});
+			}
+			
+			//console.log(character);
+			callback(character);
 		});
 	},
 
