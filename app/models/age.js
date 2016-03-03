@@ -10,4 +10,3 @@ var AgeSchema = new Schema({
 });
 
 module.exports = mongoose.model('Age', AgeSchema);
-
