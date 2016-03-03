@@ -231,7 +231,7 @@ module.exports = {
 								if(name == "born") {
 									name = "dateOfBirth";
 								}
-								else if(name == "dies") {
+								else if(name == "died") {
 									name = "dateOfDeath";
 								}
 								else if(name == "played by") {
