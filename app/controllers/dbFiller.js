@@ -7,8 +7,21 @@ module.exports = {
         console.log('Filling started. This may take a while.');
 
         Scraper.getHouses(function(houses) {
-            var houses = houses;
             var i = 0;
+
+            var callbackDebug =  function(success,data) {
+                if(success != 1)
+                {
+                    console.log('Problem:' + data);
+                }
+                else
+                {
+                    console.log('SUCCESS: ' + data.name);
+
+                }
+
+            };
+
             // go through houses
             for(var k in houses) {
                 if(!houses[k].hasOwnProperty('name'))
@@ -42,28 +55,17 @@ module.exports = {
                     }
                 }
 
-                Houses.add(houses[k], function(success,data) {
-                    if(success != 1)
-                    {
-                        console.log('Problem:' + data);
-                    }
-                    else
-                    {
-                        console.log('SUCCESS: ' + data.name);
-
-                    }
-
-                });
+                Houses.add(houses[k], callbackDebug);
 
             }
         });
     },
     clearHouses: function(req,res) {
         House.remove({}, function(err) {
-            console.log('collection removed')
+            console.log('collection removed');
         });
     },
     addHousesReferences: function(req,res) {
         // TODO: Still every db entry has to be edited and the references updated
     }
-}
+};
