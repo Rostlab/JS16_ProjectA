@@ -252,10 +252,10 @@ module.exports = {
 			
 			console.log(characters.length);
 			
-			for(i = 0; i < 20; i++) {
+			for(i = 0; i < characters.length; i++) {
 				scraper.getSingleCharacter(characters[i], function(character) {
 					charactersCollection.push(character);
-					if(charactersCollection.length == 20) {
+					if(charactersCollection.length == characters.length) {
 						callback(charactersCollection);
 					}
 				});
