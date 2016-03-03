@@ -523,6 +523,40 @@ module.exports = {
 		res.status(404).json({message: 'Failure: No characters with that culture are existing.', data: message});
 	    } 
         });
+    },
+
+
+
+    /**
+     * @api {delete} /api/character/byGender/:id Get characters by gender
+     * @apiVersion 0.0.1
+     * @apiName GetCharactersByGender
+     * @apiGroup Characters
+     *
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : characters}
+     *
+     * @apiError (404) NotFound No characters with that gender existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No characters with that gender existing!", "data": err };
+     *
+     * @apiDescription Get all characters which have the same culture
+     */
+    getCharactersByGender: function (req, res) {
+        var charactersStore = require('../stores/characters');
+        charactersStore.getCharactersByGender(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+            }else if (success == 4){
+	    	res.status(404).json(message);
+	    }else{
+		res.status(404).json({message: 'Failure: No characters with that gender are existing.', data: message});
+	    } 
+        });
     }
 
 };

@@ -157,4 +157,35 @@ module.exports = {
 
 
     },
+
+
+
+
+    //returns all characters of one gender
+    getCharactersByGender: function(genderName, callback){
+
+	var male;
+	if(genderName.toLowerCase() == "male"){
+	   male = true;
+	}else if (genderName.toLowerCase() == "female"){
+	   male = false;
+	}else{
+	   callback(4, "No valid gender");	
+	}
+
+
+	Character.find({'male' : male}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, genderName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
 };
