@@ -46,8 +46,8 @@ module.exports = {
     },
 
     //returns the episodes of a specific character
-    getEpisodesByCharacter: function(characterId, callback){
-	Episode.find({'characters' : characterId}, function(err, obj){
+    getEpisodesByCharacter: function(characterName, callback){
+	Episode.find({'characters.name' : characterName}, function(err, obj){
 	   if(err){
 		callback(2, err);
 	   }
