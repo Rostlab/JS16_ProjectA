@@ -3,9 +3,9 @@ module.exports = function (app, router) {
     var defController = require('./app/controllers/default');
     router.get('/', defController.init);
 
-    var dbFiller = require(__appbase + 'controllers/dbFiller');
-    router.get('/dbFiller/houses', dbFiller.fillHouses);
-    router.delete('/dbFiller/houses', dbFiller.clearHouses);
+    var housesFiller = require(__appbase + 'controllers/filler/houses');
+    router.get('/houses/filler', housesFiller.fillHouses);
+    router.delete('/houses/filler', housesFiller.clearAll);
 
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
