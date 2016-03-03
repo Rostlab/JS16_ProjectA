@@ -122,4 +122,21 @@ module.exports = {
             }
         });
     },
+
+    //returns all characters of a specific house
+    getCharactersByHouse: function(houseName, callback){
+	Character.find({'characters.house.name' : houseName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, houseName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
 };

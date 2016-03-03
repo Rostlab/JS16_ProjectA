@@ -52,7 +52,7 @@ module.exports = {
 		callback(2, err);
 	   }
 	   else if (obj.length === 0){
-		callback(3, characterId);
+		callback(3, characterName);
 	   }
 	   else{
 		callback(1, obj);

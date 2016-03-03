@@ -35,7 +35,7 @@ module.exports = function (app, router) {
     router.get('/events', eventsController.getAll);
     router.get('/events/:name', eventsController.getByName);
     router.get('/events/byId/:id', eventsController.getById);
-    router.get('/episodes/byCharacter/:id', episodeController.getByCharacter);
+    router.get('/episodes/byCharacter/:id', episodeController.getEpisodesByCharacter);
     router.delete('/events/:id', eventsController.remove);
     router.put('/events/:id', eventsController.edit);
 
@@ -54,6 +54,7 @@ module.exports = function (app, router) {
     router.get('/characters', characterController.getAll);
     router.get('/characters/:name', characterController.getByName);
     router.get('/characters/byId/:id', characterController.getById);
+    router.get('/characters/byHouses/:id', characterController.getCharactersByHouse);
     router.delete('/characters/:id', characterController.remove);
     router.put('/characters/:id', characterController.edit);
     router.post('/skills', characterController.addSkill);
