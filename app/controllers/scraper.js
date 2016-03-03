@@ -87,7 +87,7 @@ module.exports = {
                 if(housesCollection.length == houses.length) {
                     callback(housesCollection);
                 }
-            }
+            };
 					
 
 			var housesCollection = [];
@@ -274,7 +274,7 @@ module.exports = {
                 if(charactersCollection.length == 20) {
                     callback(charactersCollection);
                 }
-            }
+            };
 			
 			for(i = 0; i < 20; i++) {
 				scraper.getSingleCharacter(characters[i], callback);
