@@ -3,13 +3,13 @@ var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
     name: {type: String, required: true},                                 // Targaryen
-    type: {type: Schema.Types.ObjectId, ref: "HouseType"},                // Current, exiled or extinct Great house
+    type: {type: String, ref: "HouseType"},                // Current, exiled or extinct Great house
     coatOfArms: String,                                                   // Sable, a dragon thrice-headed gules
     words: String,                                                        // Fire and Blood
-    currentLord: {type: Schema.Types.ObjectId, ref: "Character"},         // Queen Daenerys Targaryen
-    overlord: {type: Schema.Types.ObjectId, ref: "Character"},            // None
-    title: [String],                                                      // King of the Andals, the Rhoynar, and the First Men,Lord of the Seven Kingdoms
-    region: {type: Schema.Types.ObjectId, ref: "Region"},                 // Crownlands (formerly Valyria)
+    currentLord: {type: String, ref: "Character"},         // Queen Daenerys Targaryen
+    overlord: {type: String, ref: "House"},            // None
+    title: String,                                                      // King of the Andals, the Rhoynar, and the First Men,Lord of the Seven Kingdoms
+    region: String,                 // Crownlands (formerly Valyria)
     cadetBranch: String,                                                  // House Blackfyre is the cadet branch of House Targaryen
     ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
     founded: Number,                                                      // > 126 BC, Age of Heroes
