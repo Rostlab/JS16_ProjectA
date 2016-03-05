@@ -106,6 +106,16 @@ module.exports = function (app, router) {
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
 
+    router.post('/city', geographyController.addCity);
+    router.post('/cities/find', geographyController.getCities);
+    router.get('/cities', geographyController.getAllCities);
+    router.get('/cities/:name', geographyController.getCityByName);
+    router.get('/cities/byId/:id', geographyController.getCityById);
+    router.get('/cities/byContinent/:id', geographyController.getCitiesByContinent);
+    router.get('/cities/byCulture/:id', geographyController.getCitiesByCulture);
+    router.delete('/cities/:id', geographyController.removeCity);
+    router.put('/cities/:id', geographyController.editCity);
+
 
     var twitterController = require('./app/controllers/twitter');
     router.get('/twitter/search/:byKeywords/:tweetCount', twitterController.searchTwitter);
