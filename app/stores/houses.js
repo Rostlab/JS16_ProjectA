@@ -49,7 +49,7 @@ module.exports = {
     getByName: function(name, callback) {
         this.get({'name':name},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);
@@ -60,7 +60,7 @@ module.exports = {
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);

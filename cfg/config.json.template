@@ -14,5 +14,6 @@
     },
     "server":{
         "port": "8080"
-    }
+    },
+    "TTLWikiCache" : 7200000
 }

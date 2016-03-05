@@ -1,4 +1,4 @@
-# JS16_ProjectA ![Build Status in TravisCI](https://api.travis-ci.org/kordianbruck/JS16_ProjectA.svg)
+# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA)
 In this project we will lay the foundations for our system by integrating data from multiple sources into a central database. The database will serve the apps and the visualization tool that will be developed in other projects.
 
 # Links
@@ -23,6 +23,7 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * Copy the config file in `cfg` to `config.json` and edit it
     * You can leave username and password empty on default configurations 
     * Use 127.0.0.1 and port 27017 for default configurations
+    * In order to stream real-time Twitter data, please register you Twitter account at http://apps.twitter.com and insert your API keys into the config.json
 * Start local MongoDB server with `mongod`
     * You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 27017`
 * Run `nodejs app.js` to start the server

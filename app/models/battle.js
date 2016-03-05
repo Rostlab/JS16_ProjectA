@@ -1,3 +1,6 @@
+/*
+Don't consider this for now till another project tells us it is really needed.
+
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -10,3 +13,4 @@ var BattleSchema   = new Schema({
 });
 
 module.exports = mongoose.model('Battle', BattleSchema);
+*/

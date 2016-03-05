@@ -5,9 +5,8 @@ var AgeSchema = new Schema({
     name: {type: String, required: true},
     startDate: {type:Number,required: true},
 	endDate: {type:Number,required: true},
-    predecessor: {type: Schema.types.ObjectId, ref: 'Age'},
-    successor: {type: Schema.types.ObjectId, ref: 'Age'}
+    predecessor: {type: Schema.Types.ObjectId, ref: 'Age'},
+    successor: {type: Schema.Types.ObjectId, ref: 'Age'}
 });
 
 module.exports = mongoose.model('Age', AgeSchema);
-

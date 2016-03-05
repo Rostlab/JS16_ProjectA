@@ -48,7 +48,7 @@ module.exports = {
     getByName: function(name, callback) {
         this.get({'name':name},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);
@@ -59,7 +59,7 @@ module.exports = {
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);
@@ -122,4 +122,42 @@ module.exports = {
             }
         });
     },
+
+
+
+    //returns all regions of one continent
+    getRegionsByContinent: function(continentName, callback){
+	Region.find({'continent' : continentName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, continentName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
+
+
+    //returns all regions of one culture
+    getRegionsByCulture: function(cultureName, callback){
+	Region.find({'cultures' : cultureName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, cultureName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
+
 };

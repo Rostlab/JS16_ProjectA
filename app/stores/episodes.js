@@ -45,10 +45,27 @@ module.exports = {
         });
     },
 
+    //returns the episodes of a specific character
+    getEpisodesByCharacter: function(characterName, callback){
+	Episode.find({'characters.name' : characterName}, function(err, obj){
+	   if(err){
+		callback(2, err);
+	   }
+	   else if (obj.length === 0){
+		callback(3, characterName);
+	   }
+	   else{
+		callback(1, obj);
+	   }
+	});	
+
+
+    },
+
     getByName: function(name, callback) {
         this.get({'name':name},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);
@@ -59,7 +76,7 @@ module.exports = {
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {
-                callback(success,message[0])
+                callback(success,message[0]);
             }
             else {
                 callback(success,message);

@@ -71,7 +71,7 @@ module.exports = {
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : episode}
+     *     {"message" : "Success", "data" : episodes}
      *
      * @apiError (404) NotFound No episode with that data existing!
      * @apiErrorExample {json} NotFound
@@ -163,7 +163,7 @@ module.exports = {
     },
 
     /**
-     * @api {put} /api/episodes/:id Get episodes by id
+     * @api {put} /api/episodes/:id Edit episode
      * @apiVersion 0.0.1
      * @apiName EditEpisode
      * @apiGroup Episodes
@@ -182,12 +182,12 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Error: Bad request. No such property", "errorProperty": property };
      *
-     * @apiError (400) GeneralError No episode with that data existing!
+     * @apiError (400) GeneralError Mongoose error.
      * @apiErrorExample {json} GeneralError
      *      HTTP/1.1 404
      *      { "message": "Error", "error": err };
      *
-     * @apiDescription Update an episode with some new information
+     * @apiDescription Update an episode with the id :id with some new information.
      */
     edit: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -206,9 +206,9 @@ module.exports = {
     },
 
     /**
-     * @api {delete} /api/episodes/:id Get episodes by id
+     * @api {delete} /api/episodes/:id Remove episode
      * @apiVersion 0.0.1
-     * @apiName DeleteEpisode
+     * @apiName RemoveEpisode
      * @apiGroup Episodes
      *
      * @apiSuccessExample {json} Success-Response
@@ -231,5 +231,38 @@ module.exports = {
                 res.status(404).json({message: 'Failure: No episode with that id is existing.', id: req.params.id});
             }
         });
+    },
+
+
+     /**
+     * @api {delete} /api/episodes/byCharacter/:id Get episodes by character
+     * @apiVersion 0.0.1
+     * @apiName GetEpisodesByCharacter
+     * @apiGroup Episodes
+     *
+      * @apiSuccessExample {json} Success-Response
+      *     HTTP/1.1 200 OK
+      *     {"message" : "Success", "data" : episodes}
+     *
+     * @apiError (404) NotFound No episode with that character existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No episode with that character existing!", "data": err };
+     *
+     * @apiDescription Search episodes in which the characterId
+     */
+    getEpisodesByCharacter: function (req, res) {
+        var episodesStore = require('../stores/episodes');
+        episodesStore.getEpisodesByCharacter(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+            }else{
+		res.status(404).json({message: 'Failure: No episode with that character is existing.', data: message});
+	    } 
+        });
     }
+
+
 };

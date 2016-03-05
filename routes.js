@@ -3,6 +3,22 @@ module.exports = function (app, router) {
     var defController = require('./app/controllers/default');
     router.get('/', defController.init);
 
+    var housesFiller = require(__appbase + 'controllers/filler/houses');
+    router.get('/houses/filler', housesFiller.fill);
+    router.delete('/houses/filler', housesFiller.clearAll);
+
+    var regionsFiller = require(__appbase + 'controllers/filler/regions');
+    router.get('/regions/filler', regionsFiller.fill);
+    router.delete('/regions/filler', regionsFiller.clearAll);
+
+    var episodesFiller = require(__appbase + 'controllers/filler/episodes');
+    router.get('/episodes/filler', episodesFiller.fill);
+    router.delete('/episodes/filler', episodesFiller.clearAll);
+
+    var charactersFiller = require(__appbase + 'controllers/filler/characters');
+    router.get('/characters/filler', charactersFiller.fill);
+    router.delete('/characters/filler', charactersFiller.clearAll);
+
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
     router.post('/houses/find', housesController.get);
@@ -21,8 +37,28 @@ module.exports = function (app, router) {
     router.get('/episodes', episodeController.getAll);
     router.get('/episodes/:name', episodeController.getByName);
     router.get('/episodes/byId/:id', episodeController.getById);
+    router.get('/episodes/byCharacter/:name', episodeController.getEpisodesByCharacter);
     router.delete('/episodes/:id', episodeController.remove);
     router.put('/episodes/:id', episodeController.edit);
+
+    var eventsController = require(__appbase + 'controllers/event');
+    router.post('/events', eventsController.add);
+    router.post('/events/find', eventsController.get);
+    router.get('/events', eventsController.getAll);
+    router.get('/events/:name', eventsController.getByName);
+    router.get('/events/byId/:id', eventsController.getById);
+    router.get('/episodes/byCharacter/:id', episodeController.getEpisodesByCharacter);
+    router.delete('/events/:id', eventsController.remove);
+    router.put('/events/:id', eventsController.edit);
+
+    var ageController = require(__appbase + 'controllers/age');
+    router.post('/ages', ageController.add);
+    router.post('/ages/find', ageController.get);
+    router.get('/ages', ageController.getAll);
+    router.get('/ages/:name', ageController.getByName);
+    router.get('/ages/byId/:id', ageController.getById);
+    router.delete('/ages/:id', ageController.remove);
+    router.put('/ages/:id', ageController.edit);
 
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters', characterController.add);
@@ -30,6 +66,9 @@ module.exports = function (app, router) {
     router.get('/characters', characterController.getAll);
     router.get('/characters/:name', characterController.getByName);
     router.get('/characters/byId/:id', characterController.getById);
+    router.get('/characters/byHouses/:id', characterController.getCharactersByHouse);
+    router.get('/characters/byCulture/:id', characterController.getCharactersByCulture);
+    router.get('/characters/byGender/:id', characterController.getCharactersByGender);
     router.delete('/characters/:id', characterController.remove);
     router.put('/characters/:id', characterController.edit);
     router.post('/skills', characterController.addSkill);
@@ -62,15 +101,13 @@ module.exports = function (app, router) {
     router.get('/regions', geographyController.getAllRegions);
     router.get('/regions/:name', geographyController.getRegionByName);
     router.get('/regions/byId/:id', geographyController.getRegionById);
+    router.get('/regions/byContinent/:id', geographyController.getRegionsByContinent);
+    router.get('/regions/byCulture/:id', geographyController.getRegionsByCulture);
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
 
 
-    var scraperController = require('./app/controllers/scraper');
-    router.get('/scrapper/houses', scraperController.getAllHouses);
-    router.get('/scrapper/characters', scraperController.getAllCharacters);
-
     var twitterController = require('./app/controllers/twitter');
-    router.get('/twitter/search/:byKeywords', twitterController.searchTwitter);
+    router.get('/twitter/search/:byKeywords/:tweetCount', twitterController.searchTwitter);
 
 };

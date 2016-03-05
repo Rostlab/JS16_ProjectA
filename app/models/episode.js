@@ -6,8 +6,8 @@ var EpisodeSchema = new Schema({
     nr: Number, // episode nr in season
     season: Number,
     name: String,
-    characters: [{type: Schema.Types.ObjectId, ref: 'Character'}],
-    airdate: Date,
+    characters: [{type: String, ref: 'Character'}],
+    airDate: Date,
     episodeLength: {type: Number, min: 60, max: 70},        // maximum 70 min, minimum 60 min duration as the episodes differ in duration
 
     predecessor: {type: Schema.Types.ObjectId, ref: 'Episode'},
