@@ -192,6 +192,7 @@ module.exports = {
                 console.log(tweet.text);
                 tweetsArray.push(tweet);
                 if (tweetsArray.length >= count) {
+                    stream.destroy();
                     res.status(200).json(tweetsArray);
                 }
             });
