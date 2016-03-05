@@ -1,7 +1,7 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var CitiesSchema   = new Schema({
+var CitySchema   = new Schema({
     name: {type: String, required: true},
 	coordX: String,												//Mongoose only supports Number (Integer)
 	coordY: String,												//For floats or doubles, it automatically converts it to String
@@ -14,4 +14,4 @@ var CitiesSchema   = new Schema({
     events: [{type: Schema.Types.ObjectId, ref: "Event"}]
 });
 
-module.exports = mongoose.model('Cities', CitiesSchema);
+module.exports = mongoose.model('City', CitySchema);

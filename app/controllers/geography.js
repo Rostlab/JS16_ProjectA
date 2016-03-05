@@ -763,5 +763,194 @@ module.exports = {
             else
                 res.status(404).json({ message: 'Failure: No culture with that id is existing.', id: req.params.id });
         });
+    },
+
+    /**
+     * @api {post} /api/api/city Add a city
+     * @apiVersion 0.0.1
+     * @apiName addCity
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Add a new city
+     */
+    addCity: function(req,res) {
+
+    },
+
+    /**
+     * @api {post} /api/cities/find Find cities
+     * @apiVersion 0.0.1
+     * @apiName getCities
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Find a city
+     */
+    getCities: function(req,res) {
+
+    },
+
+    /**
+     * @api {get} /api/cities Get all cities
+     * @apiVersion 0.0.1
+     * @apiName getAllCities
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Get all cities
+     */
+    getAllCities: function(req,res) {
+
+    },
+
+    /**
+     * @api {get} /api/cities/:name Get city by name
+     * @apiVersion 0.0.1
+     * @apiName getCityByName
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No cities with that data existing!", "data": err };
+     *
+     * @apiDescription Find a city by name
+     */
+    getCityByName: function(req,res) {
+
+    },
+
+    /**
+     * @api {get} /api/cities/byId/:id Get city by :id
+     * @apiVersion 0.0.1
+     * @apiName getCityById
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Get city by :id
+     */
+    getCityById: function(req,res) {
+
+    },
+
+    /**
+     * @api {get} /api/cities/byContinent/:id Get cities by continent
+     * @apiVersion 0.0.1
+     * @apiName getCitiesByContinent
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Get cities by continent
+     */
+    getCitiesByContinent: function(req,res) {
+
+    },
+
+    /**
+     * @api {get} /api/cities/byCulture/:id Get cities by culture
+     * @apiVersion 0.0.1
+     * @apiName getCitiesByCulture
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Delete the city with the :id
+     */
+    getCitiesByCulture: function(req,res) {
+
+    },
+
+    /**
+     * @api {delete} /api/cities/:id Remove city
+     * @apiVersion 0.0.1
+     * @apiName removeCity
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Delete the city with the :id
+     */
+    removeCity: function(req,res) {
+
+    }, 
+
+    /**
+     * @api {put} /api/cities/:id Edit city
+     * @apiVersion 0.0.1
+     * @apiName editCity
+     * @apiGroup City
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success"}
+     *
+     * @apiError (404) NotFound No city with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No city with that data existing!", "data": err };
+     *
+     * @apiDescription Edit the city with the :id
+     */
+    editCity: function(req,res) {
+
     }
 };
