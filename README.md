@@ -23,6 +23,7 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * Copy the config file in `cfg` to `config.json` and edit it
     * You can leave username and password empty on default configurations 
     * Use 127.0.0.1 and port 27017 for default configurations
+    * In order to stream real-time Twitter data, please register you Twitter account at http://apps.twitter.com and insert your API keys into the config.json
 * Start local MongoDB server with `mongod`
     * You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 27017`
 * Run `nodejs app.js` to start the server
