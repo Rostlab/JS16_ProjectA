@@ -50,7 +50,7 @@ module.exports = {
         // go through the properties of the house
         for(var z in character) {
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'culture' || z == 'mother' || z == 'father' || z == 'heir'|| z == 'placeOfBirth' || z == 'placeOfDeath'|| z == 'house'|| z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
+            if ( z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
                 delete character[z];
             }
 
