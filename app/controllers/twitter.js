@@ -189,7 +189,7 @@ module.exports = {
 
         client.stream('statuses/filter', {track: keywords}, function (stream) {
             stream.on('data', function (tweet) {
-                console.log(tweet);
+                console.log(tweet.text);
                 tweetsArray.push(tweet);
                 if (tweetsArray.length >= count) {
                     res.status(200).json(tweetsArray);
