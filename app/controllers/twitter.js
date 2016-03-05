@@ -174,13 +174,13 @@ module.exports = {
      *
      */
     searchTwitter: function (req, res) {
-        var twitter = require('twitter');
+        var Twitter = require('twitter');
         var config = require(__base + 'cfg/config.json');
         var keywords = req.params.byKeywords;
         var count = req.params.tweetCount;
         var tweetsArray = new Array();
 
-        var client = new twitter({
+        var client = new Twitter({
             consumer_key: config.twitter.consumer_key,
             consumer_secret: config.twitter.consumer_secret,
             access_token_key: config.twitter.access_token_key,
