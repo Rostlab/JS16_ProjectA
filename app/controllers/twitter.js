@@ -1,13 +1,20 @@
 module.exports = {
     /**
-     * @api {post} /api/search/twitter/:byKeywords
+     * @api {post} /api/search/twitter/:byKeywords/:tweetCount
      * @apiVersion 0.0.1
      * @apiName Twitter Stream
      * @apiDescription Show a live stream from Twitter
      * @apiGroup Twitter
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "Stark"}
+     * { 
+     *   "Connection": keep-alive,
+     *   "Content-Length": 12707,
+     *   "Content-Type": application/json; charset=utf-8,
+     *   "Date": Sat, 05 Mar 2016 16:47:09 GMT,
+     *   "ETag": W/"31a3-Mu/XIt21JlHPYa6ez8FJzw",
+     *   "X-Powered-By": Express
+     * }
      *
      * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
@@ -164,8 +171,8 @@ module.exports = {
      *  "timestamp_ms": "1456662971515"
      * }
      *
-     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
-     * @apiErrorExample {json} PropertyInvalid
+     * @apiError (400) Bad request
+     * @apiErrorExample {json} Bad Request
      *     HTTP/1.1 400
      *     {
      *          "message": "Error.",
@@ -194,7 +201,7 @@ module.exports = {
                 if (tweetsArray.length >= count) {
                     stream.destroy();
                     res.status(200).json(tweetsArray);
-                }
+                };
             });
             stream.on('error', function (error) {
                 res.status(400).json({ message: 'Error.', error: error });
