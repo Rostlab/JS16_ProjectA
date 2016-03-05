@@ -50,8 +50,20 @@ module.exports = {
         // go through the properties of the house
         for(var z in episode) {
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'characters' || z == 'predecessor' || z == 'successor' || !Episode.schema.paths.hasOwnProperty(z)) {
+            if ( z == 'characters' || z == 'predecessor' || z == 'successor' || !Episode.schema.paths.hasOwnProperty(z)) {
                 delete episode[z];
+            }
+            // TODO: Translate
+            if(z = 'airDate') {
+                var date = new Date(episode[z]);
+                if ( Object.prototype.toString.call(date) === "[object Date]" && isNaN( date.getTime() )) {
+                    console.log('Could not translate date for airdate:' + episode[z] );
+                    delete episode[z];
+                }
+                else {
+
+                    episode[z] =  date;
+                }
             }
 
             // remove spaces and html tags
