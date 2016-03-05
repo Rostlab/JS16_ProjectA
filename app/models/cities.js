@@ -7,7 +7,9 @@ var CitiesSchema   = new Schema({
 	coordY: String,												//For floats or doubles, it automatically converts it to String
 	type: String,
 	prio: { type: Number, min: 0, max: 6},
-	link: String
+	link: String,
+	continent: {type: Schema.Types.ObjectId, ref: "Continent"},
+    neighbors:[{type: Schema.Types.ObjectId, ref: "Region"}]
 });
 
 module.exports = mongoose.model('Cities', CitiesSchema);
