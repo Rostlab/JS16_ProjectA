@@ -177,6 +177,7 @@ module.exports = {
         var twitter = require('twitter');
         var config = require(__base + 'cfg/config.json');
         var keywords = req.params.byKeywords;
+        var count = req.params.tweetCount
 
         var client = new twitter({
             consumer_key: config.twitter.consumer_key,

@@ -1,7 +1,7 @@
 A web crawler or web spider is a program, which visits websites and grabs data from and stores it
 to a database to enable analytics and data mining.
 
-How to use the Twitter Crawler:
+How to use the Twitter Crawler to mine historic data:
 
 1. Make sure you have Python installed
   -If you have OS X, install Homebrew first. Homebrew is THE package manager for Mac.
@@ -18,5 +18,5 @@ How to use the Twitter Crawler:
   -Remember, that after a few days the target file will be several hundred MByte in size.
   -The target file should look like the "app/misc/twitter_crawler/mock_tweet.json"
 6. If you want, import the resulting file to the MongoDB database.
-  -The respective Mongoose model is in "app/models/tweets.js"
+  -Look at the json structure and create a respective model in /app/models/twitter.js
 7. Happy Text Mining!
