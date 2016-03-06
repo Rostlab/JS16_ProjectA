@@ -460,7 +460,7 @@ module.exports = {
 	},
 	
 	getSingleEpisode : function(episodeName, callback) {
-		//console.log("start getSingleEpisode");
+		//console.log("start getSingleEpisode: " + episodeName);
 
 		
 
@@ -474,7 +474,6 @@ module.exports = {
 			
 			var episode = {};			
 			client.api.call(params, function (err, info, next, data) {
-				//console.log(data);
 				if(data != null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
 					if(arr != null) {	
@@ -497,12 +496,21 @@ module.exports = {
 							*/
 							
 							if(value != null) {
+								//console.log(value);
 								name = name.toLowerCase();
 								if(name == "airdate") {
 									name = "airDate";
 								}
 								else if(name == "episode #") {
-									name = "nr";
+									
+									var tmp = arr[i].match(/Episode\s\#(.*?)<\/tr>/g)[0].match(/>(.*?)</g);
+									var seasonNumber = tmp[2].substring(1, tmp[2].length-1);
+									var episodeNumber = tmp[3].substring(11, tmp[3].length-1);
+									episode["nr"] = episodeNumber;
+									episode["season"] = seasonNumber;
+									episode["totalNr"] = parseInt(episodeNumber) + (parseInt(seasonNumber)-1) * 10;
+									continue;
+									
 								}
 								episode[name] = value;
 							}
