@@ -395,6 +395,7 @@ module.exports = {
 			var cultures  = [];
 
 			var i,j;
+			//console.log(result[2]);
 			//iterate through all <td>s in the site
 			for (i=0; i<result.length; i++) {
 				
@@ -407,9 +408,9 @@ module.exports = {
 			    	for(j=0; j<listForSevenKingdoms.length; j++){
 			    		listForSevenKingdoms[j] = listForSevenKingdoms[j].substring(6, listForSevenKingdoms[j].length);
 			    	}
+			    	//console.log("here 1");
 			    	cultures.push(listForSevenKingdoms);
 			    }
-			    //do not remove for now
 			    /*
 			    if(result[i].match(/(Beyond the Wall)/)){
 			    	listForBeyondTheWall = result[i].match(/title="([^"]*)"/g);
@@ -421,12 +422,12 @@ module.exports = {
 			    	//!!this is for Essos and Beyond the Wall
 			    	listForEssos = result[i].match(/title="([^"]*)"/g);
 			    	listForEssos.shift();
-			    	for(j=0; j<listForSevenKingdoms.length; j++){
+			    	for(j=0; j<listForEssos.length; j++){
 			    		listForEssos[j] = listForEssos[j].substring(6, listForEssos[j].length);
 			    	}
+			    	//console.log("here 3");
 			    	cultures.push(listForEssos);
 			    }
-			    //do not remove for now
 			    /*
 			    if(result[i].match(/(From ancient times)/)){
 			    	listForAncientTimes = result[i].match(/title="([^"]*)"/g);
@@ -434,6 +435,9 @@ module.exports = {
 			    	cultures.push(listForAncientTimes);
 			    }
 			    */
+			    
+
+				//console.log(result);
 			}
 			//console.log(cultures.length);
 			callback(cultures);
