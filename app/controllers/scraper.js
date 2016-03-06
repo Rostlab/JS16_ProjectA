@@ -331,37 +331,72 @@ module.exports = {
 
         res.status(400).json({message: 'Error', error: "something went wrong"});
     },
-
-
-    getAllCulture: function (req, res) {
-
+    
+    getCultures: function (callback) {
+		console.log("start getCultures");
         //Setup the mediawiki bot
-        var bot = require("nodemw");
 
-        var client = new bot({
-            server: "awoiaf.westeros.org",
-            path: "/api.php"
+	        var params = {
+	            action: "parse",
+	            page: "Portal:Culture",
+	            format: "json"
+	        };
+	
+	        client.api.call(params, function (err, info, next, data) {
+
+			var allData = data["parse"]["text"]["*"];
+				
+
+			var result = allData.match(/<tr>(.|\n)*?<\/tr>/g); 
+ 
+			var listForSevenKingdoms, listForBeyondTheWall, listForEssos, listForAncientTimes;
+			var cultures  = [];
+
+			var i,j;
+			//iterate through all <td>s in the site
+			for (i=0; i<result.length; i++) {
+				
+				//if the content of a <td> is:
+			    if(result[i].match(/(Seven Kingdoms)/)){
+			    	//!!this is for Seven Kingdoms and From ancient times
+			    	//get the title attribute of the contained <a>tag and push it in the list of cultures
+			    	listForSevenKingdoms = result[i].match(/title="([^"]*)"/g);
+			    	listForSevenKingdoms.shift();
+			    	for(j=0; j<listForSevenKingdoms.length; j++){
+			    		listForSevenKingdoms[j] = listForSevenKingdoms[j].substring(6, listForSevenKingdoms[j].length);
+			    	}
+			    	cultures.push(listForSevenKingdoms);
+			    }
+			    //do not remove for now
+			    /*
+			    if(result[i].match(/(Beyond the Wall)/)){
+			    	listForBeyondTheWall = result[i].match(/title="([^"]*)"/g);
+			    	console.log("here 2");
+			    	cultures.push(listForBeyondTheWall);
+			    }
+			    */
+			    if(result[i].match(/Essos/)){
+			    	//!!this is for Essos and Beyond the Wall
+			    	listForEssos = result[i].match(/title="([^"]*)"/g);
+			    	listForEssos.shift();
+			    	for(j=0; j<listForSevenKingdoms.length; j++){
+			    		listForEssos[j] = listForEssos[j].substring(6, listForEssos[j].length);
+			    	}
+			    	cultures.push(listForEssos);
+			    }
+			    //do not remove for now
+			    /*
+			    if(result[i].match(/(From ancient times)/)){
+			    	listForAncientTimes = result[i].match(/title="([^"]*)"/g);
+			    	console.log("here 4");
+			    	cultures.push(listForAncientTimes);
+			    }
+			    */
+			}
+			//console.log(cultures.length);
+			callback(cultures);
+
         });
-        var params = {
-            action: "",
-            page: "",
-            prop: "",
-            format: "json"
-        };
-
-        culture = [];
-
-        //Iterate through all culture
-
-        console.log("Loading all culture from the wiki. This might take a while");
-        client.api.call(params, function (err, info, next, data) {
-            for (i = 0; i < data[""][""].length; i++) {
-                characters.push(data[""][""][i]["*"]);
-            }
-            res.status(200).json(culture);
-        });
-
-        res.status(400).json({message: 'Error', error: "something went wrong"});
     },
 
 	getSingleRegion: function(regionName, callback) {
