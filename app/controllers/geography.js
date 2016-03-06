@@ -842,7 +842,7 @@ module.exports = {
      */
     getAllCities: function(req,res) {
         var citiesStore = require('../stores/cities');
-        citiesStore.getAll(function(success,continents) {
+        citiesStore.getAll(function(success,cities) {
             res.status(200).json(cities);
         });
     },
