@@ -376,72 +376,66 @@ module.exports = {
     
     getCultures: function (callback) {
 		console.log("start getCultures");
-        //Setup the mediawiki bot
 
-	        var params = {
-	            action: "parse",
-	            page: "Portal:Culture",
-	            format: "json"
-	        };
+		var client = new bot({
+		server: "awoiaf.westeros.org",
+		path: "/api.php"
+		});
 	
-	        client.api.call(params, function (err, info, next, data) {
+		var params = {
+			action: "parse",
+			page: "Portal:Culture",
+			format: "json"
+		};
+	
+	    client.api.call(params, function (err, info, next, data) {
 
 			var allData = data["parse"]["text"]["*"];
-				
-
 			var result = allData.match(/<tr>(.|\n)*?<\/tr>/g); 
- 
 			var listForSevenKingdoms, listForBeyondTheWall, listForEssos, listForAncientTimes;
 			var cultures  = [];
 
-			var i,j;
-			//console.log(result[2]);
-			//iterate through all <td>s in the site
-			for (i=0; i<result.length; i++) {
-				
-				//if the content of a <td> is:
+			for (i = 0; i < result.length; i++) {
 			    if(result[i].match(/(Seven Kingdoms)/)){
-			    	//!!this is for Seven Kingdoms and From ancient times
-			    	//get the title attribute of the contained <a>tag and push it in the list of cultures
 			    	listForSevenKingdoms = result[i].match(/title="([^"]*)"/g);
 			    	listForSevenKingdoms.shift();
-			    	for(j=0; j<listForSevenKingdoms.length; j++){
-			    		listForSevenKingdoms[j] = listForSevenKingdoms[j].substring(6, listForSevenKingdoms[j].length);
+			    	for(j = 0; j < listForSevenKingdoms.length; j++) {
+						var culture = {};
+			    		culture["name"] = listForSevenKingdoms[j].substring(7, listForSevenKingdoms[j].length-1);
+						cultures.push(culture);
 			    	}
-			    	//console.log("here 1");
-			    	cultures.push(listForSevenKingdoms);
 			    }
 			    /*
 			    if(result[i].match(/(Beyond the Wall)/)){
 			    	listForBeyondTheWall = result[i].match(/title="([^"]*)"/g);
-			    	console.log("here 2");
-			    	cultures.push(listForBeyondTheWall);
+					for(j=0; j<listForBeyondTheWall.length; j++){
+			    		var culture = {};
+			    		culture["name"] = listForBeyondTheWall[j].substring(7, listForBeyondTheWall[j].length-1);
+						cultures.push(culture);
+			    	}
 			    }
 			    */
 			    if(result[i].match(/Essos/)){
-			    	//!!this is for Essos and Beyond the Wall
 			    	listForEssos = result[i].match(/title="([^"]*)"/g);
 			    	listForEssos.shift();
-			    	for(j=0; j<listForEssos.length; j++){
-			    		listForEssos[j] = listForEssos[j].substring(6, listForEssos[j].length);
+			    	for(j = 0; j < listForEssos.length; j++) {
+			    		var culture = {};
+			    		culture["name"] = listForEssos[j].substring(7, listForEssos[j].length-1);
+						cultures.push(culture);
 			    	}
-			    	//console.log("here 3");
-			    	cultures.push(listForEssos);
 			    }
 			    /*
 			    if(result[i].match(/(From ancient times)/)){
 			    	listForAncientTimes = result[i].match(/title="([^"]*)"/g);
-			    	console.log("here 4");
-			    	cultures.push(listForAncientTimes);
+			    	for(j=0; j<listForAncientTimes.length; j++){
+			    		var culture = {};
+			    		culture["name"] = listForAncientTimes[j].substring(7, listForAncientTimes[j].length-1);
+						cultures.push(culture);
+			    	}
 			    }
-			    */
-			    
-
-				//console.log(result);
+				*/
 			}
-			//console.log(cultures.length);
 			callback(cultures);
-
         });
     },
 
