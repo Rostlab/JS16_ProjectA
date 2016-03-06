@@ -300,6 +300,45 @@ module.exports = {
         });
     },
 	
+	getAgeNames : function(callback) {
+		 var bot = require("nodemw");
+
+        var client = new bot({
+            server: "awoiaf.westeros.org",
+            path: "/api.php"
+        });
+        var params = {
+            action: "parse",
+            page: "Timeline_of_major_events",
+            format: "json"
+        };
+		var ages = [];
+		client.api.call(params, function(err, info, next, data) {
+			
+			var arr = data["parse"]["text"]["*"].match(/<span\sclass=\"tocnumber(.*?)>(.*?)<\/a>/g);
+			for(i = 1; i < arr.length-2; i++) {
+				tmp = arr[i].match(/\">(.*?)<\/span>/g);
+				ageName = tmp[1].substring(2, tmp[1].length-7);
+				var age = {};
+				age["name"] = ageName;
+				ages.push(age);
+			}
+			for(i = 0; i < ages.length; i++) {
+				console.log(ages[i]);
+				if(i > 0 && i < ages.length-1) {
+					ages[i]["predecessor"] = ages[i-1]["name"];
+					ages[i]["successor"] = ages[i+1]["name"];
+				}
+				if(i == 0) {
+					ages[i]["successor"] = ages[i+1]["name"];
+				}
+				if(i == ages.length-1) {
+					ages[i]["predecessor"] = ages[i-1]["name"];
+				}
+			}
+			callback(ages);
+		});
+	},
 	
     getAllHistory: function (req, res) {
 
@@ -311,11 +350,14 @@ module.exports = {
             path: "/api.php"
         });
         var params = {
-            action: "",
-            page: "",
-            prop: "",
-            format: "json"
+			action: "query",
+			titles: "Timeline_of_major_events",
+			list: "search",
+			srsearch: "mw-headline",
+			sroffset: String(i)
         };
+		
+
 
         history = [];
 
@@ -554,6 +596,15 @@ module.exports = {
 							*
 							*/
 						}
+					}
+					var arr = data.parse.text["*"].match(/<td>\"<a\shref(.*?)>(.*?)<\/a>\"<\/td>/g);
+					console.log(arr);
+					if(arr != null) {
+						var predecessor = arr[0].match(/\">(.*?)<\/a>"/g)[0];
+						predecessor = predecessor.substring(2, predecessor.length-4);
+						var successor = arr[1].match(/\">(.*?)<\/a>"/g)[0];
+						predecessor = successor.substring(2, successor.length-4);
+						console.log(predecessor + "-" + successor);
 					}
 				}
 				

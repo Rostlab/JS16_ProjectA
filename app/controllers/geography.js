@@ -783,7 +783,15 @@ module.exports = {
      * @apiDescription Add a new city
      */
     addCity: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.add(req.body,function(success, message) {
+            if(success == 1)
+                res.status(201).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
+            else
+                res.status(400).json({ message: 'Error.', error: message });
+        });
     },
 
     /**
@@ -804,7 +812,15 @@ module.exports = {
      * @apiDescription Find a city
      */
     getCities: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.get(req.body, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if (success == 3)
+                res.status(404).json({ message: 'Failure. No cities with that data existing!',data: message });
+            else
+                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
+        });
     },
 
     /**
@@ -825,7 +841,10 @@ module.exports = {
      * @apiDescription Get all cities
      */
     getAllCities: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.getAll(function(success,cities) {
+            res.status(200).json(cities);
+        });
     },
 
     /**
@@ -846,7 +865,13 @@ module.exports = {
      * @apiDescription Find a city by name
      */
     getCityByName: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.getByName(req.params.name, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No cities with that data existing!',data: message });
+        });
     },
 
     /**
@@ -867,7 +892,13 @@ module.exports = {
      * @apiDescription Get city by :id
      */
     getCityById: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.getById(req.params.id, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No cities with that data existing!',data: message });
+        });
     },
 
     /**
@@ -888,7 +919,16 @@ module.exports = {
      * @apiDescription Get cities by continent
      */
     getCitiesByContinent: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.getCitiesByContinent(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+        }else{
+        res.status(404).json({message: 'Failure: No cities within that continent are existing.', data: message});
+        } 
+        });
     },
 
     /**
@@ -909,6 +949,18 @@ module.exports = {
      * @apiDescription Delete the city with the :id
      */
     getCitiesByCulture: function(req,res) {
+        var citiesStore = require('../stores/cities');
+        citiesStore.getCitiesByCulture(req.params.id , function (success, message) {
+            if (success === 1) {
+                res.status(200).json({message: 'Success', data: obj});
+            }
+            else if (success === 2){
+                res.status(404).json({message: 'Error', error: message});
+            }
+            else {
+                res.status(404).json({message: 'Failure: No cities within that culture are existing.', data: message});
+            } 
+        });
 
     },
 
@@ -930,7 +982,13 @@ module.exports = {
      * @apiDescription Delete the city with the :id
      */
     removeCity: function(req,res) {
-
+        var citiesStore = require('../stores/cities');
+        citiesStore.remove(req.params.id,function(success) {
+            if(success === true)
+                res.status(200).json({ message: 'Success.' });
+            else
+                res.status(404).json({ message: 'Failure: No cities with that id is existing.', id: req.params.id });
+        });
     }, 
 
     /**
@@ -951,6 +1009,17 @@ module.exports = {
      * @apiDescription Edit the city with the :id
      */
     editCity: function(req,res) {
+        var citiesStore = require('../stores/cities');
+        citiesStore.edit(req.params.id, req.body,function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(404).json({ message: 'Error. No cities existing with that id', id: req.params.id });
+            else if(success == 4)
+                res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
+            else
+                res.status(400).json({ message: 'Error.', error: message });
+        });
 
     }
 };
