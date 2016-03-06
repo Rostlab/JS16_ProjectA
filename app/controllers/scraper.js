@@ -508,6 +508,7 @@ module.exports = {
 									var episodeNumber = tmp[3].substring(11, tmp[3].length-1);
 									episode["nr"] = episodeNumber;
 									episode["season"] = seasonNumber;
+									episode["totalNr"] = parseInt(episodeNumber) + (parseInt(seasonNumber)-1) * 10;
 									continue;
 									
 								}
