@@ -54,7 +54,7 @@ module.exports = {
                 delete age[z];
             }
 
-
+            // TODO: startDate, endDate, predescessor, successor
             // remove spaces and html tags
             if (typeof age[z] == 'string') {
                 age[z] = age[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
