@@ -2,8 +2,8 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var HouseSchema   = new Schema({
-    name: {type: String, required: true},                                 // Targaryen
-    type: {type: String, ref: "HouseType"},                // Current, exiled or extinct Great house
+    name: {type: String, required: true},
+    isExtinct: Boolean,
     coatOfArms: String,                                                   // Sable, a dragon thrice-headed gules
     words: String,                                                        // Fire and Blood
     currentLord: {type: String, ref: "Character"},         // Queen Daenerys Targaryen
