@@ -8,10 +8,8 @@ var CitySchema   = new Schema({
 	type: String,
 	priority: { type: Number, min: 0, max: 6},
 	link: String,
-	continent: {type: Schema.Types.ObjectId, ref: "Continent"},
-    neighbors:[{type: Schema.Types.ObjectId, ref: "Region"}],
-    cultures: [{type: Schema.Types.ObjectId, ref: "Culture"}],
-    events: [{type: Schema.Types.ObjectId, ref: "Event"}]
+	continent: {type: String, ref: "Continent"},
+    regions:[{type: String, ref: "Region"}]
 });
 
 module.exports = mongoose.model('City', CitySchema);
