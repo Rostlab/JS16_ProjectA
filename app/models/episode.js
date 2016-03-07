@@ -12,6 +12,7 @@ var EpisodeSchema = new Schema({
 
     predecessor: {type: String, ref: 'Episode'},
     successor: {type: String, ref: 'Episode'},
+    director: String,
 
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now}
