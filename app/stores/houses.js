@@ -1,5 +1,4 @@
 var House = require(__appbase + 'models/house');
-var HouseType = require(__appbase + 'models/houseType');
 
 module.exports = {
 
