@@ -1,3 +1,4 @@
+/*
 var Skill = require(__appbase + 'models/skill');
 
 module.exports = {
@@ -122,4 +123,4 @@ module.exports = {
             }
         });
     },
-};
+};*/

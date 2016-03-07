@@ -1,3 +1,4 @@
+/*
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -6,3 +7,4 @@ var SkillSchema   = new Schema({
 });
 
 module.exports = mongoose.model('Skill', SkillSchema);
+*/
