@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AgeSchema = new Schema({
-    name: {type: String, required: true},
+    name: {type: String, required: true, unique: true},
     startDate: {type:Number,required: true},
 	endDate: {type:Number,required: true},
     predecessor: {type: Schema.Types.ObjectId, ref: 'Age'},

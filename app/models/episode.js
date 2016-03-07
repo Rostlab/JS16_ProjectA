@@ -5,7 +5,7 @@ var EpisodeSchema = new Schema({
     totalNr: Number, // episode nr. overall
     nr: Number, // episode nr in season
     season: Number,
-    name: String,
+    name: {type: String, required: true, unique: true},
     characters: [{type: String, ref: 'Character'}],
     airDate: Date,
     episodeLength: {type: Number, min: 60, max: 70},        // maximum 70 min, minimum 60 min duration as the episodes differ in duration

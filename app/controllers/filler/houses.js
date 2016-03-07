@@ -55,7 +55,7 @@ module.exports = {
             }
 
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'currentLord' || !House.schema.paths.hasOwnProperty(z)) {
+            if (!House.schema.paths.hasOwnProperty(z)) {
                 delete house[z];
             }
 
