@@ -301,7 +301,7 @@ module.exports = {
     },
 	
 	getAges : function(callback) {
-		 var bot = require("nodemw");
+		var bot = require("nodemw");
 
         var client = new bot({
             server: "awoiaf.westeros.org",
@@ -336,6 +336,46 @@ module.exports = {
 					ages[i]["predecessor"] = ages[i-1]["name"];
 				}
 			}
+			var arr = data["parse"]["text"]["*"].match(/<table\sclass=\"wikitable\">((.|[\r\n])*?)<\/table>/g);
+			var start, end;
+			for(i = 0; i < arr.length; i++) {
+				var q = arr[i].match(/<tr>\n<td(.*?)>((.|[\r\n])*?)<\/td>/g);
+				if(q[0].indexOf("a>") != -1) {
+					if(q[0].indexOf("width") != -1) {
+						q[0] = q[0].match(/\<a(.*?)">((.|[\r\n])*?)<\/a>/g)[0];
+						q[0] = q[0].substring(2, q[0].length);
+					}
+					var tmp = q[0].match(/\">((.|[\r\n])*?)<\/a>/g);
+					start = tmp[0].substring(2, tmp[0].length-4);
+					
+				}
+				else {
+					var tmp = q[0].match(/>((.|[\r\n])*?)</g);
+					start = tmp[1].substring(1, tmp[1].length-2);
+				}
+				
+				if(q[q.length-1].indexOf("a>") != -1) {
+					if(q[q.length-1].indexOf("width") != -1) {
+						q[q.length-1] = q[q.length-1].match(/\<a(.*?)">((.|[\r\n])*?)<\/a>/g)[0];
+						q[q.length-1] = q[q.length-1].substring(2, q[q.length-1].length);
+					}
+					var tmp = q[q.length-1].match(/\">((.|[\r\n])*?)<\/a>/g);
+					end = tmp[0].substring(2, tmp[0].length-4);
+					
+				}
+				else {
+					var tmp = q[q.length-1].match(/>((.|[\r\n])*?)</g);
+					end = tmp[1].substring(1, tmp[1].length-2);
+				}
+				
+				ages[i]["startDate"] = start;
+				ages[i]["endDate"] = end;
+			}
+			
+
+			
+			
+			
 			callback(ages);
 		});
 	},
