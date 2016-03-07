@@ -106,7 +106,7 @@ module.exports = function (app, router) {
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
 
-    router.post('/city', geographyController.addCity);
+    router.post('/cities', geographyController.addCity);
     router.post('/cities/find', geographyController.getCities);
     router.get('/cities', geographyController.getAllCities);
     router.get('/cities/:name', geographyController.getCityByName);
