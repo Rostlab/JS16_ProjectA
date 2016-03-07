@@ -49,8 +49,13 @@ module.exports = {
     matchToModel: function(house) {
         // go through the properties of the house
         for(var z in house) {
+            if(z == 'died out')
+            {
+                house['isExtinct'] = true;
+            }
+
             // ignore references for now, later gather the ids and edit the entries
-            if (z == 'overlord' || z == 'region' || z == 'type' || z == 'currentLord' || !House.schema.paths.hasOwnProperty(z)) {
+            if (z == 'currentLord' || !House.schema.paths.hasOwnProperty(z)) {
                 delete house[z];
             }
 
