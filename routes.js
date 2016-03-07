@@ -6,6 +6,10 @@ module.exports = function (app, router) {
     var housesFiller = require(__appbase + 'controllers/filler/houses');
     router.get('/houses/filler', housesFiller.fill);
     router.delete('/houses/filler', housesFiller.clearAll);
+    
+    var continentsFiller = require(__appbase + 'controllers/filler/continents');
+    router.get('/continents/filler', continentsFiller.fill);
+    router.delete('/continents/filler', continentsFiller.clearAll);
 
     var regionsFiller = require(__appbase + 'controllers/filler/regions');
     router.get('/regions/filler', regionsFiller.fill);
@@ -22,6 +26,10 @@ module.exports = function (app, router) {
     var agesFiller = require(__appbase + 'controllers/filler/ages');
     router.get('/ages/filler', agesFiller.fill);
     router.delete('/ages/filler', agesFiller.clearAll);
+    
+    var culturesFiller = require(__appbase + 'controllers/filler/cultures');
+    router.get('/cultures/filler', culturesFiller.fill);
+    router.delete('/cultures/filler', culturesFiller.clearAll);
 
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
