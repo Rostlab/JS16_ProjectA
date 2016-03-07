@@ -28,11 +28,30 @@ module.exports = {
     },
 
     get: function(data, callback) {
-        // check if POST data matches Schema
         for (var key in data) {
+
+            // check if POST data matches Schema
             if (data.hasOwnProperty(key) && !Cities.schema.paths.hasOwnProperty(key)) {
-                callback(2,key);
+                callback(2, key);
                 return;
+            }
+
+            // priority range queries:
+            // Find x < c
+            if (key == 'priority') {
+                var sub = data[key].substring(0,2);
+                if (sub == '>=') {
+                    data[key] = {$gte: data[key].substring(2)};
+                }
+                else if (sub == '<=') {
+                    data[key] = {$lte: data[key].substring(2)};
+                }
+                else if (data[key].indexOf('>') > -1) {
+                    data[key] = {$gt: data[key].replace('>', '')};
+                }
+                else if (data[key].indexOf('<') > -1) {
+                    data[key] = {$lt: data[key].replace('<', '')};
+                }
             }
         }
 

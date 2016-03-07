@@ -800,9 +800,13 @@ module.exports = {
      * @apiName getCities
      * @apiGroup City
      *
+     * @apiHeaderExample {json} By priority range
+     * {"priority": "<=2"}
+     *
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success"}
+     *     {"message" : "Success", data: [entries]}
      *
      * @apiError (404) NotFound No city with that data existing!
      * @apiErrorExample {json} NotFound
