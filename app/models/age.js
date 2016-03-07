@@ -3,10 +3,10 @@ var Schema = mongoose.Schema;
 
 var AgeSchema = new Schema({
     name: {type: String, required: true, unique: true},
-    startDate: {type:Number,required: true},
-	endDate: {type:Number,required: true},
-    predecessor: {type: Schema.Types.ObjectId, ref: 'Age'},
-    successor: {type: Schema.Types.ObjectId, ref: 'Age'}
+    startDate: {type:Number},
+	endDate: {type:Number},
+    predecessor: {type: String, ref: 'Age'},
+    successor: {type: String, ref: 'Age'}
 });
 
 module.exports = mongoose.model('Age', AgeSchema);

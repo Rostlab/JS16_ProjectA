@@ -110,8 +110,5 @@ module.exports = {
             function (err) {
                 callback(true);
             });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
     }
 };

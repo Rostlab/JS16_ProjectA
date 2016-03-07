@@ -50,11 +50,48 @@ module.exports = {
         // go through the properties of the house
         for(var z in age) {
             // ignore references for now, later gather the ids and edit the entries
-            if ( z == 'startDate' || z == 'endDate' || z == 'predecessor' || z == 'successor' || !Age.schema.paths.hasOwnProperty(z)) {
+            if (!Age.schema.paths.hasOwnProperty(z)) {
                 delete age[z];
             }
 
-            // TODO: startDate, endDate, predescessor, successor
+            // translate startDate to (negative) number
+            if( z == 'startDate') {
+                if(age[z].indexOf('BC')>-1) {
+                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '')
+                }
+                else if(age[z].indexOf('AC')>-1) {
+                    age[z] = age[z].replace(/[^0-9\.]/g, '')
+                }
+                else if(age[z].indexOf('ca')>-1) {
+                    age[z] = age[z].replace('ca.','').replace(',','');
+                }
+                else {
+                    delete age[z];
+                }
+            }
+
+            // translate startDate to (negative) number
+            if( z == 'endDate') {
+                if(age[z].indexOf('BC')>-1) {
+                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '')
+                }
+                else if(age[z].indexOf('282-283 AC')>-1) { //hardcoded =/
+                    age[z] = 283;
+                }
+                else if(age[z].indexOf('AC')>-1) {
+                    age[z] = age[z].replace(/[^0-9\.]/g, '')
+                }
+                else if(age[z].indexOf('~')>-1) {
+                    age[z] = age[z].replace('~', '')
+                }
+                else if(age[z].indexOf('ca')>-1) {
+                    age[z] = age[z].replace('ca.','').replace(',','').replace(' ','');
+                }
+                else {
+                    delete age[z];
+                }
+            }
+
             // remove spaces and html tags
             if (typeof age[z] == 'string') {
                 age[z] = age[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');

@@ -34,6 +34,29 @@ module.exports = {
                 callback(2,key);
                 return;
             }
+
+            var rangeQuery = function(key,callback) {
+                var sub = data[key].substring(0,2);
+                if (sub == '>=') {
+                    callback({$gte: data[key].substring(2)});
+                }
+                else if (sub == '<=') {
+                    callback({$lte: data[key].substring(2)});
+                }
+                else if (data[key].indexOf('>') > -1) {
+                    callback({$gt: data[key].replace('>', '')});
+                }
+                else if (data[key].indexOf('<') > -1) {
+                    callback({$lt: data[key].replace('<', '')});
+                }
+
+            }
+
+            if (key == 'startDate' || key == 'endDate') {
+                rangeQuery(key,function(callback){
+                    data[key] = callback;
+                });
+            }
         }
 
         Age.find(data, function(err,obj)
