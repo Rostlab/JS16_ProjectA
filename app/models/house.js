@@ -12,7 +12,7 @@ var HouseSchema   = new Schema({
     region: String,                 // Crownlands (formerly Valyria)
     cadetBranch: String,                                                  // House Blackfyre is the cadet branch of House Targaryen
     ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
-    founded: Number,                                                      // > 126 BC, Age of Heroes
+    founded: String,                                                      // > 126 BC, Age of Heroes
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now}
 });

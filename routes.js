@@ -19,6 +19,10 @@ module.exports = function (app, router) {
     router.get('/characters/filler', charactersFiller.fill);
     router.delete('/characters/filler', charactersFiller.clearAll);
 
+    var agesFiller = require(__appbase + 'controllers/filler/ages');
+    router.get('/ages/filler', agesFiller.fill);
+    router.delete('/ages/filler', agesFiller.clearAll);
+
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
     router.post('/houses/find', housesController.get);
