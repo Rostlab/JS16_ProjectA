@@ -300,7 +300,7 @@ module.exports = {
         });
     },
 	
-	getAgeNames : function(callback) {
+	getAges : function(callback) {
 		 var bot = require("nodemw");
 
         var client = new bot({
