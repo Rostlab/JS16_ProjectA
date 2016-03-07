@@ -66,6 +66,12 @@ module.exports = {
                 }
             }
 
+
+            if(z = 'name') {
+                episode[z] = episode[z].trim().replace(' (TV)', '');
+
+            }
+
             // remove spaces and html tags
             if (typeof episode[z] == 'string') {
                 episode[z] = episode[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
