@@ -10,7 +10,10 @@ module.exports = {
 
         var afterInsertion = function()
         {
-            console.log('Filling done =).');
+            var filler = require(__appbase + 'controllers/filler/episodes');
+            filler.fillPreAndSuccessor(function(success) {
+                console.log('Filling done =).');
+            });
         }
 
         var file = __appbase + '../wikiData/episodes.json';
@@ -86,24 +89,62 @@ module.exports = {
 
         // iterate through houses
         async.forEach(episodes, function (episode, _callback) {
-                var filler = require(__appbase + 'controllers/filler/episodes');
-                episode = filler.matchToModel(episode);
-                // add house to db
-                Episodes.add(episode, function (success, data) {
-                    if (success != 1) {
-                        console.log('Problem:' + data);
-                    }
-                    else {
-                        console.log('SUCCESS: ' + data.name);
-                    }
-                    _callback();
-                });
+            var filler = require(__appbase + 'controllers/filler/episodes');
+            episode = filler.matchToModel(episode);
+            // add house to db
+            Episodes.add(episode, function (success, data) {
+                if (success != 1) {
+                    console.log('Problem:' + data);
+                }
+                else {
+                    console.log('SUCCESS: ' + data.name);
+                }
+                _callback();
+            });
+        },
+        function (err) {
+            callback(true);
+        });
+    },
+    fillPreAndSuccessor: function(callback) {
+        console.log('Start filling pre- and successor.');
+        Episodes.getAll(function(success,episodes) {
+            // foreach episode
+            async.forEach(episodes, function (episode, _callback) {
+                var pre = episode['totalNr']-1,
+                    next = episode['totalNr']+1;
+                if(pre > 0) {
+                    Episodes.get({'totalNr': pre},function(success,data) {
+                       if(data.length>0)
+                       {
+                           var preEpisode = data[0];
+                           if( preEpisode['name'] !== undefined) {
+                               episode['predecessor'] = preEpisode['name'];
+                               episode.save(episode['id'],function(err){});
+                           }
+                       }
+                        else {
+                           console.log(episode['name'] + "has no predecessor with totalNr" + pre);
+                       }
+                    });
+                }
+                if(next > 0) {
+                    Episodes.get({'totalNr': next},function(success,data) {
+                        if(data.length>0)
+                        {
+                            var nextEpisode = data[0];
+                            if( nextEpisode['name'] !== undefined) {
+                                episode['successor'] = nextEpisode['name'];
+                                episode.save(episode['id'],function(err){});
+                            }
+                        }
+                    });
+                }
+                _callback();
             },
             function (err) {
                 callback(true);
             });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
+        });
     }
 };
