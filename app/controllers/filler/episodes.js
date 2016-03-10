@@ -138,6 +138,9 @@ module.exports = {
                                 episode.save(episode['id'],function(err){});
                             }
                         }
+                        else {
+                            console.log(episode['name'] + "has no successor with totalNr" + next);
+                        }
                     });
                 }
                 _callback();

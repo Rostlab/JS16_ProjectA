@@ -27,6 +27,10 @@ module.exports = function (app, router) {
     router.get('/ages/filler', agesFiller.fill);
     router.delete('/ages/filler', agesFiller.clearAll);
     
+    var eventsFiller = require(__appbase + 'controllers/filler/events');
+    router.get('/events/filler', eventsFiller.fill);
+    router.delete('/events/filler', eventsFiller.clearAll);
+    
     var culturesFiller = require(__appbase + 'controllers/filler/cultures');
     router.get('/cultures/filler', culturesFiller.fill);
     router.delete('/cultures/filler', culturesFiller.clearAll);
