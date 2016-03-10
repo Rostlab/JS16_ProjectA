@@ -543,9 +543,7 @@ module.exports = {
 			arr =data.parse.text["*"].match(/<li>(.*?)<\/li>/g);
 			for(i = 0; i < arr.length; i++) {
 				subArr = arr[i].match(/\stitle=\"(.*?)\"/g);
-				//var episode = {};
 				episodes.push(subArr[0].substring(8,subArr[0].length-1));
-				//episodes.push(episode);
 			}
 			callback(episodes);
         });
@@ -567,6 +565,7 @@ module.exports = {
 						nr--;
 					}
 					if(episodesCollection.length == nr) {
+						console.log("Fetched " + episodesCollection.length + " episodes");
 						callback(episodesCollection);
 					}
 				});
@@ -578,8 +577,16 @@ module.exports = {
 		//console.log("start getSingleEpisode: " + episodeName);
 
 		
+			if(episodeName == "Baelor" || episodeName == "Mhysa") {
+					episodeName = episodeName + " (TV)";
+				}
+			if(episodeName == "Nightlands (TV)") {
+					episodeName = "The Night Lands (TV)";
+				}
+		
 
 			var pageName = episodeName.replace(" ", "_");
+			
 
 			var params = {
 				action: "parse",
@@ -611,7 +618,6 @@ module.exports = {
 							*/
 							
 							if(value != null) {
-								//console.log(value);
 								name = name.toLowerCase();
 								if(name == "airdate") {
 									name = "airDate";
@@ -627,6 +633,7 @@ module.exports = {
 									continue;
 									
 								}
+								
 								episode[name] = value;
 							}
 							
@@ -636,13 +643,11 @@ module.exports = {
 						}
 					}
 					var arr = data.parse.text["*"].match(/<td>\"<a\shref(.*?)>(.*?)<\/a>\"<\/td>/g);
-					console.log(arr);
 					if(arr != null) {
 						var predecessor = arr[0].match(/\">(.*?)<\/a>"/g)[0];
 						predecessor = predecessor.substring(2, predecessor.length-4);
 						var successor = arr[1].match(/\">(.*?)<\/a>"/g)[0];
 						predecessor = successor.substring(2, successor.length-4);
-						console.log(predecessor + "-" + successor);
 					}
 				}
 				
