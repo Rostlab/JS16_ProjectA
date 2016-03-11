@@ -58,7 +58,7 @@ module.exports = {
             }
             // TODO: Translate
             if(z == 'airDate') {
-                var date = new Date(episode[z]);
+                var date = new Date(Date.parse(episode[z].trim() + ' EDT'));
                 if ( Object.prototype.toString.call(date) === "[object Date]" && isNaN( date.getTime() )) {
                     console.log('Could not translate date for airdate:' + episode[z] );
                     delete episode[z];
