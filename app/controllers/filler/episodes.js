@@ -56,9 +56,8 @@ module.exports = {
             if ( z == 'characters' || z == 'predecessor' || z == 'successor' || !Episode.schema.paths.hasOwnProperty(z)) {
                 delete episode[z];
             }
-            // TODO: Translate
             if(z == 'airDate') {
-                var date = new Date(Date.parse(episode[z].trim() + ' EDT'));
+                var date = new Date(Date.parse(episode[z].replace('th','') + ' EDT'));
                 if ( Object.prototype.toString.call(date) === "[object Date]" && isNaN( date.getTime() )) {
                     console.log('Could not translate date for airdate:' + episode[z] );
                     delete episode[z];
