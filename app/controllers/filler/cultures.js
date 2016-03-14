@@ -11,33 +11,34 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-        }
+        };
 
         var file = __appbase + '../wikiData/cultures.json';
+        var scrape = function(){
+            Scraper.scrapToFile(file, Scraper.getCultures, function (err, obj) {
+                if (err !== null) {
+                    console.log(err);
+                } else {
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            });
+        };
+
         jsonfile.readFile(file, function(err, obj) {
             var filler = require(__appbase + 'controllers/filler/cultures');
-            if(obj != undefined)
-                var cacheCulture = ((new Date) - new Date(obj.createdAt));
-
             var ttl = require(__appbase + '../cfg/config.json');
-            ttl = ttl.TTLWikiCache;
 
-            if(obj == undefined || cacheCulture > ttl) {
-                if(obj != undefined && cacheCulture > ttl)
+            if(obj !== undefined) {
+                var cacheAge = ((new Date()) - new Date(obj.createdAt));
+                if(cacheAge > ttl.TTLWikiCache) {
                     console.log('Cache file outdated.');
-
-                Scraper.scrapToFile(file, Scraper.getCultures, function (err, obj) {
-                    if (err != null) {
-                        console.log(err)
-                    }
-                    else {
-                        filler.insertToDb(obj.data,afterInsertion);
-                    }
-                });
-            }
-            else {
-                console.log('Cultures from cache file "'+file+'". Not scrapped from wiki.');
-                filler.insertToDb(obj.data,afterInsertion);
+                    scrape();
+                } else {
+                    console.log('Cultures from cache file "'+file+'". Not scrapped from wiki.');
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            } else {
+                scrape();
             }
         });
     },
