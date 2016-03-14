@@ -14,33 +14,34 @@ module.exports = {
             filler.fillPreAndSuccessor(function(success) {
                 console.log('Filling done =).');
             });
-        }
+        };
 
         var file = __appbase + '../wikiData/episodes.json';
+        var scrape = function(){
+            Scraper.scrapToFile(file, Scraper.getEpisodes, function (err, obj) {
+                if (err !== null) {
+                    console.log(err);
+                } else {
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            });
+        };
+
         jsonfile.readFile(file, function(err, obj) {
             var filler = require(__appbase + 'controllers/filler/episodes');
-            if(obj != undefined)
-                var cacheAge = ((new Date) - new Date(obj.createdAt));
-
             var ttl = require(__appbase + '../cfg/config.json');
-            ttl = ttl.TTLWikiCache;
 
-            if(obj == undefined || cacheAge > ttl) {
-                if(obj != undefined && cacheAge > ttl)
+            if(obj !== undefined) {
+                var cacheAge = ((new Date()) - new Date(obj.createdAt));
+                if(cacheAge > ttl.TTLWikiCache) {
                     console.log('Cache file outdated.');
-
-                Scraper.scrapToFile(file, Scraper.getEpisodes, function (err, obj) {
-                    if (err != null) {
-                        console.log(err)
-                    }
-                    else {
-                        filler.insertToDb(obj.data,afterInsertion);
-                    }
-                });
-            }
-            else {
-                console.log('Episodes from cache file "'+file+'". Not scrapped from wiki.');
-                filler.insertToDb(obj.data,afterInsertion);
+                    scrape();
+                } else {
+                    console.log('Episodes from cache file "'+file+'". Not scrapped from wiki.');
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            } else {
+                scrape();
             }
         });
     },
@@ -110,20 +111,20 @@ module.exports = {
         Episodes.getAll(function(success,episodes) {
             // foreach episode
             async.forEach(episodes, function (episode, _callback) {
-                var pre = episode['totalNr']-1,
-                    next = episode['totalNr']+1;
+                var pre = episode.totalNr-1,
+                    next = episode.totalNr+1;
                 if(pre > 0) {
                     Episodes.get({'totalNr': pre},function(success,data) {
                        if(data.length>0)
                        {
                            var preEpisode = data[0];
-                           if( preEpisode['name'] !== undefined) {
-                               episode['predecessor'] = preEpisode['name'];
-                               episode.save(episode['id'],function(err){});
+                           if( preEpisode.name !== undefined) {
+                               episode.predecessor = preEpisode.name;
+                               episode.save(episode.id,function(err){});
                            }
                        }
                         else {
-                           console.log(episode['name'] + "has no predecessor with totalNr" + pre);
+                           console.log(episode.name + "has no predecessor with totalNr" + pre);
                        }
                     });
                 }
@@ -132,13 +133,13 @@ module.exports = {
                         if(data.length>0)
                         {
                             var nextEpisode = data[0];
-                            if( nextEpisode['name'] !== undefined) {
-                                episode['successor'] = nextEpisode['name'];
-                                episode.save(episode['id'],function(err){});
+                            if( nextEpisode.name !== undefined) {
+                                episode.successor = nextEpisode.name;
+                                episode.save(episode.id,function(err){});
                             }
                         }
                         else {
-                            console.log(episode['name'] + "has no successor with totalNr" + next);
+                            console.log(episode.name + "has no successor with totalNr" + next);
                         }
                     });
                 }
