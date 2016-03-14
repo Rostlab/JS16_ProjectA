@@ -54,16 +54,16 @@ db.on('open', function () {
 
     // this happens for every request
     router.use(function (req, res, next) {
-        console.log('Request incoming: '+req.url);
+        console.log('Request incoming: ' + req.url);
 
-        //Allow all GET requests as these do not modify data
-        if(req.method === 'GET'){
+        //Allow all GET requests as these do not modify data and we want users to be able to see that basic stuff
+        if (req.method === 'GET') {
             return next();
         }
 
         //Otherwise check if we got a token
         var sentToken = req.get('token');
-        if(!sentToken) {
+        if (!sentToken) {
             console.log('401 - no token sent');
             return res.status(401).send({ //Send a nice little message to remind the user that he needs to supply a token
                 message: 'Need to send a token',
@@ -72,7 +72,7 @@ db.on('open', function () {
         }
 
         //Also check if the token is valid or not
-        if(sentToken == accessToken){
+        if (sentToken == accessToken) {
             return next();
         } else {
             console.log('401 - wrong token sent');
@@ -84,9 +84,9 @@ db.on('open', function () {
     require(__base + 'routes')(app, router);
 
     //Setup access token
-    if(config.server.accessToken){
+    if (config.server.accessToken) {
         global.accessToken = config.server.accessToken;
-    }else{
+    } else {
         global.accessToken = uuid.v4(); //Generate a default token when none is set
     }
     console.log('Your requests must contain the following token: ' + accessToken);
