@@ -54,9 +54,30 @@ db.on('open', function () {
 
     // this happens for every request
     router.use(function (req, res, next) {
-        console.log('Request incoming.');
-        // HERE LOGIN TEST
-        next(); // go to the specialized request
+        console.log('Request incoming: '+req.url);
+
+        //Allow all GET requests as these do not modify data
+        if(req.method === 'GET'){
+            return next();
+        }
+
+        //Otherwise check if we got a token
+        var sentToken = req.get('token');
+        if(!sentToken) {
+            console.log('401 - no token sent');
+            return res.status(401).send({ //Send a nice little message to remind the user that he needs to supply a token
+                message: 'Need to send a token',
+                code: 401
+            });
+        }
+
+        //Also check if the token is valid or not
+        if(sentToken == accessToken){
+            return next();
+        } else {
+            console.log('401 - wrong token sent');
+            return res.sendStatus(401);
+        }
     });
 
     //Include routes from external file
