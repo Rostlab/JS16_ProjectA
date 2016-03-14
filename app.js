@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 var swig = require('swig');
+var uuid = require('node-uuid');
+
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
 
@@ -57,15 +59,16 @@ db.on('open', function () {
         next(); // go to the specialized request
     });
 
-    /*
-     #### Routes
-     */
-
+    //Include routes from external file
     require(__base + 'routes')(app, router);
 
-    /*
-     ###
-     */
+    //Setup access token
+    if(config.server.accessToken){
+        global.accessToken = config.server.accessToken;
+    }else{
+        global.accessToken = uuid.v4(); //Generate a default token when none is set
+    }
+    console.log('Your requests must contain the following token: ' + accessToken);
 
     // prefix for all routes
     app.use('/api', router);

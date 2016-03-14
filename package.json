@@ -25,7 +25,8 @@
     "mongoose": "~4.4.5",
     "nodemw": "0.8.1",
     "swig": "^1.4.2",
-    "twitter": "latest"
+    "twitter": "latest",
+    "node-uuid": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
