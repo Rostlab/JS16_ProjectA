@@ -82,6 +82,7 @@ db.on('open', function () {
     });
 
     //Start listening for requests
-    app.listen(config.server.port);
-    console.log('Node server is listening on port ' + config.server.port);
+    var port = config.server.port || 8080; //set a default port if the config file does not contain it
+    app.listen(port);
+    console.log('Node server is listening on port ' + port);
 });
