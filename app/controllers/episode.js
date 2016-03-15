@@ -64,7 +64,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/episodes/find Find episodes
+     * @api {post} /api/episodes/find Find episodes
      * @apiVersion 0.0.1
      * @apiName FindEpisode
      * @apiGroup Episodes

@@ -73,7 +73,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/events/find Find event
+     * @api {post} /api/events/find Find event
      * @apiVersion 0.0.1
      * @apiName FindEvents
      * @apiGroup Events

@@ -72,7 +72,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/continents/find Find continents
+     * @api {post} /api/continents/find Find continents
      * @apiVersion 0.0.1
      * @apiName FindContinents
      * @apiGroup Continents

@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 var swig = require('swig');
+var uuid = require('node-uuid');
+var cors = require('cors');
+
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
 
@@ -52,20 +55,49 @@ db.on('open', function () {
 
     // this happens for every request
     router.use(function (req, res, next) {
-        console.log('Request incoming.');
-        // HERE LOGIN TEST
-        next(); // go to the specialized request
+        console.log('Request incoming: ' + req.url);
+
+        //Allow all GET requests as these do not modify data and we want users to be able to see that basic stuff
+        if (req.method === 'GET') {
+            return next();
+        }
+
+        //Otherwise check if we got a token
+        var sentToken = req.get('token');
+        if (!sentToken) {
+            console.log('401 - no token sent');
+            return res.status(401).send({ //Send a nice little message to remind the user that he needs to supply a token
+                message: 'Need to send a token',
+                code: 401
+            });
+        }
+
+        //Also check if the token is valid or not
+        if (sentToken == accessToken) {
+            return next();
+        } else {
+            console.log('401 - wrong token sent');
+            return res.sendStatus(401);
+        }
     });
 
-    /*
-     #### Routes
-     */
+    //Add cors support for all routes
+    app.use(cors({
+        "origin": "*",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "preflightContinue": false
+    }));
 
+    //Include routes from external file
     require(__base + 'routes')(app, router);
 
-    /*
-     ###
-     */
+    //Setup access token
+    if (config.server.accessToken) {
+        global.accessToken = config.server.accessToken;
+    } else {
+        global.accessToken = uuid.v4(); //Generate a default token when none is set
+    }
+    console.log('Your requests must contain the following token: ' + accessToken);
 
     // prefix for all routes
     app.use('/api', router);
@@ -79,6 +111,7 @@ db.on('open', function () {
     });
 
     //Start listening for requests
-    app.listen(config.server.port);
-    console.log('Node server is listening on port ' + config.server.port);
+    var port = config.server.port || 8080; //set a default port if the config file does not contain it
+    app.listen(port);
+    console.log('Node server is listening on port ' + port);
 });
