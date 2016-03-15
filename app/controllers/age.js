@@ -73,7 +73,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/ages/find Find ages
+     * @api {post} /api/ages/find Find ages
      * @apiVersion 0.0.1
      * @apiName FindAges
      * @apiGroup Ages
