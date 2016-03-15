@@ -11,33 +11,34 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-        }
+        };
 
         var file = __appbase + '../wikiData/ages.json';
+        var scrape = function(){
+            Scraper.scrapToFile(file, Scraper.getAges, function (err, obj) {
+                if (err !== null) {
+                    console.log(err);
+                } else {
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            });
+        };
+
         jsonfile.readFile(file, function(err, obj) {
             var filler = require(__appbase + 'controllers/filler/ages');
-            if(obj != undefined)
-                var cacheAge = ((new Date) - new Date(obj.createdAt));
-
             var ttl = require(__appbase + '../cfg/config.json');
-            ttl = ttl.TTLWikiCache;
 
-            if(obj == undefined || cacheAge > ttl) {
-                if(obj != undefined && cacheAge > ttl)
+            if(obj !== undefined) {
+                var cacheAge = ((new Date()) - new Date(obj.createdAt));
+                if(cacheAge > ttl.TTLWikiCache) {
                     console.log('Cache file outdated.');
-
-                Scraper.scrapToFile(file, Scraper.getAges, function (err, obj) {
-                    if (err != null) {
-                        console.log(err)
-                    }
-                    else {
-                        filler.insertToDb(obj.data,afterInsertion);
-                    }
-                });
-            }
-            else {
-                console.log('Ages from cache file "'+file+'". Not scrapped from wiki.');
-                filler.insertToDb(obj.data,afterInsertion);
+                    scrape();
+                } else {
+                    console.log('Ages from cache file "'+file+'". Not scrapped from wiki.');
+                    filler.insertToDb(obj.data,afterInsertion);
+                }
+            } else {
+                scrape();
             }
         });
     },
@@ -57,10 +58,10 @@ module.exports = {
             // translate startDate to (negative) number
             if( z == 'startDate') {
                 if(age[z].indexOf('BC')>-1) {
-                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '')
+                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '');
                 }
                 else if(age[z].indexOf('AC')>-1) {
-                    age[z] = age[z].replace(/[^0-9\.]/g, '')
+                    age[z] = age[z].replace(/[^0-9\.]/g, '');
                 }
                 else if(age[z].indexOf('ca')>-1) {
                     age[z] = age[z].replace('ca.','').replace(',','');
@@ -73,16 +74,16 @@ module.exports = {
             // translate startDate to (negative) number
             if( z == 'endDate') {
                 if(age[z].indexOf('BC')>-1) {
-                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '')
+                    age[z] = 0 - age[z].replace(/[^0-9\.]/g, '');
                 }
                 else if(age[z].indexOf('282-283 AC')>-1) { //hardcoded =/
                     age[z] = 283;
                 }
                 else if(age[z].indexOf('AC')>-1) {
-                    age[z] = age[z].replace(/[^0-9\.]/g, '')
+                    age[z] = age[z].replace(/[^0-9\.]/g, '');
                 }
                 else if(age[z].indexOf('~')>-1) {
-                    age[z] = age[z].replace('~', '')
+                    age[z] = age[z].replace('~', '');
                 }
                 else if(age[z].indexOf('ca')>-1) {
                     age[z] = age[z].replace('ca.','').replace(',','').replace(' ','');

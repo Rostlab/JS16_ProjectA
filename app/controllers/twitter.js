@@ -185,7 +185,7 @@ module.exports = {
         var config = require(__base + 'cfg/config.json');
         var keywords = req.params.byKeywords;
         var count = req.params.tweetCount;
-        var tweetsArray = new Array();
+        var tweetsArray = [];
 
         var client = new Twitter({
             consumer_key: config.twitter.consumer_key,
@@ -201,7 +201,7 @@ module.exports = {
                 if (tweetsArray.length >= count) {
                     stream.destroy();
                     res.status(200).json(tweetsArray);
-                };
+                }
             });
             stream.on('error', function (error) {
                 res.status(400).json({ message: 'Error.', error: error });

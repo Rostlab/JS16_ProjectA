@@ -11,7 +11,7 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-        }
+        };
 
         console.log('The 3 existing continents are hardcoded. Not scrapped from wiki.');
         continents = [
@@ -31,7 +31,7 @@ module.exports = {
                 neighbors: ["Essos","Sothoryos"]
             }
 
-        ]
+        ];
 
 
         var filler = require(__appbase + 'controllers/filler/continents');
