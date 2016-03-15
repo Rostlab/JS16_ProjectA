@@ -63,7 +63,7 @@ db.on('open', function () {
         }
 
         //Otherwise check if we got a token
-        var sentToken = req.get('token');
+        var sentToken = req.query.token;
         if (!sentToken) {
             console.log('401 - no token sent');
             return res.status(401).send({ //Send a nice little message to remind the user that he needs to supply a token
