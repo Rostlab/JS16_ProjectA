@@ -82,13 +82,14 @@ module.exports = {
 
 			var housesCollection = [];
 			var scraper = require("./scraper");
+            var saveHouse = function(house) {
+                housesCollection.push(house);
+                if(housesCollection.length == houses.length) {
+                    callback(housesCollection);
+                }
+            };
 			for(i = 0; i <houses.length; i++) {
-				scraper.getSingleHouse(houses[i], function(house) {
-					housesCollection.push(house);
-					if(housesCollection.length == houses.length) {
-						callback(housesCollection);
-					}
-				});
+				scraper.getSingleHouse(houses[i], saveHouse);
 			}
 		});
 	},
@@ -114,10 +115,10 @@ module.exports = {
 			var house = {};			
 				
 			client.api.call(params, function (err, info, next, data) {
-				if(data != null) {
+				if(data !== null) {
 					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-					if(arr != null) {	
-						house["name"] = houseName;
+					if(arr !== null) {
+						house.name = houseName;
 
 						for(i = 0; i < arr.length; i++) {
 							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
@@ -136,7 +137,7 @@ module.exports = {
 							* Get the other information
 							*/
 							
-							if(value != null) {
+							if(value !== null) {
 								name = name.toLowerCase();
 								if(name == "coat of arms") {
 									name = "coatOfArms";
@@ -181,10 +182,10 @@ module.exports = {
 
 		var character = {};			
 		client.api.call(params, function (err, info, next, data) {
-			if(data != null) {
+			if(data !== null) {
 				var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
-				if(arr != null) {	
-					character["name"] = characterName;
+				if(arr !== null) {
+					character.name = characterName;
 					for(i = 0; i < arr.length; i++) {
 						var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
 						var name = tempName[0].substring(1, tempName[0].length-1);
@@ -202,7 +203,7 @@ module.exports = {
 						* Get the other information
 						*/
 						
-						if(value != null) {
+						if(value !== null) {
 							name = name.toLowerCase();
 							if(name == "born") {
 								name = "dateOfBirth";
@@ -224,25 +225,25 @@ module.exports = {
 						*/
 					}
 				}
-				if(data.parse.properties.length != 0) {
+				if(data.parse.properties.length !== 0) {
 					var firstAttempt = data.parse.properties[0]["*"];
 					var gender = null;
-					if(firstAttempt != null) {
+					if(firstAttempt !== null) {
 						var phrases = firstAttempt.split(".");
 						if(phrases.length > 1) {
 							var phrase = phrases[1].trim();
-							if(phrase.indexOf("He") == 0 || phrase.indexOf("His") == 0) {
+							if(phrase.indexOf("He") === 0 || phrase.indexOf("His") === 0) {
 								gender = "Male";
 							}
-							else if(phrase.indexOf("She") == 0 || phrase.indexOf("Her") == 0) {
+							else if(phrase.indexOf("She") === 0 || phrase.indexOf("Her") === 0) {
 								gender = "Female";
 							}
 						}					
 					}
 					
-					if(gender == null) {
+					if(gender === null) {
 						var secondAttempt = data.parse.text["*"];
-						if(secondAttempt != null) {
+						if(secondAttempt !== null) {
 							var fGender = (secondAttempt.match(/\sher\s/g) || []).length;
 							var mGender = (secondAttempt.match(/\shis\s|\shim\s/g) || []).length;
 							if(fGender > mGender) {
@@ -258,14 +259,14 @@ module.exports = {
 					}
 					
 					if(gender == "Male") {
-						character["male"] = true;
+						character.male = true;
 					}
 					else {
-						character["male"] = false;
+						character.male = false;
 					}
 				}
 			}
-			console.log("Fetched " + character["name"]);
+			console.log("Fetched " + character.name);
 			callback(character);
 		});
 	},
@@ -280,17 +281,17 @@ module.exports = {
 		scraper.getCharacterNames(function(characters) {
 		
 			var charactersCollection = [];
-
+            var saveChar = function(character) {
+                charactersCollection.push(character);
+                if(charactersCollection.length == characters.length) {
+                    callback(charactersCollection);
+                }
+            };
 			
 			console.log(characters.length);
 			
 			for(i = 0; i < characters.length; i++) {
-				scraper.getSingleCharacter(characters[i], function(character) {
-					charactersCollection.push(character);
-					if(charactersCollection.length == characters.length) {
-						callback(charactersCollection);
-					}
-				});
+				scraper.getSingleCharacter(characters[i], saveChar);
 			}
 		});
 	},
