@@ -175,9 +175,9 @@ module.exports = {
 	* Fetches details for one character
 	*/
 	getSingleCharacter : function(characterName, callback) {
-		console.log("start getSingleCharacter");
-
-
+		
+		console.log("Fetching " + characterName);
+	
 		var pageName = characterName.replace(" ", "_");
 
 		var params = {
@@ -231,9 +231,48 @@ module.exports = {
 						*/
 					}
 				}
+				if(data.parse.properties.length != 0) {
+					var firstAttempt = data.parse.properties[0]["*"];
+					var gender = null;
+					if(firstAttempt != null) {
+						var phrases = firstAttempt.split(".");
+						if(phrases.length > 1) {
+							var phrase = phrases[1].trim();
+							if(phrase.indexOf("He") == 0 || phrase.indexOf("His") == 0) {
+								gender = "Male";
+							}
+							else if(phrase.indexOf("She") == 0 || phrase.indexOf("Her") == 0) {
+								gender = "Female";
+							}
+						}					
+					}
+					
+					if(gender == null) {
+						var secondAttempt = data.parse.text["*"];
+						if(secondAttempt != null) {
+							var fGender = (secondAttempt.match(/\sher\s/g) || []).length;
+							var mGender = (secondAttempt.match(/\shis\s|\shim\s/g) || []).length;
+							if(fGender > mGender) {
+								gender = "Female";
+							}
+							else if (fGender < mGender) {
+								gender = "Male";
+							}
+							else {
+								gender = "undefined";
+							}
+						}
+					}
+					
+					if(gender == "Male") {
+						character["male"] = true;
+					}
+					else {
+						character["male"] = false;
+					}
+				}
 			}
-			
-			//console.log(character);
+			console.log("Fetched " + character["name"]);
 			callback(character);
 		});
 	},
