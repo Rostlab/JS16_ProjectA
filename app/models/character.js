@@ -19,7 +19,15 @@ var CharacterSchema = new Schema({
     placeOfDeath: {type: String, ref: "Region"},                                                 // Trident
     house: {type: String, ref: "House"},                   // House Targaryen
     createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date, default: Date.now}
+    updatedAt: {type: Date, default: Date.now},
+    
+    //issue #72 fields
+    spouse: {type: String, ref: 'Character'},
+    allegiance: {type: String, ref: 'Character'},
+    characterPopularity: Number, 
+    parents: [{type: String, ref: 'Character'}],
+    books: [String],
+    placeOfLastVisit: {type: String, ref: "Region"}
 
 });
 
