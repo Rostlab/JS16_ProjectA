@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 var swig = require('swig');
+var cors = require('cors');
+
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
 
@@ -56,6 +58,13 @@ db.on('open', function () {
         // HERE LOGIN TEST
         next(); // go to the specialized request
     });
+
+    //Add cors support
+    app.use(cors({
+        "origin": "*",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "preflightContinue": false
+    }));
 
     /*
      #### Routes
