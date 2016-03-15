@@ -4,11 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 var swig = require('swig');
-<<<<<<< HEAD
 var uuid = require('node-uuid');
-=======
 var cors = require('cors');
->>>>>>> master
 
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
