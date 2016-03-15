@@ -25,7 +25,7 @@
 
             var apiCallback = function (err, info, next, data) {
                 if (data !== null) {
-                    for (j = 0; j < data.query.search.length; j++) {
+                    for (let j = 0; j < data.query.search.length; j++) {
                         //console.log(info);
                         var title = String(data.query.search[j].title);
                         if (title === null) {
@@ -42,7 +42,7 @@
                 }
             };
 
-            for (i = 0; i < 540; i = i + 10) {
+            for (let i = 0; i < 540; i = i + 10) {
                 //Setup up the api parameters
                 var params = {
                     action: "query",
@@ -88,7 +88,7 @@
                         callback(housesCollection);
                     }
                 };
-                for (i = 0; i < houses.length; i++) {
+                for (let i = 0; i < houses.length; i++) {
                     scraper.getSingleHouse(houses[i], saveHouse);
                 }
             });
@@ -119,7 +119,7 @@
                     if (arr !== null) {
                         house.name = houseName;
 
-                        for (i = 0; i < arr.length; i++) {
+                        for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
                             var name = tempName[0].substring(1, tempName[0].length - 1);
                             var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);
@@ -184,7 +184,7 @@
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
-                        for (i = 0; i < arr.length; i++) {
+                        for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
                             var name = tempName[0].substring(1, tempName[0].length - 1);
                             var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);
@@ -287,7 +287,7 @@
 
                 console.log(characters.length);
 
-                for (i = 0; i < characters.length; i++) {
+                for (let i = 0; i < characters.length; i++) {
                     scraper.getSingleCharacter(characters[i], saveChar);
                 }
             });
@@ -317,9 +317,9 @@
 
             console.log("Loading all character names from the wiki. This might take a while");
             client.api.call(params, function (err, info, next, data) {
-                for (i = 0; i < data.parse.links.length; i++) {
+                for (let i = 0; i < data.parse.links.length; i++) {
 
-                    title = String(data.parse.links[i]["*"]);
+                    let title = String(data.parse.links[i]["*"]);
                     if (title === null) {
                         break;
                     }
@@ -346,14 +346,14 @@
             client.api.call(params, function (err, info, next, data) {
 
                 var arrAge = data.parse.text["*"].match(/<span\sclass=\"tocnumber(.*?)>(.*?)<\/a>/g);
-                for (i = 1; i < arrAge.length - 2; i++) {
+                for (let i = 1; i < arrAge.length - 2; i++) {
                     let tmp = arrAge[i].match(/\">(.*?)<\/span>/g);
                     let ageName = tmp[1].substring(2, tmp[1].length - 7);
                     var age = {};
                     age.name = ageName;
                     ages.push(age);
                 }
-                for (i = 0; i < ages.length; i++) {
+                for (let i = 0; i < ages.length; i++) {
                     console.log(ages[i]);
                     if (i > 0 && i < ages.length - 1) {
                         ages[i].predecessor = ages[i - 1].name;
@@ -368,7 +368,7 @@
                 }
                 var arr = data.parse.text["*"].match(/<table\sclass=\"wikitable\">((.|[\r\n])*?)<\/table>/g);
                 var start, end;
-                for (i = 0; i < arr.length; i++) {
+                for (let i = 0; i < arr.length; i++) {
                     var q = arr[i].match(/<tr>\n<td(.*?)>((.|[\r\n])*?)<\/td>/g);
                     if (q[0].indexOf("a>") != -1) {
                         if (q[0].indexOf("width") != -1) {
@@ -421,14 +421,14 @@
             client.api.call(params, function (err, info, next, data) {
 
                 var arrAge = data.parse.text["*"].match(/<span\sclass=\"tocnumber(.*?)>(.*?)<\/a>/g);
-                for (i = 1; i < arrAge.length - 2; i++) {
+                for (let i = 1; i < arrAge.length - 2; i++) {
                     let tmp = arrAge[i].match(/\">(.*?)<\/span>/g);
                     let ageName = tmp[1].substring(2, tmp[1].length - 7);
                     var age = {};
                     age.name = ageName;
                     ages.push(age);
                 }
-                for (i = 0; i < ages.length; i++) {
+                for (let i = 0; i < ages.length; i++) {
                     console.log(ages[i]);
                     if (i > 0 && i < ages.length - 1) {
                         ages[i].predecessor = ages[i - 1].name;
@@ -443,7 +443,7 @@
                 }
                 var arr = data.parse.text["*"].match(/<table\sclass=\"wikitable\">((.|[\r\n])*?)<\/table>/g);
                 var start, end;
-                for (i = 0; i < arr.length; i++) {
+                for (let i = 0; i < arr.length; i++) {
                     var q = arr[i].match(/<tr>\n<td(.*?)>((.|[\r\n])*?)<\/td>/g);
                     if (q[0].indexOf("a>") != -1) {
                         if (q[0].indexOf("width") != -1) {
@@ -476,10 +476,10 @@
                     ages[i].startDate = start;
                     ages[i].endDate = end;
                 }
-                for (i = 0; i < arr.length; i++) {
+                for (let i = 0; i < arr.length; i++) {
                     var lines = arr[i].match(/<tr>((.|[\r\n])*?)<\/tr>/g);
                     let events = [];
-                    for (j = 0; j < lines.length; j++) {
+                    for (let j = 0; j < lines.length; j++) {
 
                         var date;
                         var event = {};
@@ -545,8 +545,8 @@
             var scraper = require("./scraper");
             var events = [];
             scraper.getAgesWithEvents(function (ages) {
-                for (i = 0; i < ages.length; i++) {
-                    for (j = 0; j < ages[i].events.length; j++) {
+                for (let i = 0; i < ages.length; i++) {
+                    for (let j = 0; j < ages[i].events.length; j++) {
                         var event = ages[i].events[j];
                         event.age = ages[i].name;
                         events.push(event);
@@ -578,11 +578,11 @@
                 var listForSevenKingdoms, listForBeyondTheWall, listForEssos, listForAncientTimes;
                 var cultures = [];
 
-                for (i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
                     if (result[i].match(/(Seven Kingdoms)/)) {
                         listForSevenKingdoms = result[i].match(/title="([^"]*)"/g);
                         listForSevenKingdoms.shift();
-                        for (j = 0; j < listForSevenKingdoms.length; j++) {
+                        for (let j = 0; j < listForSevenKingdoms.length; j++) {
                             let culture = {};
                             culture.name = listForSevenKingdoms[j].substring(7, listForSevenKingdoms[j].length - 1);
                             cultures.push(culture);
@@ -601,7 +601,7 @@
                     if (result[i].match(/Essos/)) {
                         listForEssos = result[i].match(/title="([^"]*)"/g);
                         listForEssos.shift();
-                        for (j = 0; j < listForEssos.length; j++) {
+                        for (let j = 0; j < listForEssos.length; j++) {
                             let culture = {};
                             culture.name = listForEssos[j].substring(7, listForEssos[j].length - 1);
                             cultures.push(culture);
@@ -625,7 +625,7 @@
         getSingleRegion: function (regionName, callback) {
             var scraper = require("./scraper");
             scraper.getRegions(function (regions) {
-                for (i = 0; i < regions.length; i++) {
+                for (let i = 0; i < regions.length; i++) {
                     if (regions[i].name == regionName) {
                         callback(regions[i]);
                     }
@@ -651,11 +651,11 @@
             client.api.call(params, function (err, info, next, data) {
 
                 var section = data.parse.text["*"].split("Regions");
-                for (i = 1; i < 4; i++) {
+                for (let i = 1; i < 4; i++) {
                     var continents = section[i].split("<\/li><\/ul>");
 
                     var str = continents[0].match(/\">(.*?)<\/a>/g);
-                    for (j = 0; j < str.length; j++) {
+                    for (let j = 0; j < str.length; j++) {
                         str[j] = str[j].substring(2, str[j].length - 4);
                         var region = {};
                         region.name = str[j];
@@ -684,7 +684,7 @@
             console.log("Loading all episodes from the wiki. This might take a while");
             client.api.call(params, function (err, info, next, data) {
                 let arr = data.parse.text["*"].match(/<li>(.*?)<\/li>/g);
-                for (i = 0; i < arr.length; i++) {
+                for (let i = 0; i < arr.length; i++) {
                     let subArr = arr[i].match(/\stitle=\"(.*?)\"/g);
                     episodes.push(subArr[0].substring(8, subArr[0].length - 1));
                 }
@@ -712,7 +712,7 @@
                 };
 
                 console.log(episodes.length + " episodes to fetch");
-                for (i = 0; i < episodes.length; i++) {
+                for (let i = 0; i < episodes.length; i++) {
                     scraper.getSingleEpisode(episodes[i], saveEpisode);
                 }
             });
@@ -745,7 +745,7 @@
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         episode.name = episodeName;
-                        for (i = 0; i < arr.length; i++) {
+                        for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
                             var name = tempName[0].substring(1, tempName[0].length - 1);
                             var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);
