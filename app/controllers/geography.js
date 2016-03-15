@@ -766,7 +766,7 @@ module.exports = {
     },
 
     /**
-     * @api {post} /api/api/city Add a city
+     * @api {post} /api/city Add a city
      * @apiVersion 0.0.1
      * @apiName addCity
      * @apiGroup City
