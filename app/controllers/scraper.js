@@ -55,204 +55,249 @@ module.exports = {
             client.api.call(params, apiCallback);
         }
     },
+	/*
+	* Call when you want to fetch all house information
+	*/
+	getHouses : function(callback) {
+		
+		/*
+		sc = require("./scraper");
+		sc.getHouseNames(function(houses) {
+			*/
+		/*
+		* For testing purposes(and faster results) uncomment this section and comment the above code section.
+		*/
+		
+		var fs = require("fs");
+		fs.readFile('./sample data/houses.txt', function (err, data) {
+			if (err) {
+			   return console.error(err);
+			}
+			string_array = data.toString().split("**");
+			houses = JSON.parse(string_array[0]);
+			fields = JSON.parse(string_array[1]);
+		
+				
+					
+
+			var housesCollection = [];
+			var scraper = require("./scraper");
+			for(i = 0; i <houses.length; i++) {
+				scraper.getSingleHouse(houses[i], function(house) {
+					housesCollection.push(house);
+					if(housesCollection.length == houses.length) {
+						callback(housesCollection);
+					}
+				});
+			}
+		});
+	},
+	
+	/*
+	* Fetches details for one house
+	*/
+	getSingleHouse : function(houseName, callback) {
+
+		
+		
+			//console.log(houseName);
+			var pageName = houseName.replace(" ", "_");
+			
+			var params = {
+				action: "parse",
+				page: pageName,
+				format: "json"
+			};	
 
 
-    /*
-     * Call when you want to fetch all house information
-     */
-    getHouses: function (callback) {
+			
+			var house = {};			
+				
+			client.api.call(params, function (err, info, next, data) {
+				if(data != null) {
+					var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
+					if(arr != null) {	
+						house["name"] = houseName;
 
-        /*
-         sc = require("./scraper");
-         sc.getHouseNames(function(houses) {
-         */
-        /*
-         * For testing purposes(and faster results) uncomment this section and comment the above code section.
-         */
+						for(i = 0; i < arr.length; i++) {
+							var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+							var name = tempName[0].substring(1, tempName[0].length-1);
+							var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+							var value = tempValue[0].substring(1, tempValue[0].length-1);
+							newValue = [];
+							if(value.indexOf("href") != -1) {
+								value = value.match(/\">(.*?)<\/a>/)[0];
+								value = value.substring(2, value.length-4);
+							}
+							else {
+								value = value.substring(1, value.length-4);
+							}
+							/*
+							* Get the other information
+							*/
+							
+							if(value != null) {
+								name = name.toLowerCase();
+								if(name == "coat of arms") {
+									name = "coatOfArms";
+								}
+								else if(name == "current lord") {
+									name = "currentLord";
+								}
+								else if(name == "cadet branch") {
+									name = "cadetBranch";
+								}
+								else if(name == "ancestral weapon") {
+									name = "ancestralWeapon";
+								}
+								house[name] = value;
+							}
+							
+							/*
+							*
+							*/
+						}
+					}
+				}
+				//console.log(house);
+				callback(house);
+			});
+	},
+	
+	/*
+	* Fetches details for one character
+	*/
+	getSingleCharacter : function(characterName, callback) {
+		
+		console.log("Fetching " + characterName);
+	
+		var pageName = characterName.replace(" ", "_");
 
-        var fs = require("fs");
-        fs.readFile('./sample data/houses.txt', function (err, data) {
-            if (err) {
-                return console.error(err);
-            }
-            string_array = data.toString().split("**");
-            houses = JSON.parse(string_array[0]);
-            fields = JSON.parse(string_array[1]);
+		var params = {
+			action: "parse",
+			page: pageName,
+			format: "json"
+		};	
 
-            var housesCollection = [];
-            var scraper = require("./scraper");
-            var saveHouse = function (house) {
-                housesCollection.push(house);
-                if (housesCollection.length == houses.length) {
-                    callback(housesCollection);
-                }
-            };
+		var character = {};			
+		client.api.call(params, function (err, info, next, data) {
+			if(data != null) {
+				var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);				
+				if(arr != null) {	
+					character["name"] = characterName;
+					for(i = 0; i < arr.length; i++) {
+						var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
+						var name = tempName[0].substring(1, tempName[0].length-1);
+						var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);	
+						var value = tempValue[0].substring(1, tempValue[0].length-1);
+						newValue = [];
+						if(value.indexOf("href") != -1) {
+							value = value.match(/\">(.*?)<\/a>/)[0];
+							value = value.substring(2, value.length-4);
+						}
+						else {
+							value = value.substring(1, value.length-4);
+						}
+						/*
+						* Get the other information
+						*/
+						
+						if(value != null) {
+							name = name.toLowerCase();
+							if(name == "born") {
+								name = "dateOfBirth";
+							}
+							else if(name == "died") {
+								name = "dateOfDeath";
+							}
+							else if(name == "played by") {
+								name = "actor";
+							}
+							else if(name == "allegiance") {
+								name = "house";
+							}
+							character[name] = value;
+						}
+						
+						/*
+						*
+						*/
+					}
+				}
+				if(data.parse.properties.length != 0) {
+					var firstAttempt = data.parse.properties[0]["*"];
+					var gender = null;
+					if(firstAttempt != null) {
+						var phrases = firstAttempt.split(".");
+						if(phrases.length > 1) {
+							var phrase = phrases[1].trim();
+							if(phrase.indexOf("He") == 0 || phrase.indexOf("His") == 0) {
+								gender = "Male";
+							}
+							else if(phrase.indexOf("She") == 0 || phrase.indexOf("Her") == 0) {
+								gender = "Female";
+							}
+						}					
+					}
+					
+					if(gender == null) {
+						var secondAttempt = data.parse.text["*"];
+						if(secondAttempt != null) {
+							var fGender = (secondAttempt.match(/\sher\s/g) || []).length;
+							var mGender = (secondAttempt.match(/\shis\s|\shim\s/g) || []).length;
+							if(fGender > mGender) {
+								gender = "Female";
+							}
+							else if (fGender < mGender) {
+								gender = "Male";
+							}
+							else {
+								gender = "undefined";
+							}
+						}
+					}
+					
+					if(gender == "Male") {
+						character["male"] = true;
+					}
+					else {
+						character["male"] = false;
+					}
+				}
+			}
+			console.log("Fetched " + character["name"]);
+			callback(character);
+		});
+	},
 
-            for (i = 0; i < houses.length; i++) {
-                scraper.getSingleHouse(houses[i], saveHouse);
-            }
-        });
-    },
+	/*
+	* Call when you want to fetch all house information
+	*/
+	getCharacters : function(callback) {
+		
+		
+		var scraper = require("./scraper");
+		scraper.getCharacterNames(function(characters) {
+		
+			var charactersCollection = [];
 
-    /*
-     * Fetches details for one house
-     */
-    getSingleHouse: function (houseName, callback) {
-        //console.log(houseName);
-        var pageName = houseName.replace(" ", "_");
+			
+			console.log(characters.length);
+			
+			for(i = 0; i < characters.length; i++) {
+				scraper.getSingleCharacter(characters[i], function(character) {
+					charactersCollection.push(character);
+					if(charactersCollection.length == characters.length) {
+						callback(charactersCollection);
+					}
+				});
+			}
+		});
+	},
 
-        var params = {
-            action: "parse",
-            page: pageName,
-            format: "json"
-        };
-
-
-        var house = {};
-        client.api.call(params, function (err, info, next, data) {
-            if (data !== null) {
-                var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
-                if (arr !== null) {
-                    house.name = houseName;
-
-                    for (i = 0; i < arr.length; i++) {
-                        var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-                        var name = tempName[0].substring(1, tempName[0].length - 1);
-                        var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);
-                        var value = tempValue[0].substring(1, tempValue[0].length - 1);
-                        newValue = [];
-                        if (value.indexOf("href") != -1) {
-                            value = value.match(/\">(.*?)<\/a>/)[0];
-                            value = value.substring(2, value.length - 4);
-                        }
-                        else {
-                            value = value.substring(1, value.length - 4);
-                        }
-                        /*
-                         * Get the other information
-                         */
-
-                        if (value !== null) {
-                            name = name.toLowerCase();
-                            if (name == "coat of arms") {
-                                name = "coatOfArms";
-                            }
-                            else if (name == "current lord") {
-                                name = "currentLord";
-                            }
-                            else if (name == "cadet branch") {
-                                name = "cadetBranch";
-                            }
-                            else if (name == "ancestral weapon") {
-                                name = "ancestralWeapon";
-                            }
-                            house[name] = value;
-                        }
-
-                        /*
-                         *
-                         */
-                    }
-                }
-            }
-            //console.log(house);
-            callback(house);
-        });
-    },
-
-    /*
-     * Fetches details for one character
-     */
-    getSingleCharacter: function (characterName, callback) {
-        console.log("start getSingleCharacter");
-
-        var pageName = characterName.replace(" ", "_");
-
-        var params = {
-            action: "parse",
-            page: pageName,
-            format: "json"
-        };
-
-        var character = {};
-        client.api.call(params, function (err, info, next, data) {
-            if (data !== null) {
-                var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
-                if (arr !== null) {
-                    character.name = characterName;
-                    for (i = 0; i < arr.length; i++) {
-                        var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
-                        var name = tempName[0].substring(1, tempName[0].length - 1);
-                        var tempValue = arr[i].match(/<td\sclass=\"\"\sstyle=\"\">(.*?)<\/td>/g)[0].match(/\">(.*?)<\/td>/g);
-                        var value = tempValue[0].substring(1, tempValue[0].length - 1);
-                        newValue = [];
-                        if (value.indexOf("href") != -1) {
-                            value = value.match(/\">(.*?)<\/a>/)[0];
-                            value = value.substring(2, value.length - 4);
-                        }
-                        else {
-                            value = value.substring(1, value.length - 4);
-                        }
-                        /*
-                         * Get the other information
-                         */
-
-                        if (value !== null) {
-                            name = name.toLowerCase();
-                            if (name == "born") {
-                                name = "dateOfBirth";
-                            }
-                            else if (name == "died") {
-                                name = "dateOfDeath";
-                            }
-                            else if (name == "played by") {
-                                name = "actor";
-                            }
-                            else if (name == "allegiance") {
-                                name = "house";
-                            }
-                            character[name] = value;
-                        }
-
-                        /*
-                         *
-                         */
-                    }
-                }
-            }
-
-            //console.log(character);
-            callback(character);
-        });
-    },
-
-    /*
-     * Call when you want to fetch all house information
-     */
-    getCharacters: function (callback) {
-
-
-        var scraper = require("./scraper");
-        scraper.getCharacterNames(function (characters) {
-
-            var charactersCollection = [];
-            console.log(characters.length);
-            var saveCharacter = function (character) {
-                charactersCollection.push(character);
-                if (charactersCollection.length == characters.length) {
-                    callback(charactersCollection);
-                }
-            };
-
-            for (i = 0; i < characters.length; i++) {
-                scraper.getSingleCharacter(characters[i], saveCharacter);
-            }
-        });
-    },
-
-    /*
-     * Returns a list of character names
-     */
+	/*
+	* Returns a list of character names
+	*/
     getCharacterNames: function (callback) {
 
         //Setup the mediawiki bot
