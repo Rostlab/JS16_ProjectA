@@ -231,7 +231,7 @@ module.exports = {
     },
 
     /**
-     * @api {delete} /api/character/byHouse/:id Get characters by house
+     * @api {get} /api/character/byHouse/:id Get characters by house
      * @apiVersion 0.0.1
      * @apiName GetCharactersByHouse
      * @apiGroup Characters
@@ -263,7 +263,7 @@ module.exports = {
 
 
      /**
-     * @api {delete} /api/character/byCulture/:id Get characters by culture
+     * @api {get} /api/character/byCulture/:id Get characters by culture
      * @apiVersion 0.0.1
      * @apiName GetCharactersByCulture
      * @apiGroup Characters
@@ -295,7 +295,7 @@ module.exports = {
 
 
     /**
-     * @api {delete} /api/character/byGender/:id Get characters by gender
+     * @api {get} /api/character/byGender/:id Get characters by gender
      * @apiVersion 0.0.1
      * @apiName GetCharactersByGender
      * @apiGroup Characters

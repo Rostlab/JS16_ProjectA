@@ -122,6 +122,8 @@ module.exports = function (app, router) {
     router.delete('/cities/:id', geographyController.removeCity);
     router.put('/cities/:id', geographyController.editCity);
 
+    var statsController = require(__appbase + 'controllers/statistics');
+    router.get('/stats/', statsController.getStats);
 
     var twitterController = require('./app/controllers/twitter');
     router.get('/twitter/search/:byKeywords/:tweetCount', twitterController.searchTwitter);

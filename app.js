@@ -4,7 +4,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./cfg/config');
 var swig = require('swig');
+<<<<<<< HEAD
 var uuid = require('node-uuid');
+=======
+var cors = require('cors');
+>>>>>>> master
 
 global.__base = __dirname + '/';
 global.__appbase = __dirname + '/app/';
@@ -79,6 +83,13 @@ db.on('open', function () {
             return res.sendStatus(401);
         }
     });
+
+    //Add cors support for all routes
+    app.use(cors({
+        "origin": "*",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "preflightContinue": false
+    }));
 
     //Include routes from external file
     require(__base + 'routes')(app, router);

@@ -139,6 +139,7 @@ module.exports = {
      * @apiName GetByIdEpisode
      * @apiGroup Episodes
      *
+     * @apiParam {String} id Episode _id
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episode}
@@ -168,6 +169,7 @@ module.exports = {
      * @apiName EditEpisode
      * @apiGroup Episodes
      *
+     * @apiParam {String} id Episode _id
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episode}
@@ -211,6 +213,7 @@ module.exports = {
      * @apiName RemoveEpisode
      * @apiGroup Episodes
      *
+     * @apiParam {String} id Episode _id
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success"}
@@ -235,22 +238,23 @@ module.exports = {
 
 
      /**
-     * @api {delete} /api/episodes/byCharacter/:id Get episodes by character
-     * @apiVersion 0.0.1
-     * @apiName GetEpisodesByCharacter
-     * @apiGroup Episodes
-     *
+      * @api {get} /api/episodes/byCharacter/:id Get episodes by character
+      * @apiVersion 0.0.1
+      * @apiName GetEpisodesByCharacter
+      * @apiGroup Episodes
+      *
+      * @apiParam {String} id Character _id
       * @apiSuccessExample {json} Success-Response
       *     HTTP/1.1 200 OK
       *     {"message" : "Success", "data" : episodes}
-     *
-     * @apiError (404) NotFound No episode with that character existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No episode with that character existing!", "data": err };
-     *
-     * @apiDescription Search episodes in which the characterId
-     */
+      *
+      * @apiError (404) NotFound No episode with that character existing!
+      * @apiErrorExample {json} NotFound
+      *      HTTP/1.1 404
+      *      { "message": "Failure. No episode with that character existing!", "data": err };
+      *
+      * @apiDescription Search episodes in which the characterId
+      */
     getEpisodesByCharacter: function (req, res) {
         var episodesStore = require('../stores/episodes');
         episodesStore.getEpisodesByCharacter(req.params.id , function (success, message) {
