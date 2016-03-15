@@ -68,7 +68,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/characters/find Find episodes
+     * @api {post} /api/characters/find Find characters
      * @apiVersion 0.0.1
      * @apiName FindCharacters
      * @apiGroup Characters
