@@ -235,7 +235,7 @@ module.exports = {
 
 
      /**
-     * @api {delete} /api/episodes/byCharacter/:id Get episodes by character
+     * @api {get} /api/episodes/byCharacter/:id Get episodes by character
      * @apiVersion 0.0.1
      * @apiName GetEpisodesByCharacter
      * @apiGroup Episodes
