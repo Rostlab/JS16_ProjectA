@@ -3,6 +3,7 @@ var Episode = require(__appbase + 'models/episode');
 var Episodes = require(__appbase + 'stores/episodes');
 var jsonfile = require('jsonfile');
 var async = require('async');
+var ttl = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -22,15 +23,12 @@ module.exports = {
                 if (err !== null) {
                     console.log(err);
                 } else {
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             });
         };
 
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/episodes');
-            var ttl = require(__appbase + '../cfg/config.json');
-
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
                 if(cacheAge > ttl.TTLWikiCache) {
@@ -38,7 +36,7 @@ module.exports = {
                     scrape();
                 } else {
                     console.log('Episodes from cache file "'+file+'". Not scrapped from wiki.');
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             } else {
                 scrape();

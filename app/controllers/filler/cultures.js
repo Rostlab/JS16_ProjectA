@@ -3,6 +3,7 @@ var Culture = require(__appbase + 'models/culture');
 var Cultures = require(__appbase + 'stores/cultures');
 var jsonfile = require('jsonfile');
 var async = require('async');
+var ttl = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -19,15 +20,12 @@ module.exports = {
                 if (err !== null) {
                     console.log(err);
                 } else {
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             });
         };
 
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/cultures');
-            var ttl = require(__appbase + '../cfg/config.json');
-
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
                 if(cacheAge > ttl.TTLWikiCache) {
@@ -35,7 +33,7 @@ module.exports = {
                     scrape();
                 } else {
                     console.log('Cultures from cache file "'+file+'". Not scrapped from wiki.');
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             } else {
                 scrape();

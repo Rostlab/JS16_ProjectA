@@ -3,6 +3,7 @@ var Event = require(__appbase + 'models/event');
 var Events = require(__appbase + 'stores/events');
 var jsonfile = require('jsonfile');
 var async = require('async');
+var ttl = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -18,15 +19,12 @@ module.exports = {
                 if (err !== null) {
                     console.log(err);
                 } else {
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             });
         };
 
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/events');
-            var ttl = require(__appbase + '../cfg/config.json');
-
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
                 if(cacheAge > ttl.TTLWikiCache) {
@@ -34,7 +32,7 @@ module.exports = {
                     scrape();
                 } else {
                     console.log('Events from cache file "'+file+'". Not scrapped from wiki.');
-                    filler.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data,afterInsertion);
                 }
             } else {
                 scrape();
