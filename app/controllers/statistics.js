@@ -1,3 +1,4 @@
+"use strict";
 var age = require(__appbase + 'models/age');
 var character = require(__appbase + 'models/character');
 var cities = require(__appbase + 'models/cities');
@@ -66,13 +67,70 @@ var getCounts = function (promises, counts) {
     }));
 }
 
+var getCharacterStats = function (promises, counts) {
+    //Popular houses
+    promises.push(new Promise(function (resolve, reject) {
+        let agg = [
+            {
+                $group: {
+                    _id: "$house",
+                    total: {$sum: 1}
+                }
+            },
+            {$sort: {"total": -1}}
+        ];
+        character.aggregate(agg, function (err, c) {
+            counts.popularHouses = c;
+            resolve();
+        });
+    }));
+
+    //Popular titles
+    promises.push(new Promise(function (resolve, reject) {
+        let agg = [
+            {
+                $group: {
+                    _id: "$title",
+                    total: {$sum: 1}
+                }
+            },
+            {$sort: {"total": -1}}
+        ];
+        character.aggregate(agg, function (err, c) {
+            counts.popularTitles = c;
+            resolve();
+        });
+    }));
+
+    //Dead vs alive
+    promises.push(new Promise(function (resolve, reject) {
+        let agg = [
+            {
+                $group: {
+                    _id: "result",
+                    alive: {$sum: {$cond: [{$gt: ["$dateOfDeath", null]}, 1, 0]}},
+                    dead: {$sum: {$cond: [{$gt: ["$dateOfDeath", null]}, 0, 1]}}
+                }
+            }
+        ];
+        character.aggregate(agg, function (err, c) {
+            if (err) {
+                reject(err);
+            }
+            counts.deadVsAlive = c;
+            resolve();
+        });
+    }));
+}
+
 module.exports = {
     getStats: function (req, res) {
 
-        var response = {counts: {}};
+        var response = {counts: {}, character: {}};
         var promises = [];
 
         getCounts(promises, response.counts);
+        getCharacterStats(promises, response.character);
 
         //Send the data once all the queries finished
         Promise.all(promises).then(function () {
