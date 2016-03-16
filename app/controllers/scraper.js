@@ -167,6 +167,10 @@
          * Fetches details for one character
          */
         getSingleCharacter: function (characterName, callback) {
+            if(!characterName){
+                console.log("Skipped: "+characterName)
+                return ;
+            }
 
             console.log("Fetching " + characterName);
 
