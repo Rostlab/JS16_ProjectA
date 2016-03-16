@@ -25,7 +25,9 @@ module.exports = {
      *     HTTP/1.1 400
      *     {"message" : "Error: Bad request", "error" : err}
      *
-     * @apiDescription Add an episode to the collection with all the required fields
+     * @apiDescription Add an episode to the collection with all the required fields.<br><br>
+     * The name property is required.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/episode.js" target="_blank">episode model</a>.
      */
     add: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -53,7 +55,7 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *     []
      *
-     * @apiDescription Get all the episodes currently stored
+     * @apiDescription Get all the episodes currently stored.
      */
     getAll: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -68,6 +70,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName FindEpisode
      * @apiGroup Episodes
+     *
+     * @apiExample {post} Example
+     *     {"nr": 2, "season": 4} // get episode S04E02
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -86,7 +91,8 @@ module.exports = {
      *     HTTP/1.1 400
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
-     * @apiDescription Find episodes matching the search criteria
+     * @apiDescription Find episodes matching the search criteria. <br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/episode.js" target="_blank">episode model</a>.
      */
     get: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -119,7 +125,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No episode with that data existing!", "data": err };
      *
-     * @apiDescription Return all episodes named :name
+     * @apiDescription Return all episodes named :name.
      */
     getByName: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -149,7 +155,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No episode with that data existing!", "data": err };
      *
-     * @apiDescription Return the episode with the specific :id
+     * @apiDescription Return the episode with the specific :id.
      */
     getById: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -168,6 +174,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditEpisode
      * @apiGroup Episodes
+     *
+     * @apiExample {post} Example
+     *     {"episodeLength": 65} // set length to 65min
      *
      * @apiParam {String} id Episode _id
      * @apiSuccessExample {json} Success-Response
@@ -189,7 +198,8 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Error", "error": err };
      *
-     * @apiDescription Update an episode with the id :id with some new information.
+     * @apiDescription Update an episode with the id :id with some new information.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/episode.js" target="_blank">episode model</a>.
      */
     edit: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -223,7 +233,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No episode with that data existing!", "data": err };
      *
-     * @apiDescription Delete the episode with the :id
+     * @apiDescription Delete the episode with the :id.
      */
     remove: function (req, res) {
         var episodesStore = require('../stores/episodes');
@@ -253,7 +263,7 @@ module.exports = {
       *      HTTP/1.1 404
       *      { "message": "Failure. No episode with that character existing!", "data": err };
       *
-      * @apiDescription Search episodes in which the characterId
+      * @apiDescription Search episodes in which the character id appears.
       */
     getEpisodesByCharacter: function (req, res) {
         var episodesStore = require('../stores/episodes');
