@@ -741,7 +741,7 @@
 
             var episode = {};
             client.api.call(params, function (err, info, next, data) {
-                if (data !== null) {
+                if (data !== null && data.parse) {
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         episode.name = episodeName;
