@@ -102,7 +102,7 @@
 
 
             //console.log(houseName);
-            var pageName = houseName.replace(" ", "_");
+            var pageName = houseName.replace(/\s/g, "_");
 
             var params = {
                 action: "parse",
@@ -158,7 +158,6 @@
                         }
                     }
                 }
-                //console.log(house);
                 callback(house);
             });
         },
@@ -174,7 +173,7 @@
 
             console.log("Fetching " + characterName);
 
-            var pageName = characterName.replace(" ", "_");
+            var pageName = characterName.replace(/\s/g, "_");
 
             var params = {
                 action: "parse",
@@ -254,7 +253,7 @@
                                     gender = "Male";
                                 }
                                 else {
-                                    gender = "undefined";
+                                    gender = null;
                                 }
                             }
                         }
@@ -312,7 +311,6 @@
             var params = {
                 action: "parse",
                 page: "List_of_characters",
-                prop: "links",
                 format: "json"
             };
 
@@ -321,14 +319,13 @@
 
             console.log("Loading all character names from the wiki. This might take a while");
             client.api.call(params, function (err, info, next, data) {
-                for (let i = 0; i < data.parse.links.length; i++) {
-
-                    let title = String(data.parse.links[i]["*"]);
-                    if (title === null) {
-                        break;
-                    }
-                    characters.push(title);
-                }
+				var arr = data.parse.text["*"];
+				var links = arr.match(/<li>\s<a\shref(.*?)<\/a>/g);
+				for(let i = 0; i < links.length; i++) {
+					var matchedName = links[i].match(/title=\"(.*?)\"/g);
+					var characterName  = matchedName[0].substring(7, matchedName[0].length-1);
+					characters.push(characterName);
+				}
                 console.log("All character names loaded");
                 callback(characters);
             });
@@ -734,7 +731,7 @@
             }
 
 
-            var pageName = episodeName.replace(" ", "_");
+            var pageName = episodeName.replace(/\s/g, "_");
 
 
             var params = {
