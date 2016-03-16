@@ -24,7 +24,7 @@
             console.log("Loading all houses from the wiki. This might take a while");
 
             var apiCallback = function (err, info, next, data) {
-                if (data !== null) {
+                if (data) {
                     for (let j = 0; j < data.query.search.length; j++) {
                         //console.log(info);
                         var title = String(data.query.search[j].title);
@@ -114,7 +114,7 @@
             var house = {};
 
             client.api.call(params, function (err, info, next, data) {
-                if (data !== null) {
+                if (data) {
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         house.name = houseName;
@@ -180,7 +180,7 @@
 
             var character = {};
             client.api.call(params, function (err, info, next, data) {
-                if (data !== null) {
+                if (data) {
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
