@@ -130,7 +130,7 @@
                     $group: {
                         _id: "result",
                         male: {$sum: {$cond: [{$eq: ["$male", true]}, 1, 0]}},
-                        female: {$sum: {$cond: [{$gt: ["$male", false]}, 1, 0]}}
+                        female: {$sum: {$cond: [{$eq: ["$male", false]}, 1, 0]}}
                     }
                 }
             ];
