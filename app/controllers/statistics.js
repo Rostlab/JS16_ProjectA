@@ -122,6 +122,26 @@
                 resolve();
             });
         }));
+
+        //male vs female
+        promises.push(new Promise(function (resolve, reject) {
+            let agg = [
+                {
+                    $group: {
+                        _id: "result",
+                        male: {$sum: {$cond: [{$eq: ["$male", true]}, 1, 0]}},
+                        female: {$sum: {$cond: [{$gt: ["$male", false]}, 1, 0]}}
+                    }
+                }
+            ];
+            character.aggregate(agg, function (err, c) {
+                if (err) {
+                    reject(err);
+                }
+                counts.maleVsFemale = c;
+                resolve();
+            });
+        }));
     };
 
     module.exports = {
