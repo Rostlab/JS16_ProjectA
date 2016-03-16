@@ -168,7 +168,7 @@
          */
         getSingleCharacter: function (characterName, callback) {
             if(!characterName){
-                console.log("Skipped: "+characterName)
+                console.log("Skipped: "+characterName);
                 return ;
             }
 
