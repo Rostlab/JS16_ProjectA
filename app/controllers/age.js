@@ -80,6 +80,10 @@ module.exports = {
      * @apiName FindAges
      * @apiGroup Ages
      *
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"startDate": "<0"}
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : age}
