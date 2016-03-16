@@ -741,9 +741,9 @@
 
             var episode = {};
             client.api.call(params, function (err, info, next, data) {
-                if (data !== null && data.parse) {
+                if (data) {
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
-                    if (arr !== null) {
+                    if (arr) {
                         episode.name = episodeName;
                         for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
