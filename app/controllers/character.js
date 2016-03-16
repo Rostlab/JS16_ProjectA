@@ -3,7 +3,10 @@ module.exports = {
      * @api {post} /api/characters/ Add character
      * @apiVersion 0.0.1
      * @apiName AddCharacter
-     * @apiDescription Add a character to the collection.
+     * @apiDescription Add a character to the collection.<br><br>
+     * The name property is required.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/character.js" target="_blank">character model</a>.
+     *
      * @apiGroup Characters
      *
      * @apiHeaderExample {json} Header-Example
@@ -73,6 +76,9 @@ module.exports = {
      * @apiName FindCharacters
      * @apiGroup Characters
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"male": true} // get all male characters
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : character}
@@ -91,6 +97,7 @@ module.exports = {
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
      * @apiDescription Find characters matching the search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/character.js" target="_blank">character model</a>.
      */
     get: function(req,res) {
         var charactersStore = require('../stores/characters');
@@ -119,7 +126,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No character with that data existing!", "data": err };
      *
-     * @apiDescription Return the character named :name
+     * @apiDescription Return the character named :name.
      */
     getByName: function(req, res) {
         var charactersStore = require('../stores/characters');
@@ -147,7 +154,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No character with that data existing!", "data": err };
      *
-     * @apiDescription Return the character with the specific :id
+     * @apiDescription Return the character with the specific :id.
      */
     getById: function(req, res) {
         var charactersStore = require('../stores/characters');
@@ -166,6 +173,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditCharacter
      * @apiGroup Characters
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"characterPopularity": 9.0} // change characterPopularity to 9.0
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -187,6 +197,7 @@ module.exports = {
      *      { "message": "Error", "error": err };
      *
      * @apiDescription Update an character with the id :id with some new information.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/character.js" target="_blank">character model</a>.
      */
     edit: function(req, res) {
         var charactersStore = require('../stores/characters');
@@ -218,7 +229,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No character with that data existing!", "data": err };
      *
-     * @apiDescription Delete the character with the :id
+     * @apiDescription Delete the character with the :id.
      */
     remove: function(req,res) {
         var charactersStore = require('../stores/characters');
@@ -230,23 +241,7 @@ module.exports = {
         });
     },
 
-    /**
-     * @api {get} /api/character/byHouse/:id Get characters by house
-     * @apiVersion 0.0.1
-     * @apiName GetCharactersByHouse
-     * @apiGroup Characters
-     *
-      * @apiSuccessExample {json} Success-Response
-      *     HTTP/1.1 200 OK
-      *     {"message" : "Success", "data" : characters}
-     *
-     * @apiError (404) NotFound No characters with that house existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No characters with that house existing!", "data": err };
-     *
-     * @apiDescription Get all characters which are in houseName
-     */
+
     getCharactersByHouse: function (req, res) {
         var charactersStore = require('../stores/characters');
         charactersStore.getCharactersByHouse(req.params.id , function (success, message) {
@@ -255,30 +250,12 @@ module.exports = {
             }else if (success === 2){
                 res.status(404).json({message: 'Error', error: message});
             }else{
-		res.status(404).json({message: 'Failure: No characters with that house are existing.', data: message});
-	    } 
+                res.status(404).json({message: 'Failure: No characters with that house are existing.', data: message});
+            }
         });
     },
 
 
-
-     /**
-     * @api {get} /api/character/byCulture/:id Get characters by culture
-     * @apiVersion 0.0.1
-     * @apiName GetCharactersByCulture
-     * @apiGroup Characters
-     *
-      * @apiSuccessExample {json} Success-Response
-      *     HTTP/1.1 200 OK
-      *     {"message" : "Success", "data" : characters}
-     *
-     * @apiError (404) NotFound No characters with that culture existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No characters with that culture existing!", "data": err };
-     *
-     * @apiDescription Get all characters which have the same culture
-     */
     getCharactersByCulture: function (req, res) {
         var charactersStore = require('../stores/characters');
         charactersStore.getCharactersByCulture(req.params.id , function (success, message) {
@@ -287,30 +264,11 @@ module.exports = {
             }else if (success === 2){
                 res.status(404).json({message: 'Error', error: message});
             }else{
-		res.status(404).json({message: 'Failure: No characters with that culture are existing.', data: message});
-	    } 
+                res.status(404).json({message: 'Failure: No characters with that culture are existing.', data: message});
+            }
         });
     },
 
-
-
-    /**
-     * @api {get} /api/character/byGender/:id Get characters by gender
-     * @apiVersion 0.0.1
-     * @apiName GetCharactersByGender
-     * @apiGroup Characters
-     *
-      * @apiSuccessExample {json} Success-Response
-      *     HTTP/1.1 200 OK
-      *     {"message" : "Success", "data" : characters}
-     *
-     * @apiError (404) NotFound No characters with that gender existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No characters with that gender existing!", "data": err };
-     *
-     * @apiDescription Get all characters which have the same culture
-     */
     getCharactersByGender: function (req, res) {
         var charactersStore = require('../stores/characters');
         charactersStore.getCharactersByGender(req.params.id , function (success, message) {
@@ -319,10 +277,10 @@ module.exports = {
             }else if (success === 2){
                 res.status(404).json({message: 'Error', error: message});
             }else if (success == 4){
-	    	res.status(404).json({message: 'No valid gender', error: message});
-	    }else{
-		res.status(404).json({message: 'Failure: No characters with that gender are existing.', data: message});
-	    } 
+                res.status(404).json({message: 'No valid gender', error: message});
+            }else{
+                res.status(404).json({message: 'Failure: No characters with that gender are existing.', data: message});
+            }
         });
     }
 
