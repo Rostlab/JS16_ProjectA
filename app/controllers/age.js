@@ -3,7 +3,9 @@ module.exports = {
      * @api {post} /api/ages/ Add age
      * @apiVersion 0.0.1
      * @apiName AddAge
-     * @apiDescription Add an age to the collection.
+     * @apiDescription Add an age to the collection.<br><br>
+     * The name property is required.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/age.js" target="_blank">age model</a>.
      * @apiGroup Ages
      *
      * @apiHeaderExample {json} Header-Example
@@ -95,7 +97,8 @@ module.exports = {
      *     HTTP/1.1 400
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
-     * @apiDescription Find ages matching the search criteria.
+     * @apiDescription Find ages matching the search criteria.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/age.js" target="_blank">age model</a>.
      */
     get: function(req,res) {
         var agesStore = require('../stores/ages');
@@ -124,7 +127,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No age with that data existing!", "data": err };
      *
-     * @apiDescription Return the age named :name
+     * @apiDescription Return the age named :name.
      */
     getByName: function(req, res) {
         var agesStore = require('../stores/ages');
@@ -152,7 +155,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No age with that data existing!", "data": err };
      *
-     * @apiDescription Return the age with the specific :id
+     * @apiDescription Return the age with the specific :id.
      */
     getById: function(req, res) {
         var agesStore = require('../stores/ages');
@@ -171,6 +174,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditAges
      * @apiGroup Ages
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"startDate": -12} // change the startDate for the age with the id = :id
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -191,7 +197,8 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Error", "error": err };
      *
-     * @apiDescription Update an age with the id :id with some new information.
+     * @apiDescription Update an age with the id :id with some new information.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/age.js" target="_blank">age model</a>.
      */
     edit: function(req, res) {
         var agesStore = require('../stores/ages');
@@ -223,7 +230,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No age with that data existing!", "data": err };
      *
-     * @apiDescription Delete the age with the :id
+     * @apiDescription Delete the age with the :id.
      */
     remove: function(req,res) {
         var agesStore = require('../stores/ages');
