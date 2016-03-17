@@ -2,7 +2,7 @@
     "use strict";
     var age = require(__appbase + 'models/age');
     var character = require(__appbase + 'models/character');
-    var cities = require(__appbase + 'models/cities');
+    var cities = require(__appbase + 'models/city');
     var continent = require(__appbase + 'models/continent');
     var culture = require(__appbase + 'models/culture');
     var episode = require(__appbase + 'models/episode');
