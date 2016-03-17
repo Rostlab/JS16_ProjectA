@@ -467,69 +467,6 @@ module.exports = {
         });
     },
 
-    /**
-     * @api {delete} /api/geography/regions/byContinent/:id Get regions by continent
-     * @apiVersion 0.0.1
-     * @apiName GetRegionsByContinent
-     * @apiGroup Regions
-     *
-      * @apiSuccessExample {json} Success-Response
-      *     HTTP/1.1 200 OK
-      *     {"message" : "Success", "data" : region}
-     *
-     * @apiError (404) NotFound No regions within that continent existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No regions within that continent existing!", "data": err };
-     *
-     * @apiDescription Get all regions which have the same continent
-     */
-    getRegionsByContinent: function (req, res) {
-        var regionsStore = require('../stores/regions');
-        regionsStore.getRegionsByContinent(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-	    }else{
-		res.status(404).json({message: 'Failure: No regions within that continent are existing.', data: message});
-	    } 
-        });
-    },
-
-
-    /**
-     * @api {delete} /api/geography/regions/byCulture/:id Get regions by culture
-     * @apiVersion 0.0.1
-     * @apiName GetRegionsByCulture
-     * @apiGroup Regions
-     *
-      * @apiSuccessExample {json} Success-Response
-      *     HTTP/1.1 200 OK
-      *     {"message" : "Success", "data" : region}
-     *
-     * @apiError (404) NotFound No regions within that culture existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No regions within that culture existing!", "data": err };
-     *
-     * @apiDescription Get all regions which have the same culture
-     */
-    getRegionsByCulture: function (req, res) {
-        var regionsStore = require('../stores/regions');
-        regionsStore.getRegionsByCulture(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-	    }else{
-		res.status(404).json({message: 'Failure: No regions within that culture are existing.', data: message});
-	    } 
-        });
-    },
-
-
-
 
 /*
  * cultures
@@ -903,69 +840,6 @@ module.exports = {
             else
                 res.status(404).json({ message: 'Failure. No cities with that data existing!',data: message });
         });
-    },
-
-    /**
-     * @api {get} /api/cities/byContinent/:id Get cities by continent
-     * @apiVersion 0.0.1
-     * @apiName getCitiesByContinent
-     * @apiGroup City
-     *
-     * @apiSuccessExample {json} Success-Response
-     *     HTTP/1.1 200 OK
-     *     {"message" : "Success"}
-     *
-     * @apiError (404) NotFound No city with that data existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No city with that data existing!", "data": err };
-     *
-     * @apiDescription Get cities by continent
-     */
-    getCitiesByContinent: function(req,res) {
-        var citiesStore = require('../stores/cities');
-        citiesStore.getCitiesByContinent(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-        }else{
-        res.status(404).json({message: 'Failure: No cities within that continent are existing.', data: message});
-        } 
-        });
-    },
-
-    /**
-     * @api {get} /api/cities/byCulture/:id Get cities by culture
-     * @apiVersion 0.0.1
-     * @apiName getCitiesByCulture
-     * @apiGroup City
-     *
-     * @apiSuccessExample {json} Success-Response
-     *     HTTP/1.1 200 OK
-     *     {"message" : "Success"}
-     *
-     * @apiError (404) NotFound No city with that data existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No city with that data existing!", "data": err };
-     *
-     * @apiDescription Delete the city with the :id
-     */
-    getCitiesByCulture: function(req,res) {
-        var citiesStore = require('../stores/cities');
-        citiesStore.getCitiesByCulture(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }
-            else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-            }
-            else {
-                res.status(404).json({message: 'Failure: No cities within that culture are existing.', data: message});
-            } 
-        });
-
     },
 
     /**
