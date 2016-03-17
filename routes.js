@@ -104,8 +104,6 @@ module.exports = function (app, router) {
     router.get('/regions', geographyController.getAllRegions);
     router.get('/regions/:name', geographyController.getRegionByName);
     router.get('/regions/byId/:id', geographyController.getRegionById);
-    router.get('/regions/byContinent/:id', geographyController.getRegionsByContinent);
-    router.get('/regions/byCulture/:id', geographyController.getRegionsByCulture);
     router.delete('/regions/:id', geographyController.removeRegion);
     router.put('/regions/:id', geographyController.editRegion);
 
@@ -114,8 +112,6 @@ module.exports = function (app, router) {
     router.get('/cities', geographyController.getAllCities);
     router.get('/cities/:name', geographyController.getCityByName);
     router.get('/cities/byId/:id', geographyController.getCityById);
-    router.get('/cities/byContinent/:id', geographyController.getCitiesByContinent);
-    router.get('/cities/byCulture/:id', geographyController.getCitiesByCulture);
     router.delete('/cities/:id', geographyController.removeCity);
     router.put('/cities/:id', geographyController.editCity);
 

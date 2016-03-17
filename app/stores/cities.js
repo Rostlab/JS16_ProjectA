@@ -141,42 +141,4 @@ module.exports = {
             }
         });
     },
-
-
-
-    //returns all citiess of one continent
-    getCitiesByContinent: function(continentName, callback){
-	Cities.find({'continent' : continentName}, function(err, obj){
-	   if(err){
-		callback(2, err);
-	   }
-	   else if (obj.length === 0){
-		callback(3, continentName);
-	   }
-	   else{
-		callback(1, obj);
-	   }
-	});	
-
-
-    },
-
-
-    //returns all citiess of one culture
-    getCitiesByCulture: function(cultureName, callback){
-	Cities.find({'cultures' : cultureName}, function(err, obj){
-	   if(err){
-		callback(2, err);
-	   }
-	   else if (obj.length === 0){
-		callback(3, cultureName);
-	   }
-	   else{
-		callback(1, obj);
-	   }
-	});	
-
-
-    },
-
 };
