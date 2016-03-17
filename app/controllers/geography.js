@@ -7,6 +7,7 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName Add continents
      * @apiDescription Add a continent to the collection.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/continent.js" target="_blank">continent model</a>.
      * @apiGroup Continents
      *
      * @apiHeaderExample {json} Header-Example
@@ -62,6 +63,7 @@ module.exports = {
      *     []
      *
      * @apiDescription Get all the continents currently stored.
+     *
      */
     getAllContinents: function (req, res) {
         var continentsStore = require('../stores/continents');
@@ -76,6 +78,10 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName FindContinents
      * @apiGroup Continents
+     *
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"cardinalDirection": "west"} // get the contintent in the west of the known world.
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -95,6 +101,7 @@ module.exports = {
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
      * @apiDescription Find continents matching the search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/continent.js" target="_blank">continent model</a>.
      */
     getContinents: function(req,res) {
         var continentsStore = require('../stores/continents');
@@ -190,6 +197,7 @@ module.exports = {
      *      { "message": "Error", "error": err };
      *
      * @apiDescription Update an continent with the id :id with some new information.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/continent.js" target="_blank">continent model</a>.
      */
     editContinent: function(req, res) {
         var continentsStore = require('../stores/continents');
@@ -221,7 +229,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No continent with that data existing!", "data": err };
      *
-     * @apiDescription Delete the continent with the :id
+     * @apiDescription Remove the continent with the :id.
      */
     removeContinent: function(req,res) {
         var continentsStore = require('../stores/continents');
@@ -240,10 +248,11 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName Add regions
      * @apiDescription Add a region to the collection.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/region.js" target="_blank">region model</a>.
      * @apiGroup Regions
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "Germany"}
+     * {"name": "Crownland"} // add crownland region
      *
      * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
@@ -310,6 +319,9 @@ module.exports = {
      * @apiName FindRegions
      * @apiGroup Regions
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"continent": "Westeros"} // get all regions in westeros.
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : region}
@@ -328,6 +340,7 @@ module.exports = {
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
      * @apiDescription Find regions matching the search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/region.js" target="_blank">region model</a>.
      */
     getRegions: function(req,res) {
         var regionsStore = require('../stores/regions');
@@ -404,6 +417,10 @@ module.exports = {
      * @apiName EditRegion
      * @apiGroup Regions
      *
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"continent": "Esos"} // change the continent of the region to esos.
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : region}
@@ -424,6 +441,7 @@ module.exports = {
      *      { "message": "Error", "error": err };
      *
      * @apiDescription Update an region with the id :id with some new information.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/region.js" target="_blank">region model</a>.
      */
     editRegion: function(req, res) {
         var regionsStore = require('../stores/regions');
@@ -476,10 +494,11 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName Add cultures
      * @apiDescription Add a culture to the collection.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/culture.js" target="_blank">culture model</a>.
      * @apiGroup Cultures
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "European"}
+     * {"name": "Warg"}
      *
      * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
@@ -503,7 +522,6 @@ module.exports = {
      *          "message": "Error. A value for a property is not valid to the underlying schema.",
      *          "error": mongooseError
      *     }
-     *
      */
     addCulture: function (req, res) {
         var culturesStore = require('../stores/cultures');
@@ -546,6 +564,9 @@ module.exports = {
      * @apiName FindCultures
      * @apiGroup Cultures
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Warg"}
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : culture}
@@ -564,6 +585,7 @@ module.exports = {
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
      * @apiDescription Find cultures matching the search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/culture.js" target="_blank">culture model</a>.
      */
     getCultures: function(req,res) {
         var culturesStore = require('../stores/cultures');
@@ -620,7 +642,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No culture with that data existing!", "data": err };
      *
-     * @apiDescription Return the culture with the specific :id
+     * @apiDescription Return the culture with the specific :id.
      */
     getCultureById: function(req, res) {
         var culturesStore = require('../stores/cultures');
@@ -638,6 +660,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditCulture
      * @apiGroup Cultures
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Bastardy"} // change name to bastardy
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -659,6 +684,7 @@ module.exports = {
      *      { "message": "Error", "error": err };
      *
      * @apiDescription Update an culture with the id :id with some new information.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/culture.js" target="_blank">culture model</a>.
      */
     editCulture: function(req, res) {
         var culturesStore = require('../stores/cultures');
@@ -690,7 +716,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No culture with that data existing!", "data": err };
      *
-     * @apiDescription Delete the culture with the :id
+     * @apiDescription Delete the culture with the :id.
      */
     removeCulture: function(req,res) {
         var culturesStore = require('../stores/cultures');
@@ -708,6 +734,9 @@ module.exports = {
      * @apiName addCity
      * @apiGroup City
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Winterfell"}
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success"}
@@ -717,7 +746,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Add a new city
+     * @apiDescription Add a new city.
      */
     addCity: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -750,7 +779,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Find a city
+     * @apiDescription Find a city with given search criteria.
      */
     getCities: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -779,7 +808,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Get all cities
+     * @apiDescription Get all cities.
      */
     getAllCities: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -803,7 +832,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No cities with that data existing!", "data": err };
      *
-     * @apiDescription Find a city by name
+     * @apiDescription Find a city by the name :name.
      */
     getCityByName: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -830,7 +859,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Get city by :id
+     * @apiDescription Get city by the id :id.
      */
     getCityById: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -857,7 +886,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Delete the city with the :id
+     * @apiDescription Delete the city with the id :id.
      */
     removeCity: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -875,6 +904,9 @@ module.exports = {
      * @apiName editCity
      * @apiGroup City
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"region": "Crownland"} // Change region to crownland.
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success"}
@@ -884,7 +916,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
-     * @apiDescription Edit the city with the :id
+     * @apiDescription Edit the city with the :id.
      */
     editCity: function(req,res) {
         var citiesStore = require('../stores/cities');
