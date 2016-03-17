@@ -1,4 +1,4 @@
-var Cities = require(__appbase + 'models/cities');
+var Cities = require(__appbase + 'models/city');
 
 module.exports = {
 
