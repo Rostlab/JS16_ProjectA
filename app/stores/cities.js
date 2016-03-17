@@ -3,31 +3,30 @@ var City = require(__appbase + 'models/city');
 module.exports = {
 
     add: function (data, callback) {
-        var cities = new City();
+        var city = new City();
 
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
-                callback(2,key);
+                callback(2, key);
                 return;
             }
-            else
-            {
-                cities[key] = data[key];
+            else {
+                city[key] = data[key];
             }
         }
 
-        cities.save(function(err) {
-            if (err){
-                callback(3,err);
+        city.save(function (err) {
+            if (err) {
+                callback(3, err);
             }
             else {
-                callback(1,cities);
+                callback(1, city);
             }
         });
     },
 
-    get: function(data, callback) {
+    get: function (data, callback) {
         for (var key in data) {
 
             // check if POST data matches Schema
@@ -39,7 +38,7 @@ module.exports = {
             // priority range queries:
             // Find x < c
             if (key == 'priority') {
-                var sub = data[key].substring(0,2);
+                var sub = data[key].substring(0, 2);
                 if (sub == '>=') {
                     data[key] = {$gte: data[key].substring(2)};
                 }
@@ -55,53 +54,55 @@ module.exports = {
             }
         }
 
-        City.find(data, function(err,obj)
-        {
-            if(obj.length === 0)
-                callback(3,data);
-            else
+        City.find(data, function (err, obj) {
+            if (obj.length === 0) {
+                callback(3, data);
+            } else {
                 callback(1, obj);
-        });
-    },
-
-    getByName: function(name, callback) {
-        this.get({'name':name},function(success,message){
-            if(success == 1) {
-                callback(success,message[0]);
-            }
-            else {
-                callback(success,message);
             }
         });
     },
 
-    getById: function(id, callback) {
-        this.get({'_id': id},function(success,message){
-            if(success == 1) {
-                callback(success,message[0]);
+    getByName: function (name, callback) {
+        this.get({'name': name}, function (success, message) {
+            if (success == 1) {
+                callback(success, message[0]);
             }
             else {
-                callback(success,message);
+                callback(success, message);
+            }
+        });
+    },
+
+    getById: function (id, callback) {
+        this.get({'_id': id}, function (success, message) {
+            if (success == 1) {
+                callback(success, message[0]);
+            }
+            else {
+                callback(success, message);
             }
         });
     },
 
     getAll: function (callback) {
-        City.find(function (err, citiess) {
-            if (err)
-                callback(false,err);
-            else
-                callback(true,citiess);
+        City.find(function (err, cities) {
+            if (err) {
+                callback(false, err);
+            } else {
+                callback(true, cities);
+            }
         });
     },
 
     remove: function (id, callback) {
-        City.remove({_id: id}, function(err, resp) {
+        City.remove({_id: id}, function (err, resp) {
             // more than zero entries removed?
-            if (resp.result.n > 0)
+            if (resp.result.n > 0) {
                 callback(true);
-            else
+            } else {
                 callback(false);
+            }
         });
 
     },
@@ -110,25 +111,25 @@ module.exports = {
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
-                callback(4,key);
+                callback(4, key);
                 return;
             }
         }
 
-        this.getById(id,function(success, cities) {
+        this.getById(id, function (success, cities) {
             // Cities exists
-            if(success == 1) {
+            if (success == 1) {
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
                         City[key] = data[key];
                     }
                 }
-                City.save(function(err) {
-                    if (err){
-                        callback(3,err);
+                City.save(function (err) {
+                    if (err) {
+                        callback(3, err);
                     }
                     else {
-                        callback(1,City);
+                        callback(1, City);
                     }
                 });
             }
