@@ -241,47 +241,4 @@ module.exports = {
         });
     },
 
-
-    getCharactersByHouse: function (req, res) {
-        var charactersStore = require('../stores/characters');
-        charactersStore.getCharactersByHouse(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-            }else{
-                res.status(404).json({message: 'Failure: No characters with that house are existing.', data: message});
-            }
-        });
-    },
-
-
-    getCharactersByCulture: function (req, res) {
-        var charactersStore = require('../stores/characters');
-        charactersStore.getCharactersByCulture(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-            }else{
-                res.status(404).json({message: 'Failure: No characters with that culture are existing.', data: message});
-            }
-        });
-    },
-
-    getCharactersByGender: function (req, res) {
-        var charactersStore = require('../stores/characters');
-        charactersStore.getCharactersByGender(req.params.id , function (success, message) {
-            if (success === 1) {
-                res.status(200).json({message: 'Success', data: obj});
-            }else if (success === 2){
-                res.status(404).json({message: 'Error', error: message});
-            }else if (success == 4){
-                res.status(404).json({message: 'No valid gender', error: message});
-            }else{
-                res.status(404).json({message: 'Failure: No characters with that gender are existing.', data: message});
-            }
-        });
-    }
-
 };
