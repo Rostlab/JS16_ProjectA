@@ -1,13 +1,13 @@
-var Cities = require(__appbase + 'models/cities');
+var City = require(__appbase + 'models/city');
 
 module.exports = {
 
     add: function (data, callback) {
-        var cities = new Cities();
+        var cities = new City();
 
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Cities.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(2,key);
                 return;
             }
@@ -31,7 +31,7 @@ module.exports = {
         for (var key in data) {
 
             // check if POST data matches Schema
-            if (data.hasOwnProperty(key) && !Cities.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(2, key);
                 return;
             }
@@ -55,7 +55,7 @@ module.exports = {
             }
         }
 
-        Cities.find(data, function(err,obj)
+        City.find(data, function(err,obj)
         {
             if(obj.length === 0)
                 callback(3,data);
@@ -87,7 +87,7 @@ module.exports = {
     },
 
     getAll: function (callback) {
-        Cities.find(function (err, citiess) {
+        City.find(function (err, citiess) {
             if (err)
                 callback(false,err);
             else
@@ -96,7 +96,7 @@ module.exports = {
     },
 
     remove: function (id, callback) {
-        Cities.remove({_id: id}, function(err, resp) {
+        City.remove({_id: id}, function(err, resp) {
             // more than zero entries removed?
             if (resp.result.n > 0)
                 callback(true);
@@ -109,7 +109,7 @@ module.exports = {
     edit: function (id, data, callback) {
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Cities.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(4,key);
                 return;
             }
@@ -120,15 +120,15 @@ module.exports = {
             if(success == 1) {
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
-                        Cities[key] = data[key];
+                        City[key] = data[key];
                     }
                 }
-                Cities.save(function(err) {
+                City.save(function(err) {
                     if (err){
                         callback(3,err);
                     }
                     else {
-                        callback(1,Cities);
+                        callback(1,City);
                     }
                 });
             }
