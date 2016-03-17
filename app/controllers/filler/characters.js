@@ -66,8 +66,6 @@ module.exports = {
                     character[z] = 0 - Math.abs(character[z].replace(/\D/g, ''));
                 }
                 else {
-                    // TODO: it is the name of an age, which has to be transformed into a date
-
                     delete character[z]; // ignore it for now
                 }
             }

@@ -7,6 +7,11 @@ module.exports = function (app, router) {
     router.get('/houses/filler', housesFiller.fill);
     router.delete('/houses/filler', housesFiller.clearAll);
 
+
+    var citiesFiller = require(__appbase + 'controllers/filler/cities');
+    router.get('/cities/filler', citiesFiller.fill);
+    router.delete('/cities/filler', citiesFiller.clearAll);
+
     var continentsFiller = require(__appbase + 'controllers/filler/continents');
     router.get('/continents/filler', continentsFiller.fill);
     router.delete('/continents/filler', continentsFiller.clearAll);
