@@ -1,6 +1,6 @@
 var Scraper = require(__appbase + 'controllers/scraper');
-var Character = require(__appbase + 'models/character');
-var Characters = require(__appbase + 'stores/characters');
+var Culture = require(__appbase + 'models/culture');
+var Cultures = require(__appbase + 'stores/cultures');
 var jsonfile = require('jsonfile');
 var async = require('async');
 var ttl = require(__appbase + '../cfg/config.json');
@@ -14,9 +14,9 @@ module.exports = {
             console.log('Filling done =).');
         };
 
-        var file = __appbase + '../wikiData/characters.json';
+        var file = __appbase + '../wikiData/cultures.json';
         var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getCharacters, function (err, obj) {
+            Scraper.scrapToFile(file, Scraper.getCultures, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {
@@ -32,7 +32,7 @@ module.exports = {
                     console.log('Cache file outdated.');
                     scrape();
                 } else {
-                    console.log('Characters from cache file "'+file+'". Not scrapped from wiki.');
+                    console.log('Cultures from cache file "'+file+'". Not scrapped from wiki.');
                     module.exports.insertToDb(obj.data,afterInsertion);
                 }
             } else {
@@ -41,56 +41,42 @@ module.exports = {
         });
     },
     clearAll: function(req,res) {
-        Character.remove({}, function(err) {
-            console.log('Characters collection removed');
+        Culture.remove({}, function(err) {
+            console.log('Cultures collection removed');
         });
     },
-    matchToModel: function(character) {
+    matchToModel: function(culture) {
         // go through the properties of the house
-        for(var z in character) {
+        for(var z in culture) {
             // ignore references for now, later gather the ids and edit the entries
-            if ( z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
-                delete character[z];
+            if (!Culture.schema.paths.hasOwnProperty(z)) {
+                delete culture[z];
             }
 
+            // TODO: startDate, endDate, predescessor, successor
             // remove spaces and html tags
-            if (typeof character[z] == 'string') {
-                character[z] = character[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
-            }
-            // translate to a number
-            if (z == 'dateOfBirth' || z == 'dateOfDeath') {
-                if (character[z].indexOf('AC') > -1 || character[z].indexOf('ac') > -1) {
-                    character[z] = Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else if (character[z].indexOf('BC') > -1 || character[z].indexOf('bc') > -1) {
-                    character[z] = 0 - Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else {
-                    // TODO: it is the name of an age, which has to be transformed into a date
-
-                    delete character[z]; // ignore it for now
-                }
+            if (typeof culture[z] == 'string') {
+                culture[z] = culture[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
             }
         }
 
-        return character;
+        return culture;
     },
-    insertToDb: function(characters, callback) {
+    insertToDb: function(cultures, callback) {
         console.log('Inserting into db..');
         var i = 0;
 
         // iterate through houses
-        async.forEach(characters, function (character, _callback) {
+        async.forEach(cultures, function (culture, _callback) {
                 // name is required
-                if (!character.hasOwnProperty('name')) {
+                if (!culture.hasOwnProperty('name')) {
                     _callback();
                     return;
                 }
-
-                var filler = require(__appbase + 'controllers/filler/characters');
-                character = filler.matchToModel(character);
+                var filler = require(__appbase + 'controllers/filler/cultures');
+                culture = filler.matchToModel(culture);
                 // add house to db
-                Characters.add(character, function (success, data) {
+                Cultures.add(culture, function (success, data) {
                     if (success != 1) {
                         console.log('Problem:' + data);
                     }
@@ -103,8 +89,5 @@ module.exports = {
             function (err) {
                 callback(true);
             });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
     }
 };

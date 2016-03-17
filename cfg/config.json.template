@@ -13,7 +13,8 @@
         "access_token_secret": "ACCESS_TOKEN_SECRET HERE"
     },
     "server":{
-        "port": "8080"
+        "port": "8080",
+        "accessToken": "123secure"
     },
     "TTLWikiCache" : 7200000
 }

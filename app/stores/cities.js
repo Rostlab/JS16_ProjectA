@@ -1,60 +1,60 @@
-var Age = require(__appbase + 'models/age');
+var City = require(__appbase + 'models/city');
 
 module.exports = {
 
     add: function (data, callback) {
-        var age = new Age();
+        var city = new City();
 
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Age.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(2, key);
                 return;
             }
             else {
-                age[key] = data[key];
+                city[key] = data[key];
             }
         }
 
-        age.save(function (err) {
+        city.save(function (err) {
             if (err) {
                 callback(3, err);
             }
             else {
-                callback(1, age);
+                callback(1, city);
             }
         });
     },
 
     get: function (data, callback) {
-        var rangeQuery = function (data, key) {
-            var sub = data[key].substring(0, 2);
-            if (sub == '>=') {
-                data[key] = {$gte: data[key].substring(2)};
-            } else if (sub == '<=') {
-                data[key] = {$lte: data[key].substring(2)};
-            } else if (data[key].indexOf('>') > -1) {
-                data[key] = {$gt: data[key].replace('>', '')};
-            } else if (data[key].indexOf('<') > -1) {
-                data[key] = {$lt: data[key].replace('<', '')};
-            }
-
-        };
-
-        // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Age.schema.paths.hasOwnProperty(key)) {
+
+            // check if POST data matches Schema
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(2, key);
                 return;
             }
 
-            //Allow dates to be ranges
-            if (key == 'startDate' || key == 'endDate') {
-                rangeQuery(data, key);
+            // priority range queries:
+            // Find x < c
+            if (key == 'priority') {
+                var sub = data[key].substring(0, 2);
+                if (sub == '>=') {
+                    data[key] = {$gte: data[key].substring(2)};
+                }
+                else if (sub == '<=') {
+                    data[key] = {$lte: data[key].substring(2)};
+                }
+                else if (data[key].indexOf('>') > -1) {
+                    data[key] = {$gt: data[key].replace('>', '')};
+                }
+                else if (data[key].indexOf('<') > -1) {
+                    data[key] = {$lt: data[key].replace('<', '')};
+                }
             }
         }
 
-        Age.find(data, function (err, obj) {
+        City.find(data, function (err, obj) {
             if (obj.length === 0) {
                 callback(3, data);
             } else {
@@ -86,17 +86,17 @@ module.exports = {
     },
 
     getAll: function (callback) {
-        Age.find(function (err, ages) {
+        City.find(function (err, cities) {
             if (err) {
                 callback(false, err);
             } else {
-                callback(true, ages);
+                callback(true, cities);
             }
         });
     },
 
     remove: function (id, callback) {
-        Age.remove({_id: id}, function (err, resp) {
+        City.remove({_id: id}, function (err, resp) {
             // more than zero entries removed?
             if (resp.result.n > 0) {
                 callback(true);
@@ -110,35 +110,35 @@ module.exports = {
     edit: function (id, data, callback) {
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Age.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !City.schema.paths.hasOwnProperty(key)) {
                 callback(4, key);
                 return;
             }
         }
 
-        this.getById(id, function (success, age) {
-            // Age exists
+        this.getById(id, function (success, cities) {
+            // Cities exists
             if (success == 1) {
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
-                        Age[key] = data[key];
+                        City[key] = data[key];
                     }
                 }
-                Age.save(function (err) {
+                City.save(function (err) {
                     if (err) {
                         callback(3, err);
                     }
                     else {
-                        callback(1, Age);
+                        callback(1, City);
                     }
                 });
             }
-            // Age is not existing
+            // Cities is not existing
             else if (success == 3) {
                 callback(2, id);
             }
             else {
-                callback(false, age);
+                callback(false, cities);
             }
         });
     },

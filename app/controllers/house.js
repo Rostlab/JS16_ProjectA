@@ -4,8 +4,8 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName AddHouse
      * @apiDescription Add a house to the collection.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
-     *
      * @apiHeaderExample {json} Header-Example
      * {"name": "Stark"}
      *
@@ -84,11 +84,12 @@ module.exports = {
      * @api {post} /api/houses/ Find houses
      * @apiVersion 0.0.1
      * @apiName FindHouses
-     * @apiDescription Find house by query.
+     * @apiDescription Find house by search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
      *
      * @apiHeaderExample {json} Header-Example
-     * {"words": "Hear Me Roar!"}
+     * {"region": "Crownlands"} // Find houses in the region crownloands.
      *
      * @apiSuccessExample {json} Success
      * HTTP/1.1 200 OK
@@ -140,7 +141,7 @@ module.exports = {
      * @api {get} /api/houses/:name Get house by name
      * @apiVersion 0.0.1
      * @apiName GetHouseByName
-     * @apiDescription Get house by name.
+     * @apiDescription Return the house named :name.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
@@ -184,7 +185,7 @@ module.exports = {
      * @api {get} /api/houses/byId/:id Get house by id
      * @apiVersion 0.0.1
      * @apiName GetHouseById
-     * @apiDescription Get house by id.
+     * @apiDescription Return the house with the id :id.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
@@ -229,10 +230,11 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditHouse
      * @apiDescription Edit a house.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "Stark"}
+     * {"words": "Fire and Blood"}
      *
      * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
@@ -292,7 +294,7 @@ module.exports = {
      * @api {delete} /api/houses/:id Remove house
      * @apiVersion 0.0.1
      * @apiName RemoveHouse
-     * @apiDescription Remove house by id.
+     * @apiDescription Remove the house with the id :id.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
@@ -316,113 +318,6 @@ module.exports = {
                 res.status(200).json({ message: 'Success.' });
             else
                 res.status(404).json({ message: 'Failure: No house with that id is existing.', id: req.params.houseId });
-        });
-    },
-
-    /**
-     * @api {post} /api/houseTypes/ Add houseType
-     * @apiVersion 0.0.1
-     * @apiName AddHouseType
-     * @apiDescription Add a houseType to the collection.
-     * @apiGroup HouseTypes
-     *
-     * @apiHeaderExample {json} Header-Example
-     * {"name": "Distinct House"}
-     *
-     * @apiSuccessExample {json} Success
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "message": "Success",
-     *       "data": newDbEntry
-     *     }
-     *
-     * @apiError (400) PropertyInvalid A property of the request is not valid to the underlying schema.
-     * @apiErrorExample {json} PropertyInvalid
-     *     HTTP/1.1 400
-     *     {
-     *          "message": "Error. Property not valid to schema.",
-     *          "errorProperty": prop
-     *     }
-     *
-     * @apiError (400) ValidationError A value for a property is not valid to the underlying schema.
-     * @apiErrorExample {json} ValidationError
-     *     HTTP/1.1 400
-     *     {
-     *          "message": "Error.",
-     *          "error": mongooseError
-     *     }
-     *
-     */
-    addType: function (req, res) {
-        var housesStore = require('../stores/houses');
-        housesStore.addType(req.body,function(success, message) {
-            if(success == 1)
-                res.status(201).json({ message: 'Success', data: message });
-            else if(success == 2)
-                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
-            else
-                res.status(400).json({ message: 'Error.', error: message });
-        });
-    },
-
-    /**
-     * @api {get} /api/houseTypes/ Get all houseTypes
-     * @apiVersion 0.0.1
-     * @apiName GetAllHouseTypes
-     * @apiDescription Get all houseTypes.
-     * @apiGroup HouseTypes
-     *
-     * @apiSuccessExample {json} Success
-     * HTTP/1.1 200 OK
-     * [
-     *   {
-     *     "_id": "56d20199979b3caaff90f182",
-     *     "name": "Exiled Great house",
-     *     "__v": 0
-     *   }
-     * ]
-     *
-     * @apiSuccessExample {json} No db-entries:
-     * HTTP/1.1 200 OK
-     * [
-     * ]
-     */
-    getAllTypes: function (req, res) {
-        var housesStore = require('../stores/houses');
-
-        housesStore.getAllTypes(function(success,types) {
-            res.status(200).json(types);
-        });
-    },
-
-    /**
-     * @api {delete} /api/houseTypes/:id Remove houseType
-     * @apiVersion 0.0.1
-     * @apiName RemoveHouseType
-     * @apiDescription Remove houseType by id.
-     * @apiGroup HouseTypes
-     *
-     * @apiSuccessExample {json} Success
-     * HTTP/1.1 200 OK
-     * {
-     *    "message": "Success"
-     * }
-     *
-     * @apiError (404) NotFound No houseType with that data existing!
-     * @apiErrorExample {json} NotFound
-     * HTTP/1.1 404
-     * {
-     *     "message": "Failure: No houseType with that id is existing.",
-     *     "id": "56d5f1e8756d3131130e5424"
-     * }
-     */
-    removeType: function(req,res) {
-        var housesStore = require('../stores/houses');
-        housesStore.removeType(req.params.houseTypeId,function(success) {
-            if(success === true)
-                res.status(200).json({ message: 'Success.' });
-            else
-                res.status(404).json({ message: 'Failure: No houseType with that id is existing.', id: req.params.houseTypeId });
         });
     },
 };

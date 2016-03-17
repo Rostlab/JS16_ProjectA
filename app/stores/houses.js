@@ -1,5 +1,4 @@
 var House = require(__appbase + 'models/house');
-var HouseType = require(__appbase + 'models/houseType');
 
 module.exports = {
 
@@ -126,46 +125,4 @@ module.exports = {
         });
     },
 
-    addType: function(data,callback) {
-        var entry = new HouseType();
-
-        // check if POST data matches Schema
-        for (var key in data) {
-            if (data.hasOwnProperty(key) && !HouseType.schema.paths.hasOwnProperty(key)) {
-                callback(2,key);
-                return;
-            }
-            else
-            {
-                entry[key] = data[key];
-            }
-        }
-
-        entry.save(function(err) {
-            if (err){
-                callback(3,err);
-            }
-            else {
-                callback(1,entry);
-            }
-        });
-    },
-    getAllTypes: function (callback) {
-        HouseType.find(function (err, types) {
-            if (err)
-                callback(false,err);
-            else
-                callback(true,types);
-        });
-    },
-
-    removeType: function (id, callback) {
-        HouseType.remove({_id: id},function(err, resp) {
-            // more than zero entries removed?
-            if (resp.result.n > 0)
-                callback(true);
-            else
-                callback(false);
-        });
-    }
 };

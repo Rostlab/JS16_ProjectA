@@ -3,7 +3,9 @@ module.exports = {
      * @api {post} /api/events/ Add event
      * @apiVersion 0.0.1
      * @apiName AddEvent
-     * @apiDescription Add a event to the collection.
+     * @apiDescription Add a event to the collection. <br>
+     * The name property is required.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/event.js" target="_blank">event model</a>.
      * @apiGroup Events
      *
      * @apiHeaderExample {json} Header-Example
@@ -73,10 +75,13 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/events/find Find event
+     * @api {post} /api/events/find Find event
      * @apiVersion 0.0.1
      * @apiName FindEvents
      * @apiGroup Events
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"date": -34} // Find events in 34 BC.
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -95,7 +100,8 @@ module.exports = {
      *     HTTP/1.1 400
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
-     * @apiDescription Find events matching the search criteria.
+     * @apiDescription Find events matching the search criteria.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/event.js" target="_blank">event model</a>.
      */
     get: function(req,res) {
         var eventsStore = require('../stores/events');
@@ -124,7 +130,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No event with that data existing!", "data": err };
      *
-     * @apiDescription Return the event named :name
+     * @apiDescription Return the event named :name.
      */
     getByName: function(req, res) {
         var eventsStore = require('../stores/events');
@@ -152,7 +158,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No event with that data existing!", "data": err };
      *
-     * @apiDescription Return the event with the specific :id
+     * @apiDescription Return the event with the specific :id.
      */
     getById: function(req, res) {
         var eventsStore = require('../stores/events');
@@ -171,6 +177,9 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditEvents
      * @apiGroup Events
+     *
+     * @apiHeaderExample {json} Header-Example
+     * {"date": 21} // change date to 21 AC
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -191,7 +200,8 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Error", "error": err };
      *
-     * @apiDescription Update an event with the id :id with some new information.
+     * @apiDescription Update an event with the id :id with some new information.<br>
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/event.js" target="_blank">event model</a>.
      */
     edit: function(req, res) {
         var eventsStore = require('../stores/events');
@@ -223,7 +233,7 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No event with that data existing!", "data": err };
      *
-     * @apiDescription Delete the event with the :id
+     * @apiDescription Delete the event with the :id.
      */
     remove: function(req,res) {
         var eventsStore = require('../stores/events');

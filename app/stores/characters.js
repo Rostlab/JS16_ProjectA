@@ -46,13 +46,8 @@ module.exports = {
     },
 
     getByName: function(name, callback) {
-        this.get({'name':name},function(success,message){
-            if(success == 1) {
-                callback(success,message[0]);
-            }
-            else {
+        this.get({'name':{ "$regex": name, "$options": "i" } },function(success,message){
                 callback(success,message);
-            }
         });
     },
 
@@ -121,72 +116,5 @@ module.exports = {
                 callback(false, Character);
             }
         });
-    },
-
-    //returns all characters of a specific house
-    getCharactersByHouse: function(houseName, callback){
-	Character.find({'house.name' : houseName}, function(err, obj){
-	   if(err){
-		callback(2, err);
-	   }
-	   else if (obj.length === 0){
-		callback(3, houseName);
-	   }
-	   else{
-		callback(1, obj);
-	   }
-	});	
-
-
-    },
-
-
-    //returns all characters of a specific culture
-    getCharactersByCulture: function(cultureName, callback){
-	Character.find({'culture.name' : cultureName}, function(err, obj){
-	   if(err){
-		callback(2, err);
-	   }
-	   else if (obj.length === 0){
-		callback(3, cultureName);
-	   }
-	   else{
-		callback(1, obj);
-	   }
-	});	
-
-
-    },
-
-
-
-
-    //returns all characters of one gender
-    getCharactersByGender: function(genderName, callback){
-
-	var male;
-	if(genderName.toLowerCase() == "male"){
-	   male = true;
-	}else if (genderName.toLowerCase() == "female"){
-	   male = false;
-	}else{
-	   callback(4, genderName);
-	   return;	
-	}
-
-
-	Character.find({'male' : male}, function(err, obj){
-	   if(err){
-		callback(2, err);
-	   }
-	   else if (obj.length === 0){
-		callback(3, genderName);
-	   }
-	   else{
-		callback(1, obj);
-	   }
-	});	
-
-
     },
 };

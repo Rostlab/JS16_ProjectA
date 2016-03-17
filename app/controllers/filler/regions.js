@@ -3,6 +3,7 @@ var Region = require(__appbase + 'models/region');
 var Regions = require(__appbase + 'stores/regions');
 var jsonfile = require('jsonfile');
 var async = require('async');
+var ttl = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -11,33 +12,31 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-        }
+        };
 
         var file = __appbase + '../wikiData/regions.json';
+        var scrape = function(){
+            Scraper.scrapToFile(file, Scraper.getRegions, function (err, obj) {
+                if (err !== null) {
+                    console.log(err);
+                } else {
+                    module.exports.insertToDb(obj.data,afterInsertion);
+                }
+            });
+        };
+
         jsonfile.readFile(file, function(err, obj) {
-            var filler = require(__appbase + 'controllers/filler/regions');
-            if(obj != undefined)
-                var cacheAge = ((new Date) - new Date(obj.createdAt));
-
-            var ttl = require(__appbase + '../cfg/config.json');
-            ttl = ttl.TTLWikiCache;
-
-            if(obj == undefined || cacheAge > ttl) {
-                if(obj != undefined && cacheAge > ttl)
+            if(obj !== undefined) {
+                var cacheAge = ((new Date()) - new Date(obj.createdAt));
+                if(cacheAge > ttl.TTLWikiCache) {
                     console.log('Cache file outdated.');
-
-                Scraper.scrapToFile(file, Scraper.getRegions, function (err, obj) {
-                    if (err != null) {
-                        console.log(err)
-                    }
-                    else {
-                        filler.insertToDb(obj.data,afterInsertion);
-                    }
-                });
-            }
-            else {
-                console.log('Regions from cache file "'+file+'". Not scrapped from wiki.');
-                filler.insertToDb(obj.data,afterInsertion);
+                    scrape();
+                } else {
+                    console.log('Regions from cache file "'+file+'". Not scrapped from wiki.');
+                    module.exports.insertToDb(obj.data,afterInsertion);
+                }
+            } else {
+                scrape();
             }
         });
     },
