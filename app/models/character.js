@@ -28,7 +28,12 @@ var CharacterSchema = new Schema({
     characterPopularity: Number,
     parents            : [{type: String, ref: 'Character'}],
     books              : [String],
-    placeOfLastVisit   : {type: String, ref: "Region"}
+    placeOfLastVisit   : {type: String, ref: "Region"},
+    
+    //issue 85 fields
+    imageLink			:	String,
+    hasPath				:	Boolean
+    
 
 });
 
