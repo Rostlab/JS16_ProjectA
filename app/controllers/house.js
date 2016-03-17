@@ -4,8 +4,8 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName AddHouse
      * @apiDescription Add a house to the collection.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
-     *
      * @apiHeaderExample {json} Header-Example
      * {"name": "Stark"}
      *
@@ -84,11 +84,12 @@ module.exports = {
      * @api {post} /api/houses/ Find houses
      * @apiVersion 0.0.1
      * @apiName FindHouses
-     * @apiDescription Find house by query.
+     * @apiDescription Find house by search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
      *
      * @apiHeaderExample {json} Header-Example
-     * {"words": "Hear Me Roar!"}
+     * {"region": "Crownlands"} // Find houses in the region crownloands.
      *
      * @apiSuccessExample {json} Success
      * HTTP/1.1 200 OK
@@ -140,7 +141,7 @@ module.exports = {
      * @api {get} /api/houses/:name Get house by name
      * @apiVersion 0.0.1
      * @apiName GetHouseByName
-     * @apiDescription Get house by name.
+     * @apiDescription Return the house named :name.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
@@ -184,7 +185,7 @@ module.exports = {
      * @api {get} /api/houses/byId/:id Get house by id
      * @apiVersion 0.0.1
      * @apiName GetHouseById
-     * @apiDescription Get house by id.
+     * @apiDescription Return the house with the id :id.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
@@ -229,10 +230,11 @@ module.exports = {
      * @apiVersion 0.0.1
      * @apiName EditHouse
      * @apiDescription Edit a house.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/house.js" target="_blank">house model</a>.
      * @apiGroup Houses
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "Stark"}
+     * {"words": "Fire and Blood"}
      *
      * @apiSuccessExample {json} Success
      *     HTTP/1.1 200 OK
@@ -292,7 +294,7 @@ module.exports = {
      * @api {delete} /api/houses/:id Remove house
      * @apiVersion 0.0.1
      * @apiName RemoveHouse
-     * @apiDescription Remove house by id.
+     * @apiDescription Remove the house with the id :id.
      * @apiGroup Houses
      *
      * @apiSuccessExample {json} Success
