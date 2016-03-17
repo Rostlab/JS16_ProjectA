@@ -734,6 +734,9 @@ module.exports = {
      * @apiName addCity
      * @apiGroup City
      *
+     * @apiHeaderExample {json} Header-Example
+     * {"name": "Winterfell"}
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success"}
