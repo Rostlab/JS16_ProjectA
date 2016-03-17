@@ -51,6 +51,12 @@ module.exports = {
         });
     },
 
+    getByPLOD: function(plod, callback) {
+        this.get({'plod': plod},function(success,message){
+                callback(success,message);
+        });
+    },
+
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {
