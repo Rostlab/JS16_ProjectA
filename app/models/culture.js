@@ -1,7 +1,7 @@
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
 
-var CultureSchema   = new Schema({
+var CultureSchema = new Schema({
     name: {type: String, required: true, unique: true},
 });
 

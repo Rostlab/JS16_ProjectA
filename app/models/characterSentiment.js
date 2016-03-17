@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema   = mongoose.Schema;
 
 var CharacterSentiment = new Schema({
-    character: {type: String, ref: "Character"},
-    date: {type:Date},
-    posSum: {type: Number},
-    negSum: {type: Number},
-    posCount: {type: Number},
-    negCount: {type: Number},
+    character: {type: mongoose.Schema.Types.ObjectId, ref: "Character"},
+    date     : {type: Date},
+    posSum   : {type: Number},
+    negSum   : {type: Number},
+    posCount : {type: Number},
+    negCount : {type: Number},
     nullCount: {type: Number}
 });
 
