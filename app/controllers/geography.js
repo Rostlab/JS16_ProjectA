@@ -750,7 +750,7 @@ module.exports = {
      * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     addCity: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.add(req.body,function(success, message) {
             if(success == 1)
                 res.status(201).json({ message: 'Success', data: message });
@@ -784,7 +784,7 @@ module.exports = {
      * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     getCities: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.get(req.body, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
@@ -813,7 +813,7 @@ module.exports = {
      * @apiDescription Get all cities.
      */
     getAllCities: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.getAll(function(success,cities) {
             res.status(200).json(cities);
         });
@@ -837,7 +837,7 @@ module.exports = {
      * @apiDescription Find a city by the name :name.
      */
     getCityByName: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.getByName(req.params.name, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
@@ -864,7 +864,7 @@ module.exports = {
      * @apiDescription Get city by the id :id.
      */
     getCityById: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.getById(req.params.id, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
@@ -891,7 +891,7 @@ module.exports = {
      * @apiDescription Delete the city with the id :id.
      */
     removeCity: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.remove(req.params.id,function(success) {
             if(success === true)
                 res.status(200).json({ message: 'Success.' });
@@ -922,7 +922,7 @@ module.exports = {
      * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     editCity: function(req,res) {
-        var citiesStore = require('../stores/city');
+        var citiesStore = require('../stores/cities');
         citiesStore.edit(req.params.id, req.body,function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
