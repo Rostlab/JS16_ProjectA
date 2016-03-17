@@ -51,9 +51,9 @@ module.exports = {
         });
     },
 
-    getByPLOD: function(plod, callback) {
-        this.get({'plod': plod},function(success,message){
-                callback(success,message);
+    getByPLOD: function(count, callback) {
+        Character.find().sort({plod: -1}).limit(count).exec(function(success,message){
+            callback(success,message);
         });
     },
 
