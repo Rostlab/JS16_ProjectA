@@ -5,7 +5,7 @@ module.exports = {
 	 * @apiName Default
 	 * @apiGroup Default
 	 *
-	 * @apiDescription This function shows the "hello world" message to prove the nodejs app is working
+	 * @apiDescription This function shows the "hello world" message to prove the nodejs app is working.
 	 */
 	init: function (req, res) {
 		res.render('default');
