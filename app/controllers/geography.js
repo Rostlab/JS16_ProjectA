@@ -735,7 +735,7 @@ module.exports = {
      * @apiGroup City
      *
      * @apiHeaderExample {json} Header-Example
-     * {"name": "Winterfell"}
+     * {"name": "Winterfell","continent": "Westeros"}
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -747,6 +747,7 @@ module.exports = {
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
      * @apiDescription Add a new city.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     addCity: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -766,8 +767,8 @@ module.exports = {
      * @apiName getCities
      * @apiGroup City
      *
-     * @apiHeaderExample {json} By priority range
-     * {"priority": "<=2"}
+     * @apiHeaderExample {json} By continent
+     * {"continent": "Westeros"}
      *
      *
      * @apiSuccessExample {json} Success-Response
@@ -780,6 +781,7 @@ module.exports = {
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
      * @apiDescription Find a city with given search criteria.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     getCities: function(req,res) {
         var citiesStore = require('../stores/cities');
@@ -905,7 +907,7 @@ module.exports = {
      * @apiGroup City
      *
      * @apiHeaderExample {json} Header-Example
-     * {"region": "Crownland"} // Change region to crownland.
+     * {"continent": "Essos"} // Change continent to essos.
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -917,6 +919,7 @@ module.exports = {
      *      { "message": "Failure. No city with that data existing!", "data": err };
      *
      * @apiDescription Edit the city with the :id.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/city.js" target="_blank">city model</a>.
      */
     editCity: function(req,res) {
         var citiesStore = require('../stores/cities');
