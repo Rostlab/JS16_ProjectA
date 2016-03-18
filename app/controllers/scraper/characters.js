@@ -146,6 +146,29 @@
                             character.titles.push(title);
                         });
                     }
+
+
+                    //fetch books
+                    character.books = [];
+                    var booksTd = $('.infobox th').
+                        filter(function(i, el) {return $(this).html() === 'Book(s)';}).
+                        parent().find('td')
+                        ;
+
+                    if(booksTd.html() !== null)
+                    {
+                        // get multiple titles
+                        var books = booksTd.html().split('<br>');
+                        books.forEach(function(book) {
+                            // remove html tags and unnecessary spaces
+                            book = book.replace(/\*?<(?:.|\n)*?>/gm, '').trim();
+
+                            // remove references like [1]
+                            book = book.replace(/\(\w+\)+/g, '').trim();
+
+                            character.books.push(book);
+                        });
+                    }
                 }
                 console.log("Fetched " + character.name);
                 callback(character);
@@ -165,14 +188,14 @@
                 var saveChar = function (character) {
                     charactersCollection.push(character);
                     console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
-                    if (charactersCollection.length == characters.length) {
+                    if (charactersCollection.length == 20) {
                         callback(charactersCollection);
                     }
                 };
 
                 console.log(characters.length);
 
-                for (let i = 0; i < characters.length; i++) {
+                for (let i = 0; i < 20; i++) {
                     scraper.get(characters[i], saveChar);
                 }
             });
