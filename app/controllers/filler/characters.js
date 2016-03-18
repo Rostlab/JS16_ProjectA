@@ -98,7 +98,7 @@ module.exports = {
                     callb(true,null);
                 }
             });
-        }
+        };
 
         var addCharacter = function(character, callb) {
             Characters.add(character, function (success, data) {
@@ -147,7 +147,7 @@ module.exports = {
                     }
                 });
             }
-        }
+        };
 
         var insertAll = function (characters) {
             // iterate through characters
