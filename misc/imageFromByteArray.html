@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<script>
+	function transformToImage(){
+		
+		var byteArray = document.getElementById('inputImage').value;
+		
+		//when you have the byte array pass it to this line of code:
+		document.getElementById("ItemPreview").src = "data:image/png;base64," + byteArray;
+	}
+</script>
+</head>
+
+<body>
+	
+	<!--This is a test part -->
+	<textarea id="inputImage" rows="4" cols="50"></textarea>
+	<button onclick="transformToImage()">Transform to image</button>
+	<img id="ItemPreview" src="" />
+
+</body>
+</html> 
