@@ -14,7 +14,8 @@ var HouseSchema = new Schema({
     ancestralWeapon: [String],                                            // Blackfyre and Dark Sister
     founded        : String,                                                      // > 126 BC, Age of Heroes
     createdAt      : {type: Date, default: Date.now},
-    updatedAt      : {type: Date, default: Date.now}
+    updatedAt      : {type: Date, default: Date.now},
+    imageLink      : String
 });
 
 module.exports = mongoose.model('House', HouseSchema);

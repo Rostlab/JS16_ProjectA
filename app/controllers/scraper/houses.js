@@ -9,6 +9,8 @@
     });
     var jsonfile = require('jsonfile');
 
+    var HtmlParser = require('cheerio');
+
     module.exports = {
         /*
          * Returns a list of house names
@@ -109,6 +111,8 @@
 
             client.api.call(params, function (err, info, next, data) {
                 if (data) {
+
+                    var $ = HtmlParser.load(data.parse.text["*"]);
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         house.name = houseName;
@@ -150,6 +154,11 @@
                              *
                              */
                         }
+                    }
+                    //fetch the image
+                    var imgLink = $('.infobox-image img').attr('src');
+                    if(imgLink !== undefined) {
+                        house.imageLink = imgLink;
                     }
                 }
                 callback(house);
