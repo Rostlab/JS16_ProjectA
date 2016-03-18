@@ -1,4 +1,4 @@
-var Scraper = require(__appbase + 'controllers/scraper');
+var Scraper = require(__appbase + 'controllers/scraper/ages');
 var Age = require(__appbase + 'models/age');
 var Ages = require(__appbase + 'stores/ages');
 var jsonfile = require('jsonfile');
@@ -9,14 +9,13 @@ module.exports = {
     fill: function(req, res) {
         console.log('Filling started.');
 
-        var afterInsertion = function()
-        {
+        var afterInsertion = function() {
             console.log('Filling done =).');
         };
 
         var file = __appbase + '../wikiData/ages.json';
-        var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getAges, function (err, obj) {
+        var scrape = function() {
+            Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {
@@ -41,9 +40,7 @@ module.exports = {
         });
     },
     clearAll: function(req,res) {
-        Age.remove({}, function(err) {
-            console.log('Ages collection removed');
-        });
+        Age.remove({}, function(err) {console.log('Ages collection removed');});
     },
     matchToModel: function(age) {
         // go through the properties of the house
@@ -101,7 +98,6 @@ module.exports = {
     },
     insertToDb: function(ages, callback) {
         console.log('Inserting into db..');
-        var i = 0;
 
         // iterate through houses
         async.forEach(ages, function (age, _callback) {
@@ -109,20 +105,11 @@ module.exports = {
                 age = filler.matchToModel(age);
                 // add house to db
                 Ages.add(age, function (success, data) {
-                    if (success != 1) {
-                        console.log('Problem:' + data);
-                    }
-                    else {
-                        console.log('SUCCESS: ' + data.name);
-                    }
+                    console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name );
                     _callback();
                 });
             },
-            function (err) {
-                callback(true);
-            });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
+            function (err) { callback(true); }
+        );
     }
 };

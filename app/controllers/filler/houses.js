@@ -1,4 +1,4 @@
-var Scraper = require(__appbase + 'controllers/scraper');
+var Scraper = require(__appbase + 'controllers/scraper/houses');
 var House = require(__appbase + 'models/house');
 var Houses = require(__appbase + 'stores/houses');
 var jsonfile = require('jsonfile');
@@ -16,7 +16,7 @@ module.exports = {
 
         var file = __appbase + '../wikiData/houses.json';
         var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getHouses, function (err, obj) {
+            Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {

@@ -1,4 +1,3 @@
-var Scraper = require(__appbase + 'controllers/scraper');
 var Continent = require(__appbase + 'models/continent');
 var Continents = require(__appbase + 'stores/continents');
 var jsonfile = require('jsonfile');

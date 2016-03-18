@@ -1,4 +1,4 @@
-var Scraper = require(__appbase + 'controllers/scraper');
+var Scraper = require(__appbase + 'controllers/scraper/regions');
 var Region = require(__appbase + 'models/region');
 var Regions = require(__appbase + 'stores/regions');
 var jsonfile = require('jsonfile');
@@ -16,7 +16,7 @@ module.exports = {
 
         var file = __appbase + '../wikiData/regions.json';
         var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getRegions, function (err, obj) {
+            Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {
@@ -89,8 +89,5 @@ module.exports = {
             function (err) {
                 callback(true);
             });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
     }
 };

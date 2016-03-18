@@ -1,4 +1,4 @@
-var Scraper = require(__appbase + 'controllers/scraper');
+var Scraper = require(__appbase + 'controllers/scraper/cultures');
 var Culture = require(__appbase + 'models/culture');
 var Cultures = require(__appbase + 'stores/cultures');
 var jsonfile = require('jsonfile');
@@ -16,7 +16,7 @@ module.exports = {
 
         var file = __appbase + '../wikiData/cultures.json';
         var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getCultures, function (err, obj) {
+            Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {
