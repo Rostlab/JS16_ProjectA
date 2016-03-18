@@ -86,7 +86,7 @@ module.exports = {
                 console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
                 callb(true);
             });
-        }
+        };
 
         var insert = function (houses) {
             // iterate through houses
@@ -107,18 +107,18 @@ module.exports = {
                     Houses.getByName(house.name,function(success,oldHouse){
                         if(success == 1) { // old entry is existing
                             if(cfg.fillerPolicy == 3) { // only add new entries, so skip
-                                console.log(house.name + " is already existing. No change according policy.")
+                                console.log(house.name + " is already existing. No change according policy.");
                                 _callback(); // next
                                 return;
                             }
                             else if(cfg.fillerPolicy == 2) { // update old entry
-                                console.log("Update house: " + house.name)
+                                console.log("Update house: " + house.name);
                                 for(var z in house) {
                                     if(z != "_id") {
                                         oldHouse[z] = house[z];
                                     }
                                 }
-                                oldHouse['updatedAt'] = new Date();
+                                oldHouse.updatedAt = new Date();
                                 oldHouse.save(function(err){
                                     _callback();
                                 });
@@ -133,12 +133,12 @@ module.exports = {
             },
             function (err) { callback(true); }
             );
-        }
+        };
 
         // delete the collection before the insertion?
         if(cfg.fillerPolicy == 1) {
-            console.log("Delete and refill policy. Deleting collection..")
-            module.exports.clearAll(function() {insert(houses)});
+            console.log("Delete and refill policy. Deleting collection..");
+            module.exports.clearAll(function() {insert(houses);});
         }
         else {
             insert(houses);
