@@ -7,6 +7,7 @@
         concurrency: "5"
     });
     var jsonfile = require('jsonfile');
+    var HtmlParser = require('cheerio');
 
     module.exports = {
         /*
@@ -31,6 +32,14 @@
             var character = {};
             client.api.call(params, function (err, info, next, data) {
                 if (data) {
+
+                    //fetch the image
+                    var $ = HtmlParser.load(data.parse.text["*"]);
+                    var imgLink = $('.infobox-image img').attr('src');
+                    if(imgLink !== undefined) {
+                        character.imageLink = imgLink;
+                    }
+
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
@@ -130,6 +139,7 @@
                 var charactersCollection = [];
                 var saveChar = function (character) {
                     charactersCollection.push(character);
+                    console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
                     if (charactersCollection.length == characters.length) {
                         callback(charactersCollection);
                     }
