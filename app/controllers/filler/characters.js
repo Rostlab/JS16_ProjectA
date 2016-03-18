@@ -3,7 +3,7 @@ var Character = require(__appbase + 'models/character');
 var Characters = require(__appbase + 'stores/characters');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var ttl = require(__appbase + '../cfg/config.json');
+var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -12,6 +12,8 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log('Filling done =).');
+            res.sendStatus(200);
+            return;
         };
 
         var file = __appbase + '../wikiData/characters.json';
@@ -28,7 +30,7 @@ module.exports = {
         jsonfile.readFile(file, function(err, obj) {
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
-                if(cacheAge > ttl.TTLWikiCache) {
+                if(cacheAge > cfg.TTLWikiCache) {
                     console.log('Cache file outdated.');
                     scrape();
                 } else {
@@ -40,13 +42,14 @@ module.exports = {
             }
         });
     },
-    clearAll: function(req,res) {
+    clearAll: function(callback) {
         Character.remove({}, function(err) {
             console.log('Characters collection removed');
+            callback();
         });
     },
     matchToModel: function(character) {
-        // go through the properties of the house
+        // go through the properties of the character
         for(var z in character) {
             // ignore references for now, later gather the ids and edit the entries
             if ( z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
@@ -75,34 +78,75 @@ module.exports = {
     },
     insertToDb: function(characters, callback) {
         console.log('Inserting into db..');
-        var i = 0;
 
-        // iterate through houses
-        async.forEach(characters, function (character, _callback) {
-                // name is required
-                if (!character.hasOwnProperty('name')) {
-                    _callback();
-                    return;
-                }
+        var addCharacter = function(character, callb) {
+            Characters.add(character, function (success, data) {
 
-                var filler = require(__appbase + 'controllers/filler/characters');
-                character = filler.matchToModel(character);
-                // add house to db
-                Characters.add(character, function (success, data) {
-                    if (success != 1) {
-                        console.log('Problem:' + data);
+                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+                callb(true);
+            });
+        };
+
+        var insert = function (characters) {
+            // iterate through characters
+            async.forEach(characters, function (character, _callback) {
+                    // name is required
+                    if (!character.hasOwnProperty('name')) {
+                        _callback();
+                        return;
+                    }
+
+                    character = module.exports.matchToModel(character);
+
+                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                        addCharacter(character, function(suc){ _callback(); });
                     }
                     else {
-                        console.log('SUCCESS: ' + data.name);
+                        // see if there is such an entry already in the db
+                        Characters.getByName(character.name,function(success,oldCharacter){
+                            if(success == 1) { // old entry is existing
+                                var isChange = false;
+                                // iterate through properties
+                                for(var z in character) {
+                                    // only change if update policy or property is not yet stored
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCharacter[z] == undefined)) {
+                                        if(oldCharacter[z] == undefined) {
+                                            console.log("To old entry the new property "+z+" is added.");
+                                        }
+                                        oldCharacter[z] = character[z];
+                                        isChange = true;
+                                    }
+                                }
+                                if(isChange) {
+                                    console.log(character.name + " is updated.")
+                                    oldCharacter.updatedAt = new Date();
+                                    oldCharacter.save(function(err){
+                                        _callback();
+                                    });
+                                }
+                                else {
+                                    console.log(character.name + " is untouched.")
+                                    _callback();
+                                }
+                            }
+                            else { // not existing, so it is added in every policy
+                                addCharacter(character, function(suc){_callback();});
+                            }
+                        });
+
                     }
-                    _callback();
-                });
-            },
-            function (err) {
-                callback(true);
-            });
-    },
-    addReferences: function(req,res) {
-        // TODO: Still every db entry has to be edited and the references updated
+                },
+                function (err) { callback(true); }
+            );
+        };
+
+        // delete the collection before the insertion?
+        if(cfg.fillerPolicy == 1) {
+            console.log("Delete and refill policy. Deleting collection..");
+            module.exports.clearAll(function() {insert(characters);});
+        }
+        else {
+            insert(characters);
+        }
     }
 };

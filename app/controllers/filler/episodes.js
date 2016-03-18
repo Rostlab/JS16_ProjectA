@@ -3,7 +3,7 @@ var Episode = require(__appbase + 'models/episode');
 var Episodes = require(__appbase + 'stores/episodes');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var ttl = require(__appbase + '../cfg/config.json');
+var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -14,6 +14,8 @@ module.exports = {
             var filler = require(__appbase + 'controllers/filler/episodes');
             filler.fillPreAndSuccessor(function(success) {
                 console.log('Filling done =).');
+                res.sendStatus(200);
+                return;
             });
         };
 
@@ -31,7 +33,7 @@ module.exports = {
         jsonfile.readFile(file, function(err, obj) {
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
-                if(cacheAge > ttl.TTLWikiCache) {
+                if(cacheAge > cfg.TTLWikiCache) {
                     console.log('Cache file outdated.');
                     scrape();
                 } else {
@@ -43,16 +45,17 @@ module.exports = {
             }
         });
     },
-    clearAll: function(req,res) {
+    clearAll: function(callback) {
         Episode.remove({}, function(err) {
             console.log('Episodes collection removed');
+            callback();
         });
     },
     matchToModel: function(episode) {
         // go through the properties of the house
         for(var z in episode) {
             // ignore references for now, later gather the ids and edit the entries
-            if ( z == 'characters' || z == 'predecessor' || z == 'successor' || !Episode.schema.paths.hasOwnProperty(z)) {
+            if ( z == 'episodes' || z == 'predecessor' || z == 'successor' || !Episode.schema.paths.hasOwnProperty(z)) {
                 delete episode[z];
             }
             if(z == 'airDate') {
@@ -83,26 +86,76 @@ module.exports = {
     },
     insertToDb: function(episodes, callback) {
         console.log('Inserting into db..');
-        var i = 0;
 
-        // iterate through houses
-        async.forEach(episodes, function (episode, _callback) {
-            var filler = require(__appbase + 'controllers/filler/episodes');
-            episode = filler.matchToModel(episode);
-            // add house to db
+        var addEpisode = function(episode, callb) {
             Episodes.add(episode, function (success, data) {
-                if (success != 1) {
-                    console.log('Problem:' + data);
-                }
-                else {
-                    console.log('SUCCESS: ' + data.name);
-                }
-                _callback();
+
+                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+                callb(true);
             });
-        },
-        function (err) {
-            callback(true);
-        });
+        };
+
+        var insert = function (episodes) {
+            // iterate through episodes
+            async.forEach(episodes, function (episode, _callback) {
+                    // name is required
+                    if (!episode.hasOwnProperty('name')) {
+                        _callback();
+                        return;
+                    }
+
+                    episode = module.exports.matchToModel(episode);
+
+                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                        addEpisode(episode, function(suc){ _callback(); });
+                    }
+                    else {
+                        // see if there is such an entry already in the db
+                        Episodes.getByName(episode.name,function(success,oldEpisode){
+                            if(success == 1) { // old entry is existing
+                                var isChange = false;
+                                // iterate through properties
+                                for(var z in episode) {
+                                    // only change if update policy or property is not yet stored
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEpisode[z] == undefined)) {
+                                        if(oldEpisode[z] == undefined) {
+                                            console.log("To old entry the new property "+z+" is added.");
+                                        }
+                                        oldEpisode[z] = episode[z];
+                                        isChange = true;
+                                    }
+                                }
+                                if(isChange) {
+                                    console.log(episode.name + " is updated.")
+                                    oldEpisode.updatedAt = new Date();
+                                    oldEpisode.save(function(err){
+                                        _callback();
+                                    });
+                                }
+                                else {
+                                    console.log(episode.name + " is untouched.")
+                                    _callback();
+                                }
+                            }
+                            else { // not existing, so it is added in every policy
+                                addEpisode(episode, function(suc){_callback();});
+                            }
+                        });
+
+                    }
+                },
+                function (err) { callback(true); }
+            );
+        };
+
+        // delete the collection before the insertion?
+        if(cfg.fillerPolicy == 1) {
+            console.log("Delete and refill policy. Deleting collection..");
+            module.exports.clearAll(function() {insert(episodes);});
+        }
+        else {
+            insert(episodes);
+        }
     },
     fillPreAndSuccessor: function(callback) {
         console.log('Start filling pre- and successor.');
@@ -121,9 +174,6 @@ module.exports = {
                                episode.save(episode.id,function(err){});
                            }
                        }
-                        else {
-                           console.log(episode.name + "has no predecessor with totalNr" + pre);
-                       }
                     });
                 }
                 if(next > 0) {
@@ -135,9 +185,6 @@ module.exports = {
                                 episode.successor = nextEpisode.name;
                                 episode.save(episode.id,function(err){});
                             }
-                        }
-                        else {
-                            console.log(episode.name + "has no successor with totalNr" + next);
                         }
                     });
                 }

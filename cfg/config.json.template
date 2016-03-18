@@ -17,5 +17,5 @@
         "accessToken": "123secure"
     },
     "TTLWikiCache" : 7200000,
-    "fillerPolicy": 2 // 1 = delete collection and refill, 2 = update old entries and add new, 3 = only insert new entries
+    "fillerPolicy": 2 // 1 = delete collection and refill, 2 = update old entries and add new, 3 = only insert new entries/properties
 }

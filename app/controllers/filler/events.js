@@ -3,7 +3,7 @@ var Event = require(__appbase + 'models/event');
 var Events = require(__appbase + 'stores/events');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var ttl = require(__appbase + '../cfg/config.json');
+var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
     fill: function(req, res) {
@@ -11,6 +11,8 @@ module.exports = {
 
         var afterInsertion = function() {
             console.log('Filling done =).');
+            res.sendStatus(200);
+            return;
         };
 
         var file = __appbase + '../wikiData/events.json';
@@ -27,7 +29,7 @@ module.exports = {
         jsonfile.readFile(file, function(err, obj) {
             if(obj !== undefined) {
                 var cacheAge = ((new Date()) - new Date(obj.createdAt));
-                if(cacheAge > ttl.TTLWikiCache) {
+                if(cacheAge > cfg.TTLWikiCache) {
                     console.log('Cache file outdated.');
                     scrape();
                 } else {
@@ -39,9 +41,10 @@ module.exports = {
             }
         });
     },
-    clearAll: function(req,res) {
+    clearAll: function(callback) {
         Event.remove({}, function(err) {
             console.log('Events collection removed');
+            callback();
         });
     },
     matchToModel: function(event) {
@@ -74,25 +77,75 @@ module.exports = {
     },
     insertToDb: function(events, callback) {
         console.log('Inserting into db..');
-        var i = 0;
 
-        // iterate through events
-        async.forEach(events, function (event, _callback) {
-            var filler = require(__appbase + 'controllers/filler/events');
-            event = filler.matchToModel(event);
-            // add event to db
+        var addEvent = function(event, callb) {
             Events.add(event, function (success, data) {
-                if (success != 1) {
-                    console.log('Problem:' + data);
-                }
-                else {
-                    console.log('SUCCESS: ' + data.name);
-                }
-                _callback();
+
+                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+                callb(true);
             });
-        },
-        function (err) {
-            callback(true);
-        });
+        };
+
+        var insert = function (events) {
+            // iterate through events
+            async.forEach(events, function (event, _callback) {
+                    // name is required
+                    if (!event.hasOwnProperty('name')) {
+                        _callback();
+                        return;
+                    }
+
+                    event = module.exports.matchToModel(event);
+
+                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                        addEvent(event, function(suc){ _callback(); });
+                    }
+                    else {
+                        // see if there is such an entry already in the db
+                        Events.getByName(event.name,function(success,oldEvent){
+                            if(success == 1) { // old entry is existing
+                                var isChange = false;
+                                // iterate through properties
+                                for(var z in event) {
+                                    // only change if update policy or property is not yet stored
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEvent[z] == undefined)) {
+                                        if(oldEvent[z] == undefined) {
+                                            console.log("To old entry the new property "+z+" is added.");
+                                        }
+                                        oldEvent[z] = event[z];
+                                        isChange = true;
+                                    }
+                                }
+                                if(isChange) {
+                                    console.log(event.name + " is updated.")
+                                    oldEvent.updatedAt = new Date();
+                                    oldEvent.save(function(err){
+                                        _callback();
+                                    });
+                                }
+                                else {
+                                    console.log(event.name + " is untouched.")
+                                    _callback();
+                                }
+                            }
+                            else { // not existing, so it is added in every policy
+                                addEvent(event, function(suc){_callback();});
+                            }
+                        });
+
+                    }
+                },
+                function (err) { callback(true); }
+            );
+        };
+
+        // delete the collection before the insertion?
+        if(cfg.fillerPolicy == 1) {
+            console.log("Delete and refill policy. Deleting collection..");
+            module.exports.clearAll(function() {insert(events);});
+        }
+        else {
+            insert(events);
+        }
     }
 };

@@ -11,7 +11,8 @@ module.exports = {
 
         var afterInsertion = function() {
             console.log('Filling done =).');
-            res.status(200);
+            res.sendStatus(200);
+            return;
         };
 
         var file = __appbase + '../wikiData/ages.json';
@@ -128,22 +129,28 @@ module.exports = {
                         // see if there is such an entry already in the db
                         Ages.getByName(age.name,function(success,oldAge){
                             if(success == 1) { // old entry is existing
-                                if(cfg.fillerPolicy == 3) { // only add new entries, so skip
-                                    console.log(age.name + " is already existing. No change according policy.");
-                                    _callback(); // next
-                                    return;
-                                }
-                                else if(cfg.fillerPolicy == 2) { // update old entry
-                                    console.log("Update age: " + age.name);
-                                    for(var z in age) {
-                                        if(z != "_id") {
-                                            oldAge[z] = age[z];
+                                var isChange = false;
+                                // iterate through properties
+                                for(var z in age) {
+                                    // only change if update policy or property is not yet stored
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldAge[z] == undefined)) {
+                                        if(oldAge[z] == undefined) {
+                                            console.log("To old entry the new property "+z+" is added.");
                                         }
+                                        oldAge[z] = age[z];
+                                        isChange = true;
                                     }
+                                }
+                                if(isChange) {
+                                    console.log(age.name + " is updated.")
                                     oldAge.updatedAt = new Date();
                                     oldAge.save(function(err){
                                         _callback();
                                     });
+                                }
+                                else {
+                                    console.log(age.name + " is untouched.")
+                                    _callback();
                                 }
                             }
                             else { // not existing, so it is added in every policy

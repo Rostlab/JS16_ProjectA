@@ -11,7 +11,8 @@ module.exports = {
 
         var afterInsertion = function() {
             console.log('Filling done =).');
-            res.status(200);
+            res.sendStatus(200);
+            return;
         };
 
         var file = __appbase + '../wikiData/houses.json';
@@ -107,22 +108,28 @@ module.exports = {
                     // see if there is such an entry already in the db
                     Houses.getByName(house.name,function(success,oldHouse){
                         if(success == 1) { // old entry is existing
-                            if(cfg.fillerPolicy == 3) { // only add new entries, so skip
-                                console.log(house.name + " is already existing. No change according policy.");
-                                _callback(); // next
-                                return;
-                            }
-                            else if(cfg.fillerPolicy == 2) { // update old entry
-                                console.log("Update house: " + house.name);
-                                for(var z in house) {
-                                    if(z != "_id") {
-                                        oldHouse[z] = house[z];
+                            var isChange = false;
+                            // iterate through properties
+                            for(var z in house) {
+                                // only change if update policy or property is not yet stored
+                                if(z != "_id" && (cfg.fillerPolicy == 2 || oldHouse[z] == undefined)) {
+                                    if(oldHouse[z] == undefined) {
+                                        console.log("To old entry the new property "+z+" is added.");
                                     }
+                                    oldHouse[z] = house[z];
+                                    isChange = true;
                                 }
+                            }
+                            if(isChange) {
+                                console.log(house.name + " is updated.")
                                 oldHouse.updatedAt = new Date();
                                 oldHouse.save(function(err){
                                     _callback();
                                 });
+                            }
+                            else {
+                                console.log(house.name + " is untouched.")
+                                _callback();
                             }
                         }
                         else { // not existing, so it is added in every policy

@@ -5,40 +5,30 @@ module.exports = function (app, router) {
 
     var housesFiller = require(__appbase + 'controllers/filler/houses');
     router.get('/houses/filler', housesFiller.fill);
-    router.delete('/houses/filler', housesFiller.clearAll);
-
 
     var citiesFiller = require(__appbase + 'controllers/filler/cities');
     router.get('/cities/filler', citiesFiller.fill);
-    router.delete('/cities/filler', citiesFiller.clearAll);
 
     var continentsFiller = require(__appbase + 'controllers/filler/continents');
     router.get('/continents/filler', continentsFiller.fill);
-    router.delete('/continents/filler', continentsFiller.clearAll);
 
     var regionsFiller = require(__appbase + 'controllers/filler/regions');
     router.get('/regions/filler', regionsFiller.fill);
-    router.delete('/regions/filler', regionsFiller.clearAll);
 
     var episodesFiller = require(__appbase + 'controllers/filler/episodes');
     router.get('/episodes/filler', episodesFiller.fill);
-    router.delete('/episodes/filler', episodesFiller.clearAll);
 
     var charactersFiller = require(__appbase + 'controllers/filler/characters');
     router.get('/characters/filler', charactersFiller.fill);
-    router.delete('/characters/filler', charactersFiller.clearAll);
 
     var agesFiller = require(__appbase + 'controllers/filler/ages');
     router.get('/ages/filler', agesFiller.fill);
-    router.delete('/ages/filler', agesFiller.clearAll);
     
     var eventsFiller = require(__appbase + 'controllers/filler/events');
     router.get('/events/filler', eventsFiller.fill);
-    router.delete('/events/filler', eventsFiller.clearAll);
     
     var culturesFiller = require(__appbase + 'controllers/filler/cultures');
     router.get('/cultures/filler', culturesFiller.fill);
-    router.delete('/cultures/filler', culturesFiller.clearAll);
 
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);

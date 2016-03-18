@@ -36,18 +36,23 @@ module.exports = {
             }
         }
 
-        Character.find(data, function(err,obj)
-        {
-            if(obj.length === 0)
-                callback(3,data);
-            else
+        Character.find(data, function (err, obj) {
+            if (obj.length === 0) {
+                callback(3, data);
+            } else {
                 callback(1, obj);
+            }
         });
     },
 
     getByName: function(name, callback) {
-        this.get({'name':{ "$regex": name, "$options": "i" } },function(success,message){
-                callback(success,message);
+        this.get({'name':{ "$regex": name, "$options": "i" } },function (success, message) {
+            if (success == 1) {
+                callback(success, message[0]);
+            }
+            else {
+                callback(success, message);
+            }
         });
     },
 

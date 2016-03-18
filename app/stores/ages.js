@@ -64,7 +64,7 @@ module.exports = {
     },
 
     getByName: function (name, callback) {
-        this.get({'name': name}, function (success, message) {
+        this.get({'name': { "$regex": name, "$options": "i" }}, function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
             }
