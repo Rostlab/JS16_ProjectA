@@ -11,6 +11,7 @@ module.exports = {
 
         var afterInsertion = function() {
             console.log('Filling done =).');
+            res.status(200);
         };
 
         var file = __appbase + '../wikiData/houses.json';
