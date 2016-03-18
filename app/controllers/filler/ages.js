@@ -133,8 +133,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in age) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldAge[z] == undefined)) {
-                                        if(oldAge[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldAge[z] === undefined)) {
+                                        if(oldAge[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldAge[z] = age[z];
@@ -142,14 +142,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(age.name + " is updated.")
+                                    console.log(age.name + " is updated.");
                                     oldAge.updatedAt = new Date();
                                     oldAge.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(age.name + " is untouched.")
+                                    console.log(age.name + " is untouched.");
                                     _callback();
                                 }
                             }

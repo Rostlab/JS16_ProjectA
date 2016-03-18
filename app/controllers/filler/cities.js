@@ -76,8 +76,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in city) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCity[z] == undefined)) {
-                                        if(oldCity[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCity[z] === undefined)) {
+                                        if(oldCity[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldCity[z] = city[z];
@@ -85,14 +85,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(city.name + " is updated.")
+                                    console.log(city.name + " is updated.");
                                     oldCity.updatedAt = new Date();
                                     oldCity.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(city.name + " is untouched.")
+                                    console.log(city.name + " is untouched.");
                                     _callback();
                                 }
                             }

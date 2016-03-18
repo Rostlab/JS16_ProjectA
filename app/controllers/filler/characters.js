@@ -109,8 +109,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in character) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCharacter[z] == undefined)) {
-                                        if(oldCharacter[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCharacter[z] === undefined)) {
+                                        if(oldCharacter[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldCharacter[z] = character[z];
@@ -118,14 +118,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(character.name + " is updated.")
+                                    console.log(character.name + " is updated.");
                                     oldCharacter.updatedAt = new Date();
                                     oldCharacter.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(character.name + " is untouched.")
+                                    console.log(character.name + " is untouched.");
                                     _callback();
                                 }
                             }

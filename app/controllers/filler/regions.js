@@ -97,8 +97,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in region) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldRegion[z] == undefined)) {
-                                        if(oldRegion[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldRegion[z] === undefined)) {
+                                        if(oldRegion[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldRegion[z] = region[z];
@@ -106,14 +106,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(region.name + " is updated.")
+                                    console.log(region.name + " is updated.");
                                     oldRegion.updatedAt = new Date();
                                     oldRegion.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(region.name + " is untouched.")
+                                    console.log(region.name + " is untouched.");
                                     _callback();
                                 }
                             }

@@ -77,8 +77,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in continent) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldContinent[z] == undefined)) {
-                                        if(oldContinent[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldContinent[z] === undefined)) {
+                                        if(oldContinent[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldContinent[z] = continent[z];
@@ -86,14 +86,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(continent.name + " is updated.")
+                                    console.log(continent.name + " is updated.");
                                     oldContinent.updatedAt = new Date();
                                     oldContinent.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(continent.name + " is untouched.")
+                                    console.log(continent.name + " is untouched.");
                                     _callback();
                                 }
                             }

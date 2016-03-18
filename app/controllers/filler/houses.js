@@ -112,8 +112,8 @@ module.exports = {
                             // iterate through properties
                             for(var z in house) {
                                 // only change if update policy or property is not yet stored
-                                if(z != "_id" && (cfg.fillerPolicy == 2 || oldHouse[z] == undefined)) {
-                                    if(oldHouse[z] == undefined) {
+                                if(z != "_id" && (cfg.fillerPolicy == 2 || oldHouse[z] === undefined)) {
+                                    if(oldHouse[z] === undefined) {
                                         console.log("To old entry the new property "+z+" is added.");
                                     }
                                     oldHouse[z] = house[z];
@@ -121,14 +121,14 @@ module.exports = {
                                 }
                             }
                             if(isChange) {
-                                console.log(house.name + " is updated.")
+                                console.log(house.name + " is updated.");
                                 oldHouse.updatedAt = new Date();
                                 oldHouse.save(function(err){
                                     _callback();
                                 });
                             }
                             else {
-                                console.log(house.name + " is untouched.")
+                                console.log(house.name + " is untouched.");
                                 _callback();
                             }
                         }

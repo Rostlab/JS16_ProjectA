@@ -108,8 +108,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in event) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEvent[z] == undefined)) {
-                                        if(oldEvent[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEvent[z] === undefined)) {
+                                        if(oldEvent[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldEvent[z] = event[z];
@@ -117,14 +117,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(event.name + " is updated.")
+                                    console.log(event.name + " is updated.");
                                     oldEvent.updatedAt = new Date();
                                     oldEvent.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(event.name + " is untouched.")
+                                    console.log(event.name + " is untouched.");
                                     _callback();
                                 }
                             }

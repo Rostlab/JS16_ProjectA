@@ -97,8 +97,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in culture) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCulture[z] == undefined)) {
-                                        if(oldCulture[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCulture[z] === undefined)) {
+                                        if(oldCulture[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldCulture[z] = culture[z];
@@ -106,14 +106,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(culture.name + " is updated.")
+                                    console.log(culture.name + " is updated.");
                                     oldCulture.updatedAt = new Date();
                                     oldCulture.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(culture.name + " is untouched.")
+                                    console.log(culture.name + " is untouched.");
                                     _callback();
                                 }
                             }

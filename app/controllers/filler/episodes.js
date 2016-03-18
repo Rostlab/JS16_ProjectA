@@ -117,8 +117,8 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in episode) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEpisode[z] == undefined)) {
-                                        if(oldEpisode[z] == undefined) {
+                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEpisode[z] === undefined)) {
+                                        if(oldEpisode[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
                                         oldEpisode[z] = episode[z];
@@ -126,14 +126,14 @@ module.exports = {
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(episode.name + " is updated.")
+                                    console.log(episode.name + " is updated.");
                                     oldEpisode.updatedAt = new Date();
                                     oldEpisode.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(episode.name + " is untouched.")
+                                    console.log(episode.name + " is untouched.");
                                     _callback();
                                 }
                             }
