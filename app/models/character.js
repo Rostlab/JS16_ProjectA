@@ -26,7 +26,6 @@ var CharacterSchema = new Schema({
     spouse             : {type: String, ref: 'Character'},
     allegiance         : {type: String, ref: 'Character'},
     characterPopularity: Number,
-    parents            : [{type: String, ref: 'Character'}],
     books              : [String],
     placeOfLastVisit   : {type: String, ref: "Region"},
     
