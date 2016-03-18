@@ -79,6 +79,27 @@ module.exports = {
     insertToDb: function(characters, callback) {
         console.log('Inserting into db..');
 
+        var downloadImage = function(character, callb) {
+            var fs = require('fs'),
+                request = require('request');
+            var uri = 'http://awoiaf.westeros.org/' + character.imageLink;
+            var filename = '/misc/images/characters/' + character.name.replace(new RegExp(" ", "g"),"_");
+            console.log(uri);
+            request.head(uri, function(err, res, body){
+                if(!err) {
+                    var type = res.headers['content-type'].replace(new RegExp("/", "g"),'.');
+                    var downloadTo = filename+'.'+type;
+                    downloadTo = downloadTo.replace(".image",'');
+                    request(uri).pipe(fs.createWriteStream(__appbase + '..' + downloadTo)).on('close', function() {
+                        callb(false,downloadTo);
+                    });
+                }
+                else {
+                    callb(true,null);
+                }
+            });
+        }
+
         var addCharacter = function(character, callb) {
             Characters.add(character, function (success, data) {
 
@@ -87,66 +108,81 @@ module.exports = {
             });
         };
 
-        var insert = function (characters) {
+        var insert = function(character,_callback) {
+            character = module.exports.matchToModel(character);
+
+            if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                addCharacter(character, function(suc){ _callback(); });
+            }
+            else {
+                // see if there is such an entry already in the db
+                Characters.getByName(character.name,function(success,oldCharacter){
+                    if(success == 1) { // old entry is existing
+                        var isChange = false;
+                        // iterate through properties
+                        for(var z in character) {
+                            // only change if update policy or property is not yet stored
+                            if(z != "_id" && (cfg.fillerPolicy == 2 || oldCharacter[z] === undefined)) {
+                                if(oldCharacter[z] === undefined) {
+                                    console.log("To old entry the new property "+z+" is added.");
+                                }
+                                oldCharacter[z] = character[z];
+                                isChange = true;
+                            }
+                        }
+                        if(isChange) {
+                            console.log(character.name + " is updated.");
+                            oldCharacter.updatedAt = new Date();
+                            oldCharacter.save(function(err){
+                                _callback();
+                            });
+                        }
+                        else {
+                            console.log(character.name + " is untouched.");
+                            _callback();
+                        }
+                    }
+                    else { // not existing, so it is added in every policy
+                        addCharacter(character, function(suc){_callback();});
+                    }
+                });
+            }
+        }
+
+        var insertAll = function (characters) {
             // iterate through characters
             async.forEach(characters, function (character, _callback) {
-                    // name is required
-                    if (!character.hasOwnProperty('name')) {
-                        _callback();
-                        return;
-                    }
+                // name is required
+                if (!character.hasOwnProperty('name')) {
+                    _callback();
+                    return;
+                }
 
-                    character = module.exports.matchToModel(character);
-
-                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
-                        addCharacter(character, function(suc){ _callback(); });
-                    }
-                    else {
-                        // see if there is such an entry already in the db
-                        Characters.getByName(character.name,function(success,oldCharacter){
-                            if(success == 1) { // old entry is existing
-                                var isChange = false;
-                                // iterate through properties
-                                for(var z in character) {
-                                    // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCharacter[z] === undefined)) {
-                                        if(oldCharacter[z] === undefined) {
-                                            console.log("To old entry the new property "+z+" is added.");
-                                        }
-                                        oldCharacter[z] = character[z];
-                                        isChange = true;
-                                    }
-                                }
-                                if(isChange) {
-                                    console.log(character.name + " is updated.");
-                                    oldCharacter.updatedAt = new Date();
-                                    oldCharacter.save(function(err){
-                                        _callback();
-                                    });
-                                }
-                                else {
-                                    console.log(character.name + " is untouched.");
-                                    _callback();
-                                }
-                            }
-                            else { // not existing, so it is added in every policy
-                                addCharacter(character, function(suc){_callback();});
-                            }
-                        });
-
-                    }
-                },
-                function (err) { callback(true); }
+                if(character.imageLink !== undefined){
+                    downloadImage(character, function(err, newImageLink){
+                        if(!err) {
+                            character.imageLink = newImageLink;
+                        }
+                        insert(character,_callback);
+                    });
+                }
+                else {
+                    insert(character,_callback);
+                }
+            },
+            function (err) { callback(true); }
             );
         };
 
         // delete the collection before the insertion?
         if(cfg.fillerPolicy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
-            module.exports.clearAll(function() {insert(characters);});
+            module.exports.clearAll(function() {
+                insertAll(characters);
+            });
         }
         else {
-            insert(characters);
+            insertAll(characters);
         }
     }
 };
