@@ -3,7 +3,7 @@ var Schema   = mongoose.Schema;
 
 var CharacterSchema = new Schema({
     name       : {type: String, required: true, unique: true},                                // Rhaegar
-    title      : String,                                                        // Prince of Dragonstone Ser
+    titles      : [String],                                                        // Prince of Dragonstone Ser
     male       : Boolean,                                                       // Male
     culture    : String,             // Valyrian
     age        : {type: Number, min: 1, max: 200},                              // ??

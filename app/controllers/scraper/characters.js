@@ -33,12 +33,6 @@
             client.api.call(params, function (err, info, next, data) {
                 if (data) {
 
-                    //fetch the image
-                    var $ = HtmlParser.load(data.parse.text["*"]);
-                    var imgLink = $('.infobox-image img').attr('src');
-                    if(imgLink !== undefined) {
-                        character.imageLink = imgLink;
-                    }
 
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
@@ -120,6 +114,35 @@
                         else {
                             character.male = false;
                         }
+                    }
+
+                    //fetch the image
+                    var $ = HtmlParser.load(data.parse.text["*"]);
+                    var imgLink = $('.infobox-image img').attr('src');
+                    if(imgLink !== undefined) {
+                        character.imageLink = imgLink;
+                    }
+                    character.titles = [];
+
+                    //fetch title
+                    var titleTd = $('.infobox th').
+                        filter(function(i, el) {return $(this).html() === 'Title';}).
+                        parent().find('td')
+                    ;
+
+                    if(titleTd.html() !== null)
+                    {
+                        // get multiple titles
+                        var titles = titleTd.html().split('<br>');
+                        titles.forEach(function(title) {
+                            // remove html tags and unnecessary spaces
+                            title = title.replace(/\*?<(?:.|\n)*?>/gm, '').trim()
+
+                            // remove references like [1]
+                            title = title.replace(/\[\d+\]+/g, '');
+
+                            character.titles.push(title);
+                        });
                     }
                 }
                 console.log("Fetched " + character.name);
