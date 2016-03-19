@@ -64,7 +64,7 @@ module.exports = {
                     // old one still up to date
                     if(!err && oldCast.data.length >= cast.data.length && !FORCENEWCASTFILE) {
                         if(oldCast.data.length > cast.data.length) {
-                            console.log("Imdb scraper of the cast could be broken, because earlier more entires got scraped.")
+                            console.log("Imdb scraper of the cast could be broken, because earlier more entires got scraped.");
                         }
                         console.log('Nothing new to scrap.');
                         afterCast();
@@ -275,7 +275,7 @@ module.exports = {
                             }
                         });
                     },function(err) {
-                        episode['characters'] = characters;
+                        episode.characters = characters;
                         episode.save(function(err) {
                             if(!err){
                                 console.log("Episode " + episode.name + " got updated with character appearances =)");
