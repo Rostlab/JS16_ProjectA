@@ -57,8 +57,13 @@ module.exports = {
     },
 
     getByPLOD: function(count, callback) {
-        Character.find({}, {name: true, plod: true}).sort({plod: -1}).limit(count).exec(function(success,message){
-            callback(success,message);
+        Character.find({}, {name: true, plod: true}).sort({plod: -1}).limit(count).exec(function(err,resp){
+            if (err) {
+                callback(false,err);
+            }
+            else {
+                callback(true,resp);
+            }
         });
     },
 
