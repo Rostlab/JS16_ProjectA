@@ -160,10 +160,7 @@ module.exports = {
         var charactersStore = require('../stores/characters');
 
         charactersStore.getByPLOD(req.params.count, function(success, message) {
-            if(success === true)
-                res.status(200).json({ message: 'Success', data: message });
-            else
-                res.status(404).json({ message: 'Failure. No character with that data existing!', data: message });
+            res.status(200).json({ message: 'Success', data: message });
         });
     },
 
