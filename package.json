@@ -38,6 +38,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "check-updates": "npm-check-updates"
+    "check-updates": "npm-check-updates",
+    "refill": "node refill.js"
   }
 }

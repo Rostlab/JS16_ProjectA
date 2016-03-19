@@ -6,14 +6,14 @@ var async = require('async');
 var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
-    fill: function(req, res) {
+    fill: function(policy, callback) {
+        module.exports.policy = policy;
         console.log('Filling started.');
 
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-            res.sendStatus(200);
-            return;
+            callback(false);
         };
 
         var file = __appbase + '../wikiData/cultures.json';
@@ -86,7 +86,7 @@ module.exports = {
 
                     culture = module.exports.matchToModel(culture);
 
-                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                    if(module.exports.policy == 1) { // empty db, so just add it
                         addCulture(culture, function(suc){ _callback(); });
                     }
                     else {
@@ -97,7 +97,7 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in culture) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCulture[z] === undefined)) {
+                                    if(z != "_id" && (module.exports.policy == 2 || oldCulture[z] === undefined)) {
                                         if(oldCulture[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
@@ -129,7 +129,7 @@ module.exports = {
         };
 
         // delete the collection before the insertion?
-        if(cfg.fillerPolicy == 1) {
+        if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {insert(cultures);});
         }

@@ -2,10 +2,10 @@ var City = require(__appbase + 'models/city');
 var Cities = require(__appbase + 'stores/cities');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
-    fill: function(req, res) {
+    fill: function(policy, callback) {
+        module.exports.policy = policy;
         console.log('Filling started.');
 
         var file = __appbase + '../data/cities.json';
@@ -17,9 +17,9 @@ module.exports = {
             }
             console.log('Cities from  file "'+file+'". No scrapping.');
             module.exports.insertToDb(obj,function() {
+                console.log();
                 console.log('Filling done =).');
-                res.sendStatus(200);
-                return;
+                callback(false);
             });
         });
     },
@@ -65,7 +65,7 @@ module.exports = {
 
                     city = module.exports.matchToModel(city);
 
-                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                    if(module.exports.policy == 1) { // empty db, so just add it
                         addCity(city, function(suc){ _callback(); });
                     }
                     else {
@@ -76,7 +76,7 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in city) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldCity[z] === undefined)) {
+                                    if(z != "_id" && (module.exports.policy == 2 || oldCity[z] === undefined)) {
                                         if(oldCity[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
@@ -108,7 +108,7 @@ module.exports = {
         };
 
         // delete the collection before the insertion?
-        if(cfg.fillerPolicy == 1) {
+        if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {insert(cities);});
         }

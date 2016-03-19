@@ -2,17 +2,16 @@ var Continent = require(__appbase + 'models/continent');
 var Continents = require(__appbase + 'stores/continents');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
-    fill: function(req, res) {
+    fill: function(policy, callback) {
+        module.exports.policy = policy;
         console.log('Filling started.');
 
         var afterInsertion = function()
         {
             console.log('Filling done =).');
-            res.sendStatus(200);
-            return;
+            callback(false);
         };
 
         console.log('The continents are hardcoded. Not scrapped from wiki.');
@@ -66,7 +65,7 @@ module.exports = {
 
                     continent = module.exports.matchToModel(continent);
 
-                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                    if(module.exports.policy == 1) { // empty db, so just add it
                         addContinent(continent, function(suc){ _callback(); });
                     }
                     else {
@@ -77,7 +76,7 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in continent) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldContinent[z] === undefined)) {
+                                    if(z != "_id" && (module.exports.policy == 2 || oldContinent[z] === undefined)) {
                                         if(oldContinent[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
@@ -109,7 +108,7 @@ module.exports = {
         };
 
         // delete the collection before the insertion?
-        if(cfg.fillerPolicy == 1) {
+        if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {insert(continents);});
         }

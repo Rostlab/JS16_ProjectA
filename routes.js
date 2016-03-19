@@ -3,33 +3,6 @@ module.exports = function (app, router) {
     var defController = require('./app/controllers/default');
     router.get('/', defController.init);
 
-    var housesFiller = require(__appbase + 'controllers/filler/houses');
-    router.get('/houses/filler', housesFiller.fill);
-
-    var citiesFiller = require(__appbase + 'controllers/filler/cities');
-    router.get('/cities/filler', citiesFiller.fill);
-
-    var continentsFiller = require(__appbase + 'controllers/filler/continents');
-    router.get('/continents/filler', continentsFiller.fill);
-
-    var regionsFiller = require(__appbase + 'controllers/filler/regions');
-    router.get('/regions/filler', regionsFiller.fill);
-
-    var episodesFiller = require(__appbase + 'controllers/filler/episodes');
-    router.get('/episodes/filler', episodesFiller.fill);
-
-    var charactersFiller = require(__appbase + 'controllers/filler/characters');
-    router.get('/characters/filler', charactersFiller.fill);
-
-    var agesFiller = require(__appbase + 'controllers/filler/ages');
-    router.get('/ages/filler', agesFiller.fill);
-    
-    var eventsFiller = require(__appbase + 'controllers/filler/events');
-    router.get('/events/filler', eventsFiller.fill);
-    
-    var culturesFiller = require(__appbase + 'controllers/filler/cultures');
-    router.get('/cultures/filler', culturesFiller.fill);
-
     var housesController = require(__appbase + 'controllers/house');
     router.post('/houses', housesController.add);
     router.post('/houses/find', housesController.get);

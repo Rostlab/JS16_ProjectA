@@ -89,6 +89,8 @@
                     }
                 };
                 for (let i = 0; i < houses.length; i++) {
+                    console.log();
+                    console.log((i-1) + " of " + houses.length + " houses scraped.");
                     scraper.get(houses[i], saveHouse);
                 }
             });
@@ -98,7 +100,8 @@
          * Fetches details for one house
          */
         get: function (houseName, callback) {
-            //console.log(houseName);
+
+            console.log("Scraping: " + houseName);
             var pageName = houseName.replace(/\s/g, "_");
 
             var params = {

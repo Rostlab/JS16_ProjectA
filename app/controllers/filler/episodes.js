@@ -10,7 +10,9 @@ const FORCENEWCASTFILE = false; // only for testing purposes
 var castFile = __appbase + '../data/cast.json';
 
 module.exports = {
-    fill: function(req, res) {
+    fill: function(policy,callback) {
+        module.exports.policy = policy;
+        
         console.log('Filling started.');
 
         var afterInsertion = function() {
@@ -18,8 +20,7 @@ module.exports = {
             filler.fillPreAndSuccessor(function(success) {
                 filler.fillCast(function(err) {
                     console.log('Filling done =).');
-                    res.sendStatus(200);
-                    return;
+                    callback(false);
                 });
             });
         };
@@ -146,7 +147,7 @@ module.exports = {
 
                     episode = module.exports.matchToModel(episode);
 
-                    if(cfg.fillerPolicy == 1) { // empty db, so just add it
+                    if(module.exports.policy == 1) { // empty db, so just add it
                         addEpisode(episode, function(suc){ _callback(); });
                     }
                     else {
@@ -159,7 +160,7 @@ module.exports = {
                                 // iterate through properties
                                 for(var z in episode) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (cfg.fillerPolicy == 2 || oldEpisode[z] === undefined)) {
+                                    if(z != "_id" && (module.exports.policy == 2 || oldEpisode[z] === undefined)) {
                                         if(oldEpisode[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
@@ -191,7 +192,7 @@ module.exports = {
         };
 
         // delete the collection before the insertion?
-        if(cfg.fillerPolicy == 1) {
+        if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {insert(episodes);});
         }

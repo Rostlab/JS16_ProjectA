@@ -6,13 +6,13 @@ var async = require('async');
 var cfg = require(__appbase + '../cfg/config.json');
 
 module.exports = {
-    fill: function(req, res) {
+    fill: function(policy, callback) {
         console.log('Filling started.');
-
+        module.exports.policy = policy;
+        
         var afterInsertion = function() {
             console.log('Filling done =).');
-            res.sendStatus(200);
-            return;
+            callback(false);
         };
 
         var file = __appbase + '../wikiData/houses.json';
@@ -114,7 +114,7 @@ module.exports = {
         var insert = function (house,_callback) {
             house = module.exports.matchToModel(house);
 
-            if(cfg.fillerPolicy == 1) { // empty db, so just add it
+            if(module.exports.policy == 1) { // empty db, so just add it
                 addHouse(house, function(suc){ _callback(); });
             }
             else {
@@ -125,7 +125,7 @@ module.exports = {
                         // iterate through properties
                         for(var z in house) {
                             // only change if update policy or property is not yet stored
-                            if(z != "_id" && (cfg.fillerPolicy == 2 || oldHouse[z] === undefined)) {
+                            if(z != "_id" && (module.exports.policy == 2 || oldHouse[z] === undefined)) {
                                 if(oldHouse[z] === undefined) {
                                     console.log("To old entry the new property "+z+" is added.");
                                 }
@@ -179,7 +179,7 @@ module.exports = {
         };
 
         // delete the collection before the insertion?
-        if(cfg.fillerPolicy == 1) {
+        if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {
                 insertAll(houses);
