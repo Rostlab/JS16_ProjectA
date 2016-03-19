@@ -23,9 +23,10 @@ var CharacterSchema = new Schema({
     allegiance         : {type: String, ref: 'Character'},
     characterPopularity: Number,
     books              : [String],
-    placeOfLastVisit   : {type: String, ref: "Region"},
+    placeOfLastVisit   : {type: String, ref: "Region"}, 
     imageLink		: String,
-    hasPath		: Boolean
+    hasPath		: Boolean,
+	slug: {type: String, required: true, unique: true} // slug for character (unique ID for URL generated from name)
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);
