@@ -16,7 +16,7 @@ module.exports = {
         };
 
         console.log('The continents are hardcoded. Not scrapped from wiki.');
-        continents = require(__appbase + '../wikiData/continents');
+        continents = require(__appbase + '../data/continents');
         
         var filler = require(__appbase + 'controllers/filler/continents');
         filler.insertToDb(continents,afterInsertion);
