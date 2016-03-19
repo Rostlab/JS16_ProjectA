@@ -18,11 +18,11 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 
 ## Scraping and filling the database
 
-x is in the following a placeholder and has to be replaced by the intended collection. (e.g. characters)
+`x` is in the following a placeholder and has to be replaced by the intended collection. (e.g. characters)
 
-* To delete the collection and fill it again (new _ids are set!) with newly scraped data use: npm run refill --collection=x
-* To update the collection with newly scraped data (manual edits are overwritten!) use: npm run update --collection=x
-* To only add new properties/entries to the collection from a newly scrap use: npm run safeUpdate --collection=x
+* To delete the collection and fill it again (new _ids are set!) with newly scraped data use: `npm run refill --collection=x`
+* To update the collection with newly scraped data (manual edits are overwritten!) use: `npm run update --collection=x`
+* To only add new properties/entries to the collection from a newly scrap use: `npm run safeUpdate --collection=x`
 
 ## Setup nodejs & mongodb
 * Install nodejs and mongodb on your local machine (https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/ and https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
