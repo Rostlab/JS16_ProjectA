@@ -41,6 +41,6 @@
     "start": "node app.js",
     "test": "grunt test",
     "check-updates": "npm-check-updates",
-    "refill": "node refill.js"
+    "refill": "node scripts/refill.js"
   }
 }
