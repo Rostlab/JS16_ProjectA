@@ -188,14 +188,14 @@
                 var saveChar = function (character) {
                     charactersCollection.push(character);
                     console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
-                    if (charactersCollection.length == 20) {
+                    if (charactersCollection.length == characters.length) {
                         callback(charactersCollection);
                     }
                 };
 
                 console.log(characters.length);
 
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < characters.length; i++) {
                     scraper.get(characters[i], saveChar);
                 }
             });
