@@ -19,15 +19,16 @@
   },
   "dependencies": {
     "body-parser": "~1.15.0",
+    "cheerio": "^0.20.0",
     "cors": "^2.7.1",
     "express": "latest",
     "jsonfile": "^2.2.3",
     "kerberos": "~0.0.17",
     "mongoose": "~4.4.5",
+    "node-uuid": "latest",
     "nodemw": "0.8.1",
     "swig": "^1.4.2",
-    "twitter": "latest",
-    "node-uuid": "latest"
+    "twitter": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -37,6 +38,7 @@
     "grunt-contrib-nodeunit": "~0.4.1"
   },
   "scripts": {
+    "start": "node app.js",
     "test": "grunt test",
     "check-updates": "npm-check-updates"
   }
