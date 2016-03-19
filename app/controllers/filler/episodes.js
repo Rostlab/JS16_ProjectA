@@ -46,7 +46,7 @@ module.exports = {
                     scrape();
                 }
             });
-        }
+        };
 
         var castFile = __appbase + '../data/cast.json';
         if(true) {
@@ -61,7 +61,7 @@ module.exports = {
                     if(err) {
                         console.log('Could not write cast into file. Error: '+ err);
                     }
-                    console.log('Cast is written into file: ' + castFile)
+                    console.log('Cast is written into file: ' + castFile);
                     afterCast();
                 });
             });

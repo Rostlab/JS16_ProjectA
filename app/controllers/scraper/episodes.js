@@ -61,7 +61,7 @@
 
         getCast: function(callback) {
             // get episode cast from imbd
-            console.log("Get the cast from imdb..")
+            console.log("Get the cast from imdb..");
             var episodesCasts = [];
             request('http://www.imdb.com/title/tt0944947/epcast', function (error, response, body) {
                 if (!error && response.statusCode == 200) {
@@ -111,7 +111,7 @@
                 else {
                     callback(error,episodesCasts);
                 }
-            })
+            });
         },
 
         get: function (episodeName, callback) {
