@@ -105,6 +105,9 @@ db.on('open', function () {
     //Route for doc folder
     app.use('/doc', express.static('apidoc'));
 
+    //Character images
+    app.use('/misc/images/', express.static('misc/images'));
+    
     //Redirect to default page
     app.get('*', function (req, res) {
         res.redirect('/api');
