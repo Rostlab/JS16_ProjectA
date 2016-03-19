@@ -16,13 +16,13 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * Generate the documentation: `apidoc -i app/ -o apidoc/`
 * Open the HTML file inside the apidoc folder or go to http://127.0.0.1:8080/doc/ if you already have set up the project
 
-## Scraping and filling the databaseafeUpdate --collection=x
+## Scraping and filling the database
 
 x is in the following a placeholder and has to be replaced by the intended collection. (e.g. characters)
 
 * To delete the collection and fill it again (new _ids are set!) with newly scraped data use: npm run refill --collection=x
 * To update the collection with newly scraped data (manual edits are overwritten!) use: npm run update --collection=x
-* To only add new properties/entries to the collection from a newly scrap use: npm run s
+* To only add new properties/entries to the collection from a newly scrap use: npm run safeUpdate --collection=x
 
 ## Setup nodejs & mongodb
 * Install nodejs and mongodb on your local machine (https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/ and https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
