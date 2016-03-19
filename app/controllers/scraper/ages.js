@@ -81,6 +81,7 @@
 
         getAllWithEvents: function (callback) {
             var ages = [];
+			var index = 0;
             client.api.call(params, function (err, info, next, data) {
 
                 var arrAge = data.parse.text["*"].match(/<span\sclass=\"tocnumber(.*?)>(.*?)<\/a>/g);
@@ -177,7 +178,8 @@
                             eventName = eventName.replace(/<\/b>/g, "");
                         }
                         else {
-                            eventName = "Unnamed";
+                            eventName = "Unnamed" + index.toString();
+							index++;
                         }
                         event.name = eventName;
                         event.date = date;
