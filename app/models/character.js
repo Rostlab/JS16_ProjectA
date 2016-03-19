@@ -24,8 +24,8 @@ var CharacterSchema = new Schema({
     characterPopularity: Number,
     books              : [String],
     placeOfLastVisit   : {type: String, ref: "Region"},
-    imageLink			:	String,
-    hasPath				:	Boolean
+    imageLink		: String,
+    hasPath		: Boolean
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);
