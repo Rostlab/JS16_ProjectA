@@ -8,7 +8,7 @@ module.exports = {
     fill: function(req, res) {
         console.log('Filling started.');
 
-        var file = __appbase + '../wikiData/cities.json';
+        var file = __appbase + '../data/cities.json';
 
         jsonfile.readFile(file, function(err, obj) {
             if(err) {
