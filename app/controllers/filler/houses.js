@@ -151,8 +151,7 @@ module.exports = {
                 });
 
             }
-
-        }
+        };
         
         var insertAll = function (houses) {
             // iterate through houses
