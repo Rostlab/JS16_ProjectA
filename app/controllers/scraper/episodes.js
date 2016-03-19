@@ -13,6 +13,8 @@
         format: "json"
     };
     var jsonfile = require('jsonfile');
+    var request = require('request');
+    var HtmlParser = require('cheerio');
 
     module.exports = {
         getAllNames: function (callback) {
@@ -55,6 +57,61 @@
                     scraper.get(episodes[i], saveEpisode);
                 }
             });
+        },
+
+        getCast: function(callback) {
+            // get episode cast from imbd
+            console.log("Get the cast from imdb..")
+            var episodesCasts = [];
+            request('http://www.imdb.com/title/tt0944947/epcast', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var $ = HtmlParser.load(body);
+                    var casts = $('.cast');
+
+                    // for each episode cast
+                    casts.each(function(episodeNr) {
+                        var entry = $(this).find('tr');
+
+                        // get actor
+                        var actor = entry.find('td.nm');
+                        if(actor.length > 2) { // > 0 is not enough!
+                            actor.each(function(index) {
+                                actor = $(this).html().replace(/\*?<(?:.|\n)*?>/gm, '').trim(); // replace html tags
+                                if(actor.length > 0) {
+                                    if(typeof episodesCasts[episodeNr] === 'undefined') {
+                                        episodesCasts[episodeNr] = [];
+                                    }
+                                    episodesCasts[episodeNr].push({"actor": actor});
+                                }
+                            });
+                        }
+
+                        // get character
+                        var char = entry.find('td.char');
+                        if(char.length > 2) { // > 0 is not enough!
+                            char.each(function(index) {
+                                char = $(this).html().replace(/\*?<(?:.|\n)*?>/gm, ''); // replace html tags
+                                char = char.replace(/\(\w+\)/g, ''); // replace (further description)
+                                char = char.replace(/&apos;/g,'\'').replace(/'\w+'/g, '').replace(/  /g, ' '); // replace nicknames
+                                char = char.trim();
+                                // i don´t get this by pattern..
+                                if(char == 'Sandor \'The Hound\' Clegane' ) {
+                                    char = 'Sandor Clegane';
+                                }
+                                if(char.length > 0) {
+                                    episodesCasts[episodeNr][index].character = char;
+                                }
+                            });
+                        }
+
+                    });
+                    callback(false, {"data" : episodesCasts, "createdAt" : new Date()});
+                }
+                else {
+                    callback(error,episodesCasts);
+                }
+            })
         },
 
         get: function (episodeName, callback) {
