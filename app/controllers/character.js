@@ -147,12 +147,12 @@ module.exports = {
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : character}
+     *     {"message" : "Success", "data" : characters}
      *
      * @apiError (404) NotFound No character with that data existing!
      * @apiErrorExample {json} NotFound
      *      HTTP/1.1 404
-     *      { "message": "Failure. No character with that data existing!", "data": { "plod" : "10" } };
+     *      { "message": "Failure. No character with that data existing!"};
      *
      * @apiDescription Return a list of top-x PLOD-characters
      */
@@ -160,7 +160,10 @@ module.exports = {
         var charactersStore = require('../stores/characters');
 
         charactersStore.getByPLOD(req.params.count, function(success, message) {
-            res.status(200).json({ message: 'Success', data: message });
+            if(success)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No character with that data existing!'});
         });
     },
 
