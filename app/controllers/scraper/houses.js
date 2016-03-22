@@ -62,7 +62,7 @@
          */
         getAll: function (callback) {
 
-             module.expots.getAllNames(function(houses) {
+            module.exports.getAllNames(function(houses) {
                  var housesCollection = [];
                 var saveHouse = function (house) {
                     housesCollection.push(house);
@@ -73,7 +73,7 @@
                 for (let i = 0; i < houses.length; i++) {
                     console.log();
                     console.log((i+1) + " of " + houses.length + " houses scraped.");
-                    module.expots.get(houses[i], saveHouse);
+                    module.exports.get(houses[i], saveHouse);
                 }
             });
 
