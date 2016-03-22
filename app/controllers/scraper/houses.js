@@ -62,12 +62,8 @@
          */
         getAll: function (callback) {
 
-
-             var sc = require("./scraper");
-             sc.getAllNames(function(houses) {
-
-                var housesCollection = [];
-                var scraper = require("./houses");
+             module.expots.getAllNames(function(houses) {
+                 var housesCollection = [];
                 var saveHouse = function (house) {
                     housesCollection.push(house);
                     if (housesCollection.length == houses.length) {
@@ -77,7 +73,7 @@
                 for (let i = 0; i < houses.length; i++) {
                     console.log();
                     console.log((i+1) + " of " + houses.length + " houses scraped.");
-                    scraper.get(houses[i], saveHouse);
+                    module.expots.get(houses[i], saveHouse);
                 }
             });
 
