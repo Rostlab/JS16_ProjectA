@@ -16,7 +16,7 @@ module.exports = {
 
         //load extra episodes from backup file
         var extraEpisodes = {};
-        jsonfile.readFile(__appbase + 'wikiData/episodesMissing.json', function(err, obj) {
+        jsonfile.readFile(__appbase + 'data/episodesMissing.json', function(err, obj) {
             if(err) {
                 return;
             }
@@ -33,7 +33,7 @@ module.exports = {
             });
         };
 
-        var file = __appbase + '../wikiData/episodes.json';
+        var file = __tmpbase + 'episodes.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
