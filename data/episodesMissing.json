@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "The Dance of Dragons",
+      "nr": "9",
+      "season": "5",
+      "totalNr": 49,
+      "airDate": " June 7,2015",
+      "director": "David Nutter"
+    },
+    {
+      "name": "Mother's Mercy",
+      "nr": "10",
+      "season": "5",
+      "totalNr": 50,
+      "airDate": " June 14,2015",
+      "director": "David Nutter"
+    }
+  ],
+  "createdAt": "2016-03-22T19:30:44.138Z"
+}

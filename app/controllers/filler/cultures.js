@@ -16,7 +16,7 @@ module.exports = {
             callback(false);
         };
 
-        var file = __appbase + '../wikiData/cultures.json';
+        var file = __tmpbase + 'cultures.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {

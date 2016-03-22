@@ -73,3 +73,6 @@ cfg/config.json
 
 # API Docs
 apidoc
+
+/wikiData
+/tmp/*.json

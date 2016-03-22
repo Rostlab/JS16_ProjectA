@@ -15,7 +15,7 @@ module.exports = {
             callback(false);
         };
 
-        var file = __appbase + '../wikiData/houses.json';
+        var file = __tmpbase + 'houses.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {

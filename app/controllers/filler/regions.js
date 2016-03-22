@@ -16,7 +16,7 @@ module.exports = {
             callback(false);
         };
 
-        var file = __appbase + '../wikiData/regions.json';
+        var file = __tmpbase + 'regions.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {

@@ -181,13 +181,15 @@
                              */
                         }
                     }
-                    var arrRelationships = data.parse.text["*"].match(/<td>\"<a\shref(.*?)>(.*?)<\/a>\"<\/td>/g);
+                   /* var arrRelationships = data.parse.text["*"].match(/<td>\"<a\shref(.*?)>(.*?)<\/a>\"<\/td>/g);
                     if (arrRelationships !== null) {
                         var predecessor = arrRelationships[0].match(/\">(.*?)<\/a>"/g)[0];
                         predecessor = predecessor.substring(2, predecessor.length - 4);
+
+
                         var successor = arrRelationships[1].match(/\">(.*?)<\/a>"/g)[0];
                         predecessor = successor.substring(2, successor.length - 4);
-                    }
+                    }*/
                 }
 
                 callback(episode);
