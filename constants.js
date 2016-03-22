@@ -1,3 +1,7 @@
-global.__base = __dirname + '/';
-global.__appbase = __dirname + '/app/';
-global.__tmpbase = __dirname + '/tmp/';
+global.appRoot = require('path').resolve(__dirname);
+
+global.__base = appRoot + '/';
+global.__appbase = appRoot + '/app/';
+global.__tmpbase = appRoot + '/tmp/';
+
+console.log(appRoot)

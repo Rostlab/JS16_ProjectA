@@ -1,4 +1,4 @@
-require(__dirname + '/' + 'constants');
+require(__dirname + '/../' + 'constants');
 
 /*
  * check console input
