@@ -92,34 +92,6 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/characters/plod/:count Get list of top-x characters by PLOD
-     * @apiVersion 0.0.1
-     * @apiName GetByPLOD
-     * @apiGroup Characters
-     *
-     * @apiSuccessExample {json} Success-Response
-     *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : characters}
-     *
-     * @apiError (404) NotFound No character with that data existing!
-     * @apiErrorExample {json} NotFound
-     *      HTTP/1.1 404
-     *      { "message": "Failure. No character with that data existing!"};
-     *
-     * @apiDescription Return a list of top-x PLOD-characters
-     */
-    getByPLOD: function(req, res) {
-        var charactersStore = require('../stores/characters');
-
-        charactersStore.getByPLOD(req.params.count, function(success, message) {
-            if(success)
-                res.status(200).json({ message: 'Success', data: message });
-            else
-                res.status(404).json({ message: 'Failure. No character with that data existing!'});
-        });
-    },
-
-    /**
      * @api {get} /api/characters/byId/:id Get character by id
      * @apiVersion 0.0.1
      * @apiName GetById

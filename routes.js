@@ -34,7 +34,18 @@ module.exports = function (app, router) {
     router.get('/characters', characterController.getAll);
     router.get('/characters/:name', characterController.getByName);
     router.get('/characters/byId/:id', characterController.getById);
-    router.get('/characters/plod/:count', characterController.getByPLOD);
+    router.delete('/characters/:id', characterController.remove);
+    router.put('/characters/:id', characterController.edit);
+
+    var characterPlodController = require(__appbase + 'controllers/characterPlod');
+    router.post('/characters/plod/'), characterPlodController.add;
+    router.post('/characters/plod/find', characterPlodController.get);
+    router.get('/characters/plod', characterPlodController.getAll);
+    router.get('/characters/plod/:count', characterPlodController.getByPLOD);
+    router.get('/characters/plod/:id', characterPlodController.getById);
+    router.get('/characters/plod/:description', characterPlodController.getByDescription);
+    router.delete('/characters/plod/:id', characterPlodController.remove);
+    router.put('/characters/plod/:id', characterPlodController.edit);
 
     var geographyController = require(__appbase + 'controllers/geography');
     router.post('/continents/find', geographyController.getContinents);

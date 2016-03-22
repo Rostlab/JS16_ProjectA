@@ -1,28 +1,28 @@
-var Character = require(__appbase + 'models/character');
+var CharacterPlod = require(__appbase + 'models/characterPlod');
 
 module.exports = {
 
     add: function (data, callback) {
-        var character = new Character();
+        var characterPlod = new CharacterPlod();
 
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Character.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !CharacterPlod.schema.paths.hasOwnProperty(key)) {
                 callback(2,key);
                 return;
             }
             else
             {
-                character[key] = data[key];
+                characterPlod[key] = data[key];
             }
         }
 
-        character.save(function(err) {
+        characterPlod.save(function(err) {
             if (err){
                 callback(3,err);
             }
             else {
-                callback(1,character);
+                callback(1,characterPlod);
             }
         });
     },
@@ -30,13 +30,13 @@ module.exports = {
     get: function(data, callback) {
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Character.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !CharacterPlod.schema.paths.hasOwnProperty(key)) {
                 callback(2,key);
                 return;
             }
         }
 
-        Character.find(data, function (err, obj) {
+        CharacterPlod.find(data, function (err, obj) {
             if (err || obj.length === 0) {
                 callback(3, data);
             } else {
@@ -45,13 +45,24 @@ module.exports = {
         });
     },
 
-    getByName: function(name, callback) {
-        this.get({'name':{ "$regex": name, "$options": "i" } },function (success, message) {
+    getByDescription: function(name, callback) {
+        this.get({'description':{ "$regex": description, "$options": "i" } },function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
             }
             else {
                 callback(success, message);
+            }
+        });
+    },
+
+    getByPLOD: function(count, callback) {
+        CharacterPlod.find({plod: {$exists: true, $ne: null}}).sort({plod: -1}).limit(parseInt(count)).exec(function(err,resp){
+            if (err) {
+                callback(false,err);
+            }
+            else {
+                callback(true,resp);
             }
         });
     },
@@ -68,16 +79,16 @@ module.exports = {
     },
 
     getAll: function (callback) {
-        Character.find(function (err, Characters) {
+        CharacterPlod.find(function (err, CharacterPlods) {
             if (err)
                 callback(false,err);
             else
-                callback(true,Characters);
+                callback(true,CharacterPlods);
         });
     },
 
     remove: function (id, callback) {
-        Character.remove({_id: id}, function(err, resp) {
+        CharacterPlod.remove({_id: id}, function(err, resp) {
             // more than zero entries removed?
             if (resp.result.n > 0)
                 callback(true);
@@ -90,35 +101,35 @@ module.exports = {
     edit: function (id, data, callback) {
         // check if POST data matches Schema
         for (var key in data) {
-            if (data.hasOwnProperty(key) && !Character.schema.paths.hasOwnProperty(key)) {
+            if (data.hasOwnProperty(key) && !CharacterPlod.schema.paths.hasOwnProperty(key)) {
                 callback(4,key);
                 return;
             }
         }
 
-        this.getById(id,function(success, Character) {
-            // Character exists
+        this.getById(id,function(success, CharacterPlod) {
+            // CharacterPlod exists
             if(success == 1) {
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
-                        Character[key] = data[key];
+                        CharacterPlod[key] = data[key];
                     }
                 }
-                Character.save(function(err) {
+                CharacterPlod.save(function(err) {
                     if (err){
                         callback(3,err);
                     }
                     else {
-                        callback(1,Character);
+                        callback(1,CharacterPlod);
                     }
                 });
             }
-            // Character is not existing
+            // CharacterPlod is not existing
             else if (success == 3) {
                 callback(2, id);
             }
             else {
-                callback(false, Character);
+                callback(false, CharacterPlod);
             }
         });
     },
