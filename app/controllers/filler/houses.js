@@ -111,11 +111,11 @@ module.exports = {
             });
         };
         
-        var insert = function (house,_callback) {
+        var insert = function (house,_callba) {
             house = module.exports.matchToModel(house);
 
             if(module.exports.policy == 1) { // empty db, so just add it
-                addHouse(house, function(suc){ _callback(); });
+                addHouse(house, function(suc){ _callba(); });
             }
             else {
                 // see if there is such an entry already in the db
@@ -137,23 +137,23 @@ module.exports = {
                             console.log(house.name + " is updated.");
                             oldHouse.updatedAt = new Date();
                             oldHouse.save(function(err){
-                                _callback();
+                                _callba();
                             });
                         }
                         else {
                             console.log(house.name + " is untouched.");
-                            _callback();
+                            _callba();
                         }
                     }
                     else { // not existing, so it is added in every policy
-                        addHouse(house, function(suc){_callback();});
+                        addHouse(house, function(suc){_callba();});
                     }
                 });
 
             }
         };
         
-        var insertAll = function (houses) {
+        var insertAll = function (houses, cback) {
             // iterate through houses
             async.forEach(houses, function (house, _callback) {
                 // name is required
@@ -174,7 +174,7 @@ module.exports = {
                     insert(house,_callback);
                 }
             },
-            function (err) { callback(true); }
+            function (err) { cback(true); }
             );
         };
 
@@ -182,11 +182,11 @@ module.exports = {
         if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {
-                insertAll(houses);
+                insertAll(houses,function(){callback(true)});
             });
         }
         else {
-            insertAll(houses);
+            insertAll(houses,function(){callback(true)});
         }
     }
 };

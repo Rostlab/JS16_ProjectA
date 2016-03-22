@@ -90,7 +90,7 @@
                 };
                 for (let i = 0; i < houses.length; i++) {
                     console.log();
-                    console.log((i-1) + " of " + houses.length + " houses scraped.");
+                    console.log((i+1) + " of " + houses.length + " houses scraped.");
                     scraper.get(houses[i], saveHouse);
                 }
             });
