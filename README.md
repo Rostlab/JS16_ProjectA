@@ -1,4 +1,4 @@
-# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA)
+# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA) [![Codacy Badge](https://api.codacy.com/project/badge/grade/b635e40a61ea43fc843008c5af01fba6)](https://www.codacy.com/app/mail_25/JS16_ProjectA)
 In this project we will lay the foundations for our system by integrating data from multiple sources into a central database. The database will serve the apps and the visualization tool that will be developed in other projects.
 
 # Links
@@ -29,11 +29,11 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * Clone this project to a folder on your hard drive, open a console and change into the folder you just checked out
 * Run `sudo npm install` to install any sub-modules required
 * Copy the config file in `cfg` to `config.json` and edit it
-    * You can leave username and password empty on default configurations 
-    * Use 127.0.0.1 and port 27017 for default configurations
-    * In order to stream real-time Twitter data, please register your Twitter account at http://apps.twitter.com and insert your API keys into the config.json. Never upload your API keys to GitHub. By default, config.json is on .gitignore.
+	* You can leave username and password empty on default configurations 
+	* Use 127.0.0.1 and port 27017 for default configurations
+	* In order to stream real-time Twitter data, please register your Twitter account at http://apps.twitter.com and insert your API keys into the config.json. Never upload your API keys to GitHub. By default, config.json is on .gitignore.
 * Start local MongoDB server with `mongod`
-    * You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 27017`
+	* You can specifc the port and folder you want to use: `mongod --dbpath /your/db/path/here --port 27017`
 * Run `nodejs app.js` to start the server
 * Node should show in console `Mongoose connected - Node server is listening on port 8080`
 * If needed, you can start MongoDB shell via `mongo`. Then type `show dbs` to see all databases. Type `use db_name_here` to switch to preferred database. With `show collections` you can see all tables (in NoSQL tables are called collections). With `db.collection_name.find()` you can output the collection content.
