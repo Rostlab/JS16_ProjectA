@@ -16,7 +16,7 @@ module.exports = {
 
         //load extra episodes from backup file
         var extraEpisodes = {};
-        jsonfile.readFile(file, function(err, obj) {
+        jsonfile.readFile(__appbase + 'wikiData/episodesMissing.json', function(err, obj) {
             if(err) {
                 return;
             }
