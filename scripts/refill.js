@@ -1,3 +1,5 @@
+require(__dirname + '/' + 'constants');
+
 /*
  * check console input
  */
