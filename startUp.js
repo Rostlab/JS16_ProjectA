@@ -78,9 +78,6 @@
                     cluster.fork();
                 });
 
-                //Use a single connection to the db server as this should be enough
-                setupDb();
-
                 //Setup the token only once so all worker share the same secret
                 setupToken();
             } else {
@@ -96,6 +93,8 @@
                         metadata: "green"
                     }
                 });
+
+                setupDb();
 
                 //Setup application
                 var app = express();
