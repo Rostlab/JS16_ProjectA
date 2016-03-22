@@ -62,23 +62,9 @@
          */
         getAll: function (callback) {
 
-            /*
-             sc = require("./scraper");
+
+             var sc = require("./scraper");
              sc.getAllNames(function(houses) {
-             */
-            /*
-             * For testing purposes(and faster results) uncomment this section and comment the above code section.
-             */
-
-            var fs = require("fs");
-            fs.readFile('./sample data/houses.txt', function (err, data) {
-                if (err) {
-                    return console.error(err);
-                }
-                let string_array = data.toString().split("**");
-                let houses = JSON.parse(string_array[0]);
-                let fields = JSON.parse(string_array[1]);
-
 
                 var housesCollection = [];
                 var scraper = require("./houses");
@@ -94,6 +80,7 @@
                     scraper.get(houses[i], saveHouse);
                 }
             });
+
         },
 
         /*
