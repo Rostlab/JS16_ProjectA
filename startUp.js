@@ -1,12 +1,11 @@
-/*
- *  Server bootstrapping
- *
- *  Created by Christian Dallago on 20160308 .
- */
 
-/*jshint esversion: 6 */
-
-var context;
+var express = require('express');
+var bodyParser = require('body-parser');
+var swig = require('swig');
+var uuid = require('node-uuid');
+var cors = require('cors');
+var mongoose = require('mongoose');
+var config = require(__base + 'cfg/config');
 
 function getDbString(config){ //Create the DB connection string
     var dbConnection = "mongodb://";
@@ -16,9 +15,39 @@ function getDbString(config){ //Create the DB connection string
     return dbConnection + config.uri + ":" + config.port + "/" + config.collection;
 }
 
+function setupDb(){
+    //Create the connection to mongodb
+    console.log("Going to connect to " + getDbString(config.database));
+    mongoose.connect(getDbString(config.database));
+    var db = mongoose.connection;
+
+    // DB CONNECTION EVENTS:
+    db.on('connected', function () { //When successfully connected
+        console.log('Mongoose connected');
+    });
+    db.on('error', function (err) {// If the connection throws an error
+        console.log('Mongoose default connection error: ' + err);
+    });
+    db.on('disconnected', function () { // When the connection is disconnected
+        console.log('Mongoose default connection disconnected');
+    });
+    db.on('open', function () {
+        console.log("Mongoose connection open")
+    });
+}
+
+function setupToken(){
+    //Setup access token
+    if (config.server.accessToken) {
+        global.accessToken = config.server.accessToken;
+    } else {
+        global.accessToken = uuid.v4(); //Generate a default token when none is set
+    }
+    console.log('Your requests must contain the following token: ' + accessToken);
+}
+
 module.exports = {
     start: function(done) {
-
         // Parallelize
         const numCPUs = require('os').cpus().length;
         const cluster = require('cluster');
@@ -47,16 +76,13 @@ module.exports = {
                 console.log(`worker ${worker.process.pid} died`);
                 cluster.fork();
             });
-        } else {
-            //Fetch dep
-            var express = require('express');
-            var bodyParser = require('body-parser');
-            var mongoose = require('mongoose');
-            var config = require(__base + 'cfg/config');
-            var swig = require('swig');
-            var uuid = require('node-uuid');
-            var cors = require('cors');
 
+            //Use a single connection to the db server as this should be enough
+            setupDb();
+
+            //Setup the token only once so all worker share the same secret
+            setupToken();
+        } else {
 
             // Setup timestamps for logging
             consoleStamp(console,{
@@ -72,25 +98,6 @@ module.exports = {
 
             //Setup application
             var app = express();
-
-            //Create the connection to mongodb
-            console.log("Going to connect to " + getDbString(config.database));
-            mongoose.connect(getDbString(config.database));
-            var db = mongoose.connection;
-
-            // DB CONNECTION EVENTS:
-            db.on('connected', function () { //When successfully connected
-                console.log('Mongoose connected');
-            });
-            db.on('error', function (err) {// If the connection throws an error
-                console.log('Mongoose default connection error: ' + err);
-            });
-            db.on('disconnected', function () { // When the connection is disconnected
-                console.log('Mongoose default connection disconnected');
-            });
-            db.on('open', function () {
-                console.log("Mongoose connection open")
-            });
 
             // Add parser to get the data from a POST
             app.use(bodyParser.urlencoded({extended: true}));
@@ -143,14 +150,6 @@ module.exports = {
             //Include routes from external file
             require(__base + 'routes')(app, router);
 
-            //Setup access token
-            if (config.server.accessToken) {
-                global.accessToken = config.server.accessToken;
-            } else {
-                global.accessToken = uuid.v4(); //Generate a default token when none is set
-            }
-            console.log('Your requests must contain the following token: ' + accessToken);
-
             // prefix for all routes
             app.use('/api', router);
 
@@ -168,7 +167,7 @@ module.exports = {
             //Start listening for requests
             var port = config.server.port || 8080; //set a default port if the config file does not contain it
             app.listen(port);
-            console.log('Node server is listening on port ' + port);
+            console.log('is listening on port ' + port);
         }
     },
     stop: function(done) {
