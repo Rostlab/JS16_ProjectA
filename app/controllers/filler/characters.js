@@ -3,7 +3,8 @@ var Character = require(__appbase + 'models/character');
 var Characters = require(__appbase + 'stores/characters');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var cfg = require(__appbase + '../cfg/config.json');
+var cfg = require(__base + 'cfg/config.json');
+var pageRankFile = __base + 'data/pageRanks.json';
 
 module.exports = {
     fill: function(policy, callback) {
@@ -12,8 +13,14 @@ module.exports = {
 
         var afterInsertion = function()
         {
-            console.log('Filling done =).');
-            callback(false);
+            console.log();
+            console.log("Updating pageRanks..")
+            jsonfile.readFile(pageRankFile,function(err,pageRanks) {
+                module.exports.updatePageRanks(pageRanks, function (err) {
+                    console.log('Filling done =).');
+                    callback(false);
+                });
+            });
         };
 
         var file = __tmpbase + 'characters.json';
@@ -80,7 +87,7 @@ module.exports = {
         console.log('Inserting into db..');
 
         var downloadImage = function(character, callb) {
-            var fs = require('fs'),
+            /*var fs = require('fs'),
                 request = require('request');
             var uri = 'http://awoiaf.westeros.org/' + character.imageLink;
             var filename = '/misc/images/characters/' + character.name.replace(new RegExp(" ", "g"),"_");
@@ -97,7 +104,8 @@ module.exports = {
                 else {
                     callb(true,null);
                 }
-            });
+            });*/
+            callb(true,null);
         };
 
         var addCharacter = function(character, callb) {
@@ -184,5 +192,29 @@ module.exports = {
         else {
             insertAll(characters);
         }
+    },
+    updatePageRanks: function(ranks, callback) {
+        console.log(ranks);
+        async.forEach(ranks, function(rank,_callback){
+
+            Character.find({'name':{ "$regex": rank.name, "$options": "i" }}, function (err, oldChar) {
+                if (err || oldChar.length === 0) {
+                    _callback();
+                } else {
+                    oldChar = oldChar[0];
+                    oldChar.pageRank = rank.score;
+                    oldChar.save(function(err){
+                        console.log(oldChar.name + ' got updated by the page rank ' + oldChar.pageRank);
+                        if(err){
+                            console.log('Error updating character: ' + err);
+
+                        }
+                        _callback();
+                    });
+                }
+            });
+        },function(err) {
+            callback(false);
+        });
     }
 };

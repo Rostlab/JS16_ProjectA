@@ -44,6 +44,7 @@
     "check-updates": "npm-check-updates",
     "refill": "node scripts/refill.js",
     "update": "node scripts/update.js",
-    "safeUpdate": "node scripts/safeUpdate.js"
+    "safeUpdate": "node scripts/safeUpdate.js",
+    "updatePageRanks": "node scripts/updatePageRanks.js"
   }
 }

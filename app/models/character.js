@@ -20,12 +20,11 @@ var CharacterSchema = new Schema({
     updatedAt   : {type: Date, default: Date.now},
     spouse             : {type: String, ref: 'Character'},
     allegiance         : {type: String, ref: 'Character'},
-    characterPopularity: Number,
+    pageRank: Number,
     books              : [String],
     placeOfLastVisit   : {type: String, ref: "Region"}, 
     imageLink		: String,
-    hasPath		: Boolean,
-	slug: {type: String, required: true, unique: true} // slug for character (unique ID for URL generated from name)
+    hasPath		: Boolean
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);

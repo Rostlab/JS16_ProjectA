@@ -34,7 +34,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
 
-global.__base = __dirname + '/';
+global.__base = __dirname + '/../';
 global.__appbase = __dirname + '/../app/';
 
 //Create the DB connection string
