@@ -1,13 +1,13 @@
 module.exports = {
     /**
-     * @api {post} /api/characters/plod/find Find characters PLOD
+     * @api {post} /api/characters/sentiment/find Find characters sentiment
      * @apiVersion 0.0.1
-     * @apiName FindCharactersPlod
-     * @apiGroup CharactersPlod
+     * @apiName FindCharactersSentiment
+     * @apiGroup CharactersSentiment
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : characterplod}
+     *     {"message" : "Success", "data" : charactersentiment}
      *
      * @apiError (404) NotFound No character with that data existing!
      * @apiErrorExample {json} NotFound
@@ -23,76 +23,76 @@ module.exports = {
      *     {"message" : "Error: Bad request. Usage of non existing schema property!", "error" : err}
      *
      * @apiDescription Find characters matching the search criteria.
-     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/characterplod.js" target="_blank">character PLOD model</a>.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/charactersentiment.js" target="_blank">character sentiment model</a>.
      */
     get: function(req,res) {
-        var charactersPlodStore = require('../stores/charactersPlod');
-        charactersPlodStore.get(req.body, function(success, message) {
+        var charactersSentimentStore = require('../stores/charactersSentiment');
+        charactersSentimentStore.get(req.body, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else if (success == 3)
-                res.status(404).json({ message: 'Failure. No character PLOD with that data existing!',data: message });
+                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!',data: message });
             else
                 res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
 
     /**
-     * @api {get} /api/characters/plod Get all characters PLOD
+     * @api {get} /api/characters/sentiment Get all characters sentiment
      * @apiVersion 0.0.1
-     * @apiName GetAllCharactersPlod
-     * @apiGroup CharactersPlod
+     * @apiName GetAllCharactersSentiment
+     * @apiGroup CharactersSentiment
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     [{CharactersPlodModel},..,{..}]
+     *     [{CharactersSentimentModel},..,{..}]
      * @apiSuccessExample {json} Empty-Success-Response
      *     HTTP/1.1 200 OK
      *     []
      *
-     * @apiDescription Get all the characters PLOD currently stored.
+     * @apiDescription Get all the characters sentiments currently stored.
      */
     getAll: function (req, res) {
-        var charactersPlodStore = require('../stores/charactersPlod');
+        var charactersSentimentStore = require('../stores/charactersSentiment');
 
-        charactersPlodStore.getAll(function(success,characters) {
+        charactersSentimentStore.getAll(function(success,characters) {
             res.status(200).json(characters);
         });
     },
 
     /**
-     * @api {get} /api/characters/plod/:count Get list of top-x characters by PLOD
+     * @api {get} /api/characters/sentiment/:date Get list of character sentiments by a specific date
      * @apiVersion 0.0.1
-     * @apiName GetByPLOD
-     * @apiGroup CharactersPlod
+     * @apiName GetBySentiment
+     * @apiGroup CharactersSentiment
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {"message" : "Success", "data" : charactersplod}
+     *     {"message" : "Success", "data" : characterssentiment}
      *
      * @apiError (404) NotFound No character with that data existing!
      * @apiErrorExample {json} NotFound
      *      HTTP/1.1 404
      *      { "message": "Failure. No character with that data existing!"};
      *
-     * @apiDescription Return a list of top-x PLOD-characters
+     * @apiDescription Return a list of characters sentiment by date
      */
-    getByPLOD: function(req, res) {
-        var charactersPlodStore = require('../stores/charactersPlod');
+    getByDate: function(req, res) {
+        var charactersSentimentStore = require('../stores/charactersSentiment');
 
-        charactersPlodStore.getByPLOD(req.params.count, function(success, message) {
+        charactersSentimentStore.getByDate(req.params.date, function(success, message) {
             if(success)
                 res.status(200).json({ message: 'Success', data: message });
             else
-                res.status(404).json({ message: 'Failure. No character PLOD with that data existing!'});
+                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!'});
         });
     },
 
     /**
-     * @api {get} /api/characters/plod/:id Get character by PLOD id
+     * @api {get} /api/characters/sentiment/:id Get character sentiment by id
      * @apiVersion 0.0.1
      * @apiName GetById
-     * @apiGroup CharactersPlod
+     * @apiGroup CharactersSentiment
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -103,12 +103,12 @@ module.exports = {
      *      HTTP/1.1 404
      *      { "message": "Failure. No character with that data existing!", "data": err };
      *
-     * @apiDescription Return the character PLOD with the specific :id.
+     * @apiDescription Return the character sentiment with the specific :id.
      */
     getById: function(req, res) {
-        var charactersPlodStore = require('../stores/charactersPlod');
+        var charactersSentimentStore = require('../stores/charactersSentiment');
 
-        charactersPlodStore.getById(req.params.id, function(success, message) {
+        charactersSentimentStore.getById(req.params.id, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
@@ -117,10 +117,10 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/characters/plod/:description Get character by plod description
+     * @api {get} /api/characters/sentiment/:description Get character by sentiment description
      * @apiVersion 0.0.1
      * @apiName GetByDescription
-     * @apiGroup CharactersPlod
+     * @apiGroup CharactersSentiment
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
@@ -129,18 +129,18 @@ module.exports = {
      * @apiError (404) NotFound No character with that data existing!
      * @apiErrorExample {json} NotFound
      *      HTTP/1.1 404
-     *      { "message": "Failure. No character PLOD with that data existing!", "data": err };
+     *      { "message": "Failure. No character sentiment with that data existing!", "data": err };
      *
-     * @apiDescription Return the character PLOD with the specific :description.
+     * @apiDescription Return the character sentiment with the specific :description.
      */
     getByDescription: function(req, res) {
-        var charactersPlodStore = require('../stores/charactersPlod');
+        var charactersSentimentStore = require('../stores/charactersSentiment');
 
-        charactersPlodStore.getByDescription(req.params.description, function(success, message) {
+        charactersSentimentStore.getByDescription(req.params.description, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
-                res.status(404).json({ message: 'Failure. No character PLOD with that data existing!',data: message });
+                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!',data: message });
         });
     }
 };
