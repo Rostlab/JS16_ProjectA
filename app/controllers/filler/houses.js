@@ -182,11 +182,11 @@ module.exports = {
         if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
             module.exports.clearAll(function() {
-                insertAll(houses,function(){callback(true)});
+                insertAll(houses,function(){callback(true);});
             });
         }
         else {
-            insertAll(houses,function(){callback(true)});
+            insertAll(houses,function(){callback(true);});
         }
     }
 };

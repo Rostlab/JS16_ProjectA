@@ -14,7 +14,7 @@ module.exports = {
         var afterInsertion = function()
         {
             console.log();
-            console.log("Updating pageRanks..")
+            console.log("Updating pageRanks..");
             jsonfile.readFile(pageRankFile,function(err,pageRanks) {
                 module.exports.updatePageRanks(pageRanks, function (err) {
                     console.log('Filling done =).');
