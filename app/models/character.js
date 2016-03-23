@@ -24,6 +24,7 @@ var CharacterSchema = new Schema({
     books              : [String],
     placeOfLastVisit   : {type: String, ref: "Region"}, 
     imageLink		: String,
+    slug		: String,
     hasPath		: Boolean
 });
 

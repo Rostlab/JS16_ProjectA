@@ -38,6 +38,8 @@
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
+                        character.slug = pageName;
+
                         for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
                             var name = tempName[0].substring(1, tempName[0].length - 1);
@@ -180,8 +182,6 @@
          * Call when you want to fetch all house information
          */
         getAll: function (callback) {
-
-
             var scraper = require("./characters");
             scraper.getAllNames(function (characters) {
 
@@ -193,8 +193,6 @@
                         callback(charactersCollection);
                     }
                 };
-
-                console.log(characters.length);
 
                 for (let i = 0; i < characters.length; i++) {
                     scraper.get(characters[i], saveChar);
@@ -241,7 +239,7 @@
             scraperFunction(function (data) {
                 data = {'data': data, createdAt: new Date()};
                 console.log('Writing results into cache file "' + cacheFile + '"..');
-                jsonfile.writeFile(cacheFile, data, function (err) {
+                jsonfile.writeFile(cacheFile, data,{'spaces':2}, function (err) {
                     callback(err, data);
                 });
             });

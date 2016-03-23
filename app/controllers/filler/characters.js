@@ -26,6 +26,7 @@ module.exports = {
         var file = __tmpbase + 'characters.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
+                console.log('DONE WITH SCRAPING');
                 if (err !== null) {
                     console.log(err);
                 } else {
@@ -87,7 +88,7 @@ module.exports = {
         console.log('Inserting into db..');
 
         var downloadImage = function(character, callb) {
-            /*var fs = require('fs'),
+            var fs = require('fs'),
                 request = require('request');
             var uri = 'http://awoiaf.westeros.org/' + character.imageLink;
             var filename = '/misc/images/characters/' + character.name.replace(new RegExp(" ", "g"),"_");
@@ -104,8 +105,7 @@ module.exports = {
                 else {
                     callb(true,null);
                 }
-            });*/
-            callb(true,null);
+            });
         };
 
         var addCharacter = function(character, callb) {

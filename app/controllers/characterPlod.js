@@ -1,4 +1,4 @@
-module.exports {
+module.exports = {
     /**
      * @api {post} /api/characters/plod Add character PLOD
      * @apiVersion 0.0.1
