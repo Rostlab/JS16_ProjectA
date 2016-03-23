@@ -51,7 +51,7 @@ module.exports = {
             strict = false;
         }
 
-        var lookup = (strict == 'true' || strict == true) ? {'name':name} : {'name':{ "$regex": name, "$options": "i" } };
+        var lookup = (strict == 'true' || strict === true) ? {'name':name} : {'name':{ "$regex": name, "$options": "i" } };
         this.get(lookup,function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
