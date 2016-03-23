@@ -69,6 +69,9 @@ module.exports = {
      * @apiName GetByName
      * @apiGroup Characters
      *
+     *
+     * @apiParam {Boolean} strict  Optional. Non-strict by default, which looks up case-insensitive and for substrings in the name. Just put ?strict=true for case-sensitive lookup.
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : character}
@@ -82,8 +85,13 @@ module.exports = {
      */
     getByName: function(req, res) {
         var charactersStore = require('../stores/characters');
-
-        charactersStore.getByName(req.params.name, function(success, message) {
+        var strict = (req.query.strict === undefined) ? 'false' : req.query.strict;
+        console.log(strict);
+        if(strict != 'false' && strict != 'true'){
+            res.status(400).json({ message: 'Error: Strict option requires to be of type boolean.' });
+            return;
+        }
+        charactersStore.getByName(req.params.name, strict, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else
