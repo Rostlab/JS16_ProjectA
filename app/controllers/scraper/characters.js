@@ -26,7 +26,8 @@
             var params = {
                 action: "parse",
                 page: pageName,
-                format: "json"
+                format: "json",
+				redirects: ""
             };
 
             var character = {};
