@@ -27,13 +27,13 @@ module.exports = {
      */
     add: function(req,res) {
         var charactersSentimentStore = require('../stores/charactersSentiment');
-        charactersSentimentStore.get(req.body, function(success, message) {
+        charactersSentimentStore.add(req.body, function(success, message) {
             if(success == 1)
-                res.status(200).json({ message: 'Success', data: message });
-            else if (success == 3)
-                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!',data: message });
+                res.status(201).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(400).json({ message: 'Error. Property not valid to schema.', errorProperty: message });
             else
-                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 

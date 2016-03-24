@@ -1,21 +1,28 @@
 var CharacterSentiment = require(__appbase + 'models/characterSentiment');
 
 module.exports = {
+    
+    add: function (data, callback) {
+        var characterSentiment = new CharacterSentiment();
 
-    add: function(data,callback) {
         // check if POST data matches Schema
         for (var key in data) {
             if (data.hasOwnProperty(key) && !CharacterSentiment.schema.paths.hasOwnProperty(key)) {
                 callback(2,key);
                 return;
             }
+            else
+            {
+                characterSentiment[key] = data[key];
+            }
         }
 
-        CharacterSentiment.insert(data, function (err, obj) {
-            if (err || obj.length === 0) {
-                callback(3, data);
-            } else {
-                callback(1, obj);
+        characterSentiment.save(function(err) {
+            if (err){
+                callback(3,err);
+            }
+            else {
+                callback(1,characterSentiment);
             }
         });
     },
