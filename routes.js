@@ -29,6 +29,10 @@ module.exports = function (app, router) {
     router.get('/ages/:name', ageController.getByName);
     router.get('/ages/byId/:id', ageController.getById);
 
+
+    var characterLocations = require(__appbase + 'controllers/characterLocations');
+    router.get('/characters/locations', characterLocations.getAll);
+
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters/find', characterController.get);
     router.get('/characters', characterController.getAll);

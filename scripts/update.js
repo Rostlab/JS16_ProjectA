@@ -17,7 +17,8 @@ var possibleRefillings = [
     'cultures',
     'events',
     'houses',
-    'regions'
+    'regions',
+    'characterLocations'
 ]
 
 if(possibleRefillings.indexOf(requested) < 0) {
