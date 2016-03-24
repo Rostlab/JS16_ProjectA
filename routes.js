@@ -57,7 +57,15 @@ module.exports = function (app, router) {
     // This data is not scraped by Project A but inserted via API by Project D!
     // Twitter Sentiment will be inserted by Project D. DO NOT remove modifying routes!
     var characterSentimentController = require(__appbase + 'controllers/characterSentiment');
-    
+    router.post('/sentiment', characterSentimentController.add);
+    router.post('/sentiment/find', characterSentimentController.get);
+    router.get('/sentiment', characterSentimentController.getAll);
+    router.get('/sentiment/byDate/:date', characterSentimentController.getByDate);
+    router.get('/sentiment/byTimeRange/:beginDate/:endDate', characterSentimentController.getByTimeRange);
+    router.get('/sentiment/byId/:id', characterSentimentController.getById);
+    router.get('/sentiment/byDescription/:description', characterSentimentController.getByDescription);
+    router.put('/sentiment/edit/:id', characterSentimentController.edit);
+    router.delete('/sentiment/remove/:id', characterSentimentController.remove);
 
     var geographyController = require(__appbase + 'controllers/geography');
     router.post('/continents/find', geographyController.getContinents);

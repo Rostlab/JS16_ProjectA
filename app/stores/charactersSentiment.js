@@ -54,7 +54,7 @@ module.exports = {
         });
     },
 
-    getByDescription: function(name, callback) {
+    getByDescription: function(description, callback) {
         this.get({'description':{ "$regex": description, "$options": "i" } },function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
@@ -65,15 +65,24 @@ module.exports = {
         });
     },
 
-    getByPLOD: function(count, callback) {
-        CharacterSentiment.find({plod: {$exists: true, $ne: null}}).sort({plod: -1}).limit(parseInt(count)).exec(function(err,resp){
-            if (err) {
-                callback(false,err);
+    getByDate: function(date, callback) {
+        this.get({'date':{ "$regex": date, "$options": "i" } },function (success, message) {
+            if (success == 1) {
+                callback(success, message[0]);
             }
             else {
-                callback(true,resp);
+                callback(success, message);
             }
         });
+    },
+
+    getByTimeRange: function(beginDate, endDate, callback) {
+        CharacterSentiment.find({'date': { $gte: beginDate, $lt: endDate } }.exec(function (err, CharacterSentiments) {
+            if (err)
+                callback(false,err);
+            else
+                callback(true,CharacterSentiments);
+        }));
     },
 
     getById: function(id, callback) {

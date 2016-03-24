@@ -3,7 +3,7 @@ module.exports = {
      * @api {post} /api/search/twitter/:byKeywords/:tweetCount
      * @apiVersion 0.0.1
      * @apiName Twitter Stream
-     * @apiDescription Show a live stream from Twitter
+     * @apiDescription Show a live stream from Twitter. IMPORTANT: check also https://github.com/Rostlab/JS16_ProjectA/issues/111 , if your query has brackets, braces or other symbols
      * @apiGroup Twitter
      *
      * @apiHeaderExample {json} Header-Example

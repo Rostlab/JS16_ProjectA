@@ -8,7 +8,7 @@ module.exports = {
      * @apiParam {token} Essential. Please ask @kordianbruck for API access token. Make your request in this query: http://got-api.bruck.me/api/plod?token=XYZ
      *
      * @apiSuccessExample {json} Success-Response
-     *     HTTP/1.1 200 OK
+     *     HTTP/1.1 201 OK
      *     {"message" : "Success", "data" : [characterplod]}
      *
      * @apiError (400) message: 'Error. Property not valid to schema.', errorProperty: message 
@@ -168,7 +168,11 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *     { message: 'Success', data: message }
      *
-     * @apiError (404) message: 'Failure. No character PLOD with that data existing!', data: message
+     * @apiError (404) message: 'Error. No character exsiting with that id', id: :id
+     *
+     * @apiError (400) message: 'Error: Bad request. No such property.', errorProperty: message 
+     *
+     * @apiError (400) message: 'Error.', error: message
      *
      * @apiDescription Edit character PLOD values by :id
      */
@@ -176,7 +180,14 @@ module.exports = {
         var charactersPlodStore = require('../stores/charactersPlod');
 
         charactersPlodStore.edit(req.params.id, function(success, message) {
-
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else if(success == 2)
+                res.status(404).json({ message: 'Error. No character exsiting with that id', id: req.params.id });
+            else if(success == 4)
+                res.status(400).json({ message: 'Error: Bad request. No such property.', errorProperty: message });
+            else
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 
