@@ -32,6 +32,9 @@ module.exports = function (app, router) {
 
     var characterLocations = require(__appbase + 'controllers/characterLocations');
     router.get('/characters/locations', characterLocations.getAll);
+    router.get('/characters/locations/:name', characterLocations.getByName);
+    router.get('/characters/locations/byLocation/:location', characterLocations.getByLocation);
+    router.get('/characters/locations/bySlug/:slug', characterLocations.getBySlug);
 
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters/find', characterController.get);

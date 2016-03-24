@@ -86,7 +86,6 @@ module.exports = {
     getByName: function(req, res) {
         var charactersStore = require('../stores/characters');
         var strict = (req.query.strict === undefined) ? 'false' : req.query.strict;
-        console.log(strict);
         if(strict != 'false' && strict != 'true'){
             res.status(400).json({ message: 'Error: Strict option requires to be of type boolean.' });
             return;
