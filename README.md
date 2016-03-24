@@ -40,4 +40,4 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * To fill the database, simply type `npm run refill --collection=x` with x as the collection name. This will _delete all previous collections_ and insert fresh, new data.
 * Update all entries and add new ones (_id is constant here): `npm run update --collection=x`
 * SafeUpdate, where old entries are not updated. Only new properties/entries added: `npm rum safeUpdate --collection=x`
-* The collections are currently: `ages, characters, cities, continents, cultures, episodes, events, houses, regions
+* The collections are currently: `ages, characters, cities, continents, cultures, episodes, events, houses, regions`
