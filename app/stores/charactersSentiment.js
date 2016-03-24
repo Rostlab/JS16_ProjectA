@@ -77,12 +77,12 @@ module.exports = {
     },
 
     getByTimeRange: function(beginDate, endDate, callback) {
-        CharacterSentiment.find({'date': { $gte: beginDate, $lt: endDate } }.exec(function (err, CharacterSentiments) {
+        CharacterSentiment.find({}).where('date').gte(beginDate).lt(endDate).exec(function (err, CharacterSentiments) {
             if (err)
-                callback(false,err);
+                callback(3,err);
             else
-                callback(true,CharacterSentiments);
-        }));
+                callback(1,CharacterSentiments);
+        });
     },
 
     getById: function(id, callback) {

@@ -50,7 +50,7 @@ module.exports = function (app, router) {
     router.get('/plod', characterPlodController.getAll);
     router.get('/plod/byCount/:count', characterPlodController.getByPLOD);
     router.get('/plod/byId/:id', characterPlodController.getById);
-    router.get('/plod/byDescription/:description', characterPlodController.getByDescription);
+    router.get('/plod/byAlgorithm/:algorithm', characterPlodController.getByAlgorithm);
     router.put('/plod/edit/:id', characterPlodController.edit);
     router.delete('/plod/remove/:id', characterPlodController.remove);
 
@@ -61,7 +61,7 @@ module.exports = function (app, router) {
     router.post('/sentiment/find', characterSentimentController.get);
     router.get('/sentiment', characterSentimentController.getAll);
     router.get('/sentiment/byDate/:date', characterSentimentController.getByDate);
-    router.get('/sentiment/byTimeRange/:beginDate/:endDate', characterSentimentController.getByTimeRange);
+    router.get('/sentiment/byTimeRange', characterSentimentController.getByTimeRange);
     router.get('/sentiment/byId/:id', characterSentimentController.getById);
     router.get('/sentiment/byDescription/:description', characterSentimentController.getByDescription);
     router.put('/sentiment/edit/:id', characterSentimentController.edit);

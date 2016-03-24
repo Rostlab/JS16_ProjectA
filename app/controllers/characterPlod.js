@@ -134,9 +134,9 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/plod/byDescription/:description Get characters PLOD by :description
+     * @api {get} /api/plod/byAlgorithm/:algorithm Get characters PLOD by :algorithm.
      * @apiVersion 0.0.1
-     * @apiName GetByDescription
+     * @apiName GetByAlgorithm
      * @apiGroup CharacterPlod  
      * 
      * @apiSuccessExample {json} Success-Response
@@ -145,12 +145,12 @@ module.exports = {
      *
      * @apiError (404) message: 'Failure. No character PLOD with that data existing!', data: message
      *
-     * @apiDescription Get character PLOD values by :description
+     * @apiDescription Get character PLOD values by :algorithm. Algorithm is a distinction between Project B, Group 6 and Group 7 as well as other PLOD methods.
      */
-    getByDescription: function(req, res) {
+    getByAlgorithm: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
 
-        charactersPlodStore.getByDescription(req.params.description, function(success, message) {
+        charactersPlodStore.getByAlgorithm(req.params.algorithm, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
             else

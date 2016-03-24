@@ -109,7 +109,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/sentiment/byTimeRange/:beginDate/:endDate Get all characters sentiment within timerange
+     * @api {get} /api/sentiment/byTimeRange?beginDate=XYZ&endDate=XYZ Get all characters sentiment within timerange
      * @apiVersion 0.0.1
      * @apiName GetByTimeRange
      * @apiGroup CharacterSentiment 
@@ -120,16 +120,20 @@ module.exports = {
      *
      * @apiError (404) message: 'Failure. No character sentiment with that data existing!',data: message 
      *
-     * @apiDescription Get all character sentiment values within a timerange
+     * @apiError (400) message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message
+     *
+     * @apiDescription Get all character sentiment values within a timerange. Make sure, that your input matches the standard JS date formats: http://www.w3schools.com/js/js_date_formats.asp
      */
     getByTimeRange: function(req, res) {
         var charactersSentimentStore = require('../stores/charactersSentiment');
 
-        charactersSentimentStore.getBySentiment((req.params.beginDate || req.params.endDate), function(success, message) {
-            if(success)
+        charactersSentimentStore.getByTimeRange(req.query.beginDate, req.query.endDate, function(success, message) {
+            if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
+            else if (success == 3)
+                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!',data: message });
             else
-                res.status(404).json({ message: 'Failure. No character sentiment with that data existing!'});
+                res.status(400).json({ message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message });
         });
     },
 

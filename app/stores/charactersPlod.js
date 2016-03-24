@@ -54,8 +54,8 @@ module.exports = {
         });
     },
 
-    getByDescription: function(name, callback) {
-        this.get({'description':{ "$regex": description, "$options": "i" } },function (success, message) {
+    getByAlgorithm: function(algorithm, callback) {
+        this.get({'algorithm':{ "$regex": algorithm, "$options": "i" } },function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
             }
