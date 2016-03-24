@@ -1,6 +1,31 @@
 var CharacterSentiment = require(__appbase + 'models/characterSentiment');
 
 module.exports = {
+    
+    add: function (data, callback) {
+        var characterSentiment = new CharacterSentiment();
+
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !CharacterSentiment.schema.paths.hasOwnProperty(key)) {
+                callback(2,key);
+                return;
+            }
+            else
+            {
+                characterSentiment[key] = data[key];
+            }
+        }
+
+        characterSentiment.save(function(err) {
+            if (err){
+                callback(3,err);
+            }
+            else {
+                callback(1,characterSentiment);
+            }
+        });
+    },
 
     get: function(data, callback) {
         // check if POST data matches Schema
@@ -39,6 +64,16 @@ module.exports = {
             else {
                 callback(success, message);
             }
+        });
+    },
+
+
+    getByTimeframe: function(startdate, enddate, callback) {
+        CharacterSentiment.find({Date: $gte: ISODate(startdate), $lt: ISODate(enddate)}).exec(function (err, CharacterSentiments) {
+            if (err)
+                callback(false,err);
+            else
+                callback(true,CharacterSentiments);
         });
     },
 
