@@ -7,6 +7,8 @@ var RegionSchema = new Schema({
     neighbors : [{type: Schema.Types.ObjectId, ref: "Region"}],
     cultures  : [{type: Schema.Types.ObjectId, ref: "Culture"}],
     events    : [{type: Schema.Types.ObjectId, ref: "Event"}],
+    color    : String,
+    borders    : [[String]],
     highlights: [String]										//Used for highlighting regions with polygons
 });
 
