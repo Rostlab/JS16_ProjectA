@@ -1,7 +1,7 @@
 var CharacterSentiment = require(__appbase + 'models/characterSentiment');
 
 module.exports = {
-    
+
     add: function (data, callback) {
         var characterSentiment = new CharacterSentiment();
 
@@ -45,6 +45,15 @@ module.exports = {
         });
     },
 
+    getAll: function (callback) {
+        CharacterSentiment.find(function (err, CharacterSentiments) {
+            if (err)
+                callback(false,err);
+            else
+                callback(true,CharacterSentiments);
+        });
+    },
+
     getByDescription: function(name, callback) {
         this.get({'description':{ "$regex": description, "$options": "i" } },function (success, message) {
             if (success == 1) {
@@ -56,24 +65,14 @@ module.exports = {
         });
     },
 
-    getByDate: function(date, callback) {
-        this.get({'date':{ "$regex": date, "$options": "i" } },function (success, message) {
-            if (success == 1) {
-                callback(success, message[0]);
+    getByPLOD: function(count, callback) {
+        CharacterSentiment.find({plod: {$exists: true, $ne: null}}).sort({plod: -1}).limit(parseInt(count)).exec(function(err,resp){
+            if (err) {
+                callback(false,err);
             }
             else {
-                callback(success, message);
+                callback(true,resp);
             }
-        });
-    },
-
-
-    getByTimeframe: function(startdate, enddate, callback) {
-        CharacterSentiment.find({Date: $gte: ISODate(startdate), $lt: ISODate(enddate)}).exec(function (err, CharacterSentiments) {
-            if (err)
-                callback(false,err);
-            else
-                callback(true,CharacterSentiments);
         });
     },
 
@@ -88,12 +87,50 @@ module.exports = {
         });
     },
 
-    getAll: function (callback) {
-        CharacterSentiment.find(function (err, CharacterSentiments) {
-            if (err)
-                callback(false,err);
-            else
-                callback(true,CharacterSentiments);
+    edit: function (id, data, callback) {
+        // check if POST data matches Schema
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && !CharacterSentiment.schema.paths.hasOwnProperty(key)) {
+                callback(4,key);
+                return;
+            }
+        }
+
+        this.getById(id,function(success, CharacterSentiment) {
+            // CharacterSentiment exists
+            if(success == 1) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        CharacterSentiment[key] = data[key];
+                    }
+                }
+                CharacterSentiment.save(function(err) {
+                    if (err){
+                        callback(3,err);
+                    }
+                    else {
+                        callback(1,CharacterSentiment);
+                    }
+                });
+            }
+            // CharacterSentiment is not existing
+            else if (success == 3) {
+                callback(2, id);
+            }
+            else {
+                callback(false, CharacterSentiment);
+            }
         });
+    },
+
+    remove: function (id, callback) {
+        CharacterSentiment.remove({_id: id}, function(err, resp) {
+            // more than zero entries removed?
+            if (resp.result.n > 0)
+                callback(true);
+            else
+                callback(false);
+        });
+
     }
 };

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
-var CharacterSentiment = new Schema({
+var CharacterSentimentSchema = new Schema({
     character: {type: mongoose.Schema.Types.ObjectId, ref: "Character"},
     date     : {type: Date},
     posSum   : {type: Number},
@@ -12,4 +12,4 @@ var CharacterSentiment = new Schema({
     description: {type: String}			// To distinguish between data sources. E.g. Group 6, Group 7
 });
 
-module.exports = mongoose.model('CharacterSentiment', CharacterSentiment);
+module.exports = mongoose.model('CharacterSentiment', CharacterSentimentSchema);

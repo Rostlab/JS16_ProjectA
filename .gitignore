@@ -74,5 +74,6 @@ cfg/config.json
 # API Docs
 apidoc
 
+/misc/images
 /wikiData
 /tmp/*.json

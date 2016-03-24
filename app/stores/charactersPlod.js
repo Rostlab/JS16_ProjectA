@@ -45,6 +45,15 @@ module.exports = {
         });
     },
 
+    getAll: function (callback) {
+        CharacterPlod.find(function (err, CharacterPlods) {
+            if (err)
+                callback(false,err);
+            else
+                callback(true,CharacterPlods);
+        });
+    },
+
     getByDescription: function(name, callback) {
         this.get({'description':{ "$regex": description, "$options": "i" } },function (success, message) {
             if (success == 1) {
@@ -76,26 +85,6 @@ module.exports = {
                 callback(success,message);
             }
         });
-    },
-
-    getAll: function (callback) {
-        CharacterPlod.find(function (err, CharacterPlods) {
-            if (err)
-                callback(false,err);
-            else
-                callback(true,CharacterPlods);
-        });
-    },
-
-    remove: function (id, callback) {
-        CharacterPlod.remove({_id: id}, function(err, resp) {
-            // more than zero entries removed?
-            if (resp.result.n > 0)
-                callback(true);
-            else
-                callback(false);
-        });
-
     },
 
     edit: function (id, data, callback) {
@@ -133,4 +122,15 @@ module.exports = {
             }
         });
     },
+
+    remove: function (id, callback) {
+        CharacterPlod.remove({_id: id}, function(err, resp) {
+            // more than zero entries removed?
+            if (resp.result.n > 0)
+                callback(true);
+            else
+                callback(false);
+        });
+
+    }
 };

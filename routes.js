@@ -42,21 +42,22 @@ module.exports = function (app, router) {
     router.get('/characters/:name', characterController.getByName);
     router.get('/characters/byId/:id', characterController.getById);
 
+    // This data is not scraped by Project A but inserted via API by Project B! 
+    // Percent Likelihood of Death (PLOD) will be inserted by Project B. DO NOT remove modifying routes!
     var characterPlodController = require(__appbase + 'controllers/characterPlod');
-    router.post('/characters/plod/find', characterPlodController.get);
-    router.get('/characters/plod', characterPlodController.getAll);
-    router.get('/characters/plod/:count', characterPlodController.getByPLOD);
-    router.get('/characters/plod/:id', characterPlodController.getById);
-    router.get('/characters/plod/:description', characterPlodController.getByDescription);
+    router.post('/plod', characterPlodController.add);
+    router.post('/plod/find', characterPlodController.get);
+    router.get('/plod', characterPlodController.getAll);
+    router.get('/plod/byCount/:count', characterPlodController.getByPLOD);
+    router.get('/plod/byId/:id', characterPlodController.getById);
+    router.get('/plod/byDescription/:description', characterPlodController.getByDescription);
+    router.put('/plod/edit/:id', characterPlodController.edit);
+    router.delete('/plod/remove/:id', characterPlodController.remove);
 
+    // This data is not scraped by Project A but inserted via API by Project D!
+    // Twitter Sentiment will be inserted by Project D. DO NOT remove modifying routes!
     var characterSentimentController = require(__appbase + 'controllers/characterSentiment');
-    router.post('/characters/sentiment/add', characterSentimentController.add);
-    router.post('/characters/sentiment/find', characterSentimentController.get);
-    router.get('/characters/sentiment', characterSentimentController.getAll);
-    router.get('/characters/sentiment/byDate/:date', characterSentimentController.getByDate);
-    router.get('/characters/sentiment/byTimeframe/:startdate/:enddate', characterSentimentController.getByTimeframe);
-    router.get('/characters/sentiment/byId/:id', characterSentimentController.getById);
-    router.get('/characters/sentiment/byDescription/:description', characterSentimentController.getByDescription);
+    
 
     var geographyController = require(__appbase + 'controllers/geography');
     router.post('/continents/find', geographyController.getContinents);
