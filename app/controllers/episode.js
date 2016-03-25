@@ -5,6 +5,7 @@ module.exports = {
      * @apiName GetAllEpisode
      * @apiGroup Episodes
      *
+     * @apiSuccess (200) {Date} airDate The date, when the episode first aired on TV. No time information, which is to ignore.
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     [{EpisodeModel},..,{..}]
@@ -31,6 +32,7 @@ module.exports = {
      * @apiExample {post} Example
      *     {"nr": 2, "season": 4} // get episode S04E02
      *
+     * @apiSuccess (200) {Date} airDate The date, when the episode first aired on TV. No time information, which is to ignore.
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episodes}
@@ -73,6 +75,7 @@ module.exports = {
      * @apiName GetByNameEpisode
      * @apiGroup Episodes
      *
+     * @apiSuccess (200) {Date} airDate The date, when the episode first aired on TV. No time information, which is to ignore.
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episode}
@@ -103,6 +106,7 @@ module.exports = {
      * @apiGroup Episodes
      *
      * @apiParam {String} id Episode _id
+     * @apiSuccess (200) {Date} airDate The date, when the episode first aired on TV. No time information, which is to ignore.
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episode}
@@ -132,6 +136,7 @@ module.exports = {
      * @apiGroup Episodes
      *
      * @apiParam {String} id Character _id
+     * @apiSuccess (200) {Date} airDate The date, when the episode first aired on TV. No time information, which is to ignore.
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {"message" : "Success", "data" : episodes}
