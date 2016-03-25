@@ -18,7 +18,8 @@ var possibleRefillings = [
     'events',
     'houses',
     'regions',
-    'characterLocations'
+    'characterLocations',
+    'characterPaths'
 ]
 
 if(possibleRefillings.indexOf(requested) < 0) {

@@ -29,12 +29,15 @@ module.exports = function (app, router) {
     router.get('/ages/:name', ageController.getByName);
     router.get('/ages/byId/:id', ageController.getById);
 
-
     var characterLocations = require(__appbase + 'controllers/characterLocations');
     router.get('/characters/locations', characterLocations.getAll);
     router.get('/characters/locations/:name', characterLocations.getByName);
     router.get('/characters/locations/byLocation/:location', characterLocations.getByLocation);
     router.get('/characters/locations/bySlug/:slug', characterLocations.getBySlug);
+
+    var characterPaths = require(__appbase + 'controllers/characterPaths');
+    router.get('/characters/paths', characterPaths.getAll);
+    router.get('/characters/paths/:name', characterPaths.getByName);
 
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters/find', characterController.get);
