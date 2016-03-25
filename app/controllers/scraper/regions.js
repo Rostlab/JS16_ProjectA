@@ -27,7 +27,8 @@
             var params = {
                 action: "parse",
                 page: "Portal:Geography",
-                format: "json"
+                format: "json",
+				redirects: ""
             };
 
             var regions = [];
