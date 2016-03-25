@@ -60,25 +60,13 @@ module.exports = {
         // go through the properties of the character
         for(var z in character) {
             // ignore references for now, later gather the ids and edit the entries
-            if ( z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
+            if (!Character.schema.paths.hasOwnProperty(z)) {
                 delete character[z];
             }
 
             // remove spaces and html tags
             if (typeof character[z] == 'string') {
                 character[z] = character[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
-            }
-            // translate to a number
-            if (z == 'dateOfBirth' || z == 'dateOfDeath') {
-                if (character[z].indexOf('AC') > -1 || character[z].indexOf('ac') > -1) {
-                    character[z] = Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else if (character[z].indexOf('BC') > -1 || character[z].indexOf('bc') > -1) {
-                    character[z] = 0 - Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else {
-                    delete character[z]; // ignore it for now
-                }
             }
         }
 
@@ -110,8 +98,9 @@ module.exports = {
 
         var addCharacter = function(character, callb) {
             Characters.add(character, function (success, data) {
-
-                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+                if(success) {
+                    console.log('SUCCESS: ' + data.name);
+                }
                 callb(true);
             });
         };
@@ -194,7 +183,6 @@ module.exports = {
         }
     },
     updatePageRanks: function(ranks, callback) {
-        console.log(ranks);
         async.forEach(ranks, function(rank,_callback){
 
             Character.find({'name':{ "$regex": rank.name, "$options": "i" }}, function (err, oldChar) {
