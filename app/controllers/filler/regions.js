@@ -207,8 +207,9 @@ module.exports = {
                     _callb();
             });
         }, function (err) {
-            console.log('Finished iteration');
-            console.log('Following regions are not from wiki scraper: '+notFoundRegions.join(', '));
+           if(notFoundRegions.length > 0) {
+               console.log('Following regions are newly added by the data file to the db: '+notFoundRegions.join(', '));
+           }
             if (err) {
                 console.log(err);
                 callback(true);
