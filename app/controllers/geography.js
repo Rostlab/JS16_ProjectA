@@ -153,7 +153,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/regions/find Find regions
+     * @api {post} /api/regions/find Find regions
      * @apiVersion 0.0.1
      * @apiName FindRegions
      * @apiGroup Regions
