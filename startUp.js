@@ -77,9 +77,6 @@
                     console.log(`worker ${worker.process.pid} died`);
                     cluster.fork();
                 });
-
-                //Setup the token only once so all worker share the same secret
-                setupToken();
             } else {
 
                 // Setup timestamps for logging
@@ -95,6 +92,9 @@
                 });
 
                 setupDb();
+
+                //Setup the token only once so all worker share the same secret
+                setupToken();
 
                 //Setup application
                 var app = express();
