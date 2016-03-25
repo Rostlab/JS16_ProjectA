@@ -72,7 +72,7 @@ module.exports = {
                     }
                     else {
                         CharacterPath.findOne({'name': path.name}, function (err, oldPath) {
-                            if (err) {
+                            if (err || !oldPath.hasOwnProperty('path')) {
                                 addPathToDb(path, function (err) {
                                     if (!err) {
                                         console.log(path.name + ' added to db!');
