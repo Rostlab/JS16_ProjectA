@@ -102,7 +102,7 @@ module.exports = {
                             if(!err) { // old entry is existing
                                 var isChange = false;
                                 // iterate through properties
-                                for(var z in region) {
+                                for(var z in oldCharacterLocation) {
                                     // only change if update policy or property is not yet stored
                                     if(z != "_id" && (module.exports.policy == 2 || oldCharacterLocation[z] === undefined)) {
                                         if(oldCharacterLocation[z] === undefined) {
