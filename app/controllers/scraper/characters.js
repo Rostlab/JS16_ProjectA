@@ -88,8 +88,8 @@
                         if (gender === null) {
                             var secondAttempt = data.parse.text["*"];
                             if (secondAttempt !== null) {
-                                var fGender = (secondAttempt.match(/\sher\s/g) || []).length;
-                                var mGender = (secondAttempt.match(/\shis\s|\shim\s/g) || []).length;
+                                var fGender = (secondAttempt.match(/\sher\s|She|herself/g) || []).length;
+                                var mGender = (secondAttempt.match(/\shis\s|\shim\s|He|himself/g) || []).length;
                                 if (fGender > mGender) {
                                     gender = "Female";
                                 }
@@ -241,6 +241,7 @@
                         console.log('Fetched ' + char.name);
                         charactersCollection.push(char);
                         console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
+						
                         cb();
                     });
                 },
