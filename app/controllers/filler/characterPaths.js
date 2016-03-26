@@ -72,7 +72,7 @@ module.exports = {
                     }
                     else {
                         CharacterPath.findOne({'name': path.name}, function (err, oldPath) {
-                            if (err || !oldPath || oldPath === null || oldPath === undefined) {
+                            if (err || oldPath == null) {
                                 addPathToDb(path, function (err) {
                                     if (!err) {
                                         console.log(path.name + ' added to db!');
@@ -82,7 +82,7 @@ module.exports = {
                                 })
                             }
 
-                            if (module.exports.policy == 2) {
+                            if (module.exports.policy == 2 && oldPath !== null) {
                                 oldPath.path = path.path;
                                 oldPath.save(function (err) {
                                     if (err) {
@@ -98,7 +98,7 @@ module.exports = {
                                     }
                                 })
                             }
-                            else {
+                            else if (module.exports.policy == 3 && oldPath !== null) {
                                 var isChange = false;
                                 for (var prop in path) {
                                     if (!oldPath.hasOwnProperty(prop) && oldPath[prop].length < 1) {
