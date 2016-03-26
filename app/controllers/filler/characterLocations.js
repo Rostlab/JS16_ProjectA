@@ -98,17 +98,17 @@ module.exports = {
                     }
                     else {
                         // see if there is such an entry already in the db
-                        CharacterLocations.find({'slug':characterLocation.slug},function(err,oldCharacterLocation){
-                            if(!err) { // old entry is existing
+                        CharacterLocations.findOne({'slug':characterLocation.slug},function(err,oldCharacterLocation){
+                            if(!err && oldCharacterLocation !== null) { // old entry is existing
                                 var isChange = false;
                                 // iterate through properties
-                                for(var z in oldCharacterLocation) {
+                                for(var z in characterLocation) {
                                     // only change if update policy or property is not yet stored
                                     if(z != "_id" && (module.exports.policy == 2 || oldCharacterLocation[z] === undefined)) {
                                         if(oldCharacterLocation[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
-                                        oldCharacterLocation[z] = oldCharacterLocation[z];
+                                        oldCharacterLocation[z] = characterLocation[z];
                                         isChange = true;
                                     }
                                 }
