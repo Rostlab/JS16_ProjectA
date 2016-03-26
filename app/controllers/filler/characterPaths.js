@@ -152,7 +152,7 @@ module.exports = {
                                 _callback(null);
                             }
                             else {
-                                console.log('Character property of ' +  char +' hasPath has been updated.');
+                                console.log('Character property hasPath of ' +  char +' has been updated.');
                                 _callback(null);
                             }
                         });
