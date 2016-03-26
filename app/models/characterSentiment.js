@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
 var CharacterSentimentSchema = new Schema({
-    character: {type: mongoose.Schema.Types.ObjectId, ref: "Character"},
+    character: {type: String, ref: "Character"},
     date     : {type: Date, default: Date.now},		// Similar to a "created at" field
     posSum   : {type: Number},
     negSum   : {type: Number},
