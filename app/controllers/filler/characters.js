@@ -192,7 +192,7 @@ module.exports = {
                     oldChar = oldChar[0];
                     oldChar.pageRank = rank.score;
 
-                    if(!oldChar.hasOwnProperty('imageLink') || oldChar.imageLink.length < 2) {
+                    if(oldChar.imageLink === undefined) {
                         oldChar.pageRank /= 2;
                         console.log(oldChar.name + ' has no image. Score divided by two!');
                     }
