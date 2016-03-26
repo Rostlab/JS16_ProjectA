@@ -32,13 +32,13 @@
 			
 			client.api.call(params, function (err, info, next, data) {
 
-                if(data != null) {
+                if(data !== null) {
 					if(data.parse.redirects.length > 0) {
 						regionName = data.parse.redirects[0].to;
 					}
 				}
 				
-				region["name"] = regionName;
+				region.name = regionName;
 				
                 callback(region);
 

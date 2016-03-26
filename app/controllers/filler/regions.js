@@ -15,7 +15,7 @@ module.exports = {
             var endInsertion = function() {
                 console.log('Filling done =).');
                 callback(false);
-            }
+            };
 
             var file = __base + 'data/regions.json';
             console.log('Add additional data from file '+ file);
@@ -173,7 +173,7 @@ module.exports = {
                     callb(false);
                 }
             });
-        }
+        };
 
         var notFoundRegions = [];
 
@@ -183,7 +183,7 @@ module.exports = {
 
                 function(region,cb) {
                     Region.findOne({'name': region.name},function(err,oldRegion){
-                        if(!err && oldRegion != null){
+                        if(!err && oldRegion !== null){
                             if(region.hasOwnProperty('color')){
                                 oldRegion.color = region.color;
                             }
@@ -192,13 +192,13 @@ module.exports = {
                             }
                             oldRegion.save(function(err){
                                console.log(oldRegion.name + ' got updated!');
-                                cb(null)
+                                cb(null);
                             });
                         }
                         else{
                             notFoundRegions.push(region.name);
                             createNewRegion(region,function(err){
-                                cb(null)
+                                cb(null);
                             });
                         }
                     });

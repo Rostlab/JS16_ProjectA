@@ -184,7 +184,7 @@
                         if(born.indexOf('BC') > -1) {
                             var bornBC = born.match(/\d+ BC/);
                             if(bornBC !== null) {
-                                born = 0 - bornBC[0].replace(/\D/g,'');;
+                                born = 0 - bornBC[0].replace(/\D/g,'');
                             }
                             isBirthDate = true;
                         }
@@ -214,7 +214,7 @@
                         if(died.indexOf('BC') > -1) {
                             var diedBC = died.match(/\d+ BC/);
                             if(diedBC !== null) {
-                                died = 0 - diedBC[0].replace(/\D/g,'');;
+                                died = 0 - diedBC[0].replace(/\D/g,'');
                             }
                             isDead = true;
                         }

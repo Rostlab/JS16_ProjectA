@@ -68,18 +68,18 @@ module.exports = {
                             }
                             _callb();
                             return;
-                        })
+                        });
                     }
                     else {
                         CharacterPath.findOne({'name': path.name}, function (err, oldPath) {
-                            if (err || oldPath == null) {
+                            if (err || oldPath === null) {
                                 addPathToDb(path, function (err) {
                                     if (!err) {
                                         console.log(path.name + ' added to db!');
                                     }
                                     _callb();
                                     return;
-                                })
+                                });
                             }
 
                             if (module.exports.policy == 2 && oldPath !== null) {
@@ -96,7 +96,7 @@ module.exports = {
                                         _callb();
                                         return;
                                     }
-                                })
+                                });
                             }
                             else if (module.exports.policy == 3 && oldPath !== null) {
                                 var isChange = false;
@@ -123,7 +123,7 @@ module.exports = {
                                         pathsToCharacters.push(oldPath.name);
                                         _callb();
                                     }
-                                })
+                                });
                             }
                         });
                     }
@@ -162,7 +162,7 @@ module.exports = {
                         console.log('Following characters are in the paths json, but not in the characters db: ' + notFoundChars.join(', '));
                     }
                     cb(null);
-                })
+                });
             }
 
         ], function(err, result) {
