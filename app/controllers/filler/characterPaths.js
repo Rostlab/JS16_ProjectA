@@ -72,7 +72,7 @@ module.exports = {
                     }
                     else {
                         CharacterPath.findOne({'name': path.name}, function (err, oldPath) {
-                            if (err || !oldPath) {
+                            if (err || !oldPath || oldPath === null || oldPath === undefined) {
                                 addPathToDb(path, function (err) {
                                     if (!err) {
                                         console.log(path.name + ' added to db!');
