@@ -15,7 +15,6 @@ var CharacterSchema = new Schema({
     heir  : {type: String, ref: 'Character'},
     placeOfBirth: {type: String, ref: "Region"},                                                 // Summerhall
     placeOfDeath: {type: String, ref: "Region"},                                                 // Trident
-    plod: {type: Number},                                         // %-Likelyhood of Death within actual season, e.g. 84%
     house       : {type: String, ref: "House"},                   // House Targaryen
     createdAt   : {type: Date, default: Date.now},
     updatedAt   : {type: Date, default: Date.now},

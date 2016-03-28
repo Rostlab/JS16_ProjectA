@@ -1,4 +1,5 @@
 var Character = require(__appbase + 'models/character');
+var CharacterPlod = require(__appbase + 'models/characterPlod');
 
 module.exports = {
 
@@ -57,7 +58,7 @@ module.exports = {
     },
 
     getByPLOD: function(count, callback) {
-        Character.find({plod: {$exists: true, $ne: null}}, {name: true, plod: true}).sort({plod: -1}).limit(count).exec(function(err,resp){
+        CharacterPlod.find({plod: {$exists: true, $ne: null}}).sort({plod: -1}).limit(parseInt(count)).exec(function(err,resp){
             if (err) {
                 callback(false,err);
             }

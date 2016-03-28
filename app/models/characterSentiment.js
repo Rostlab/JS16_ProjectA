@@ -8,7 +8,8 @@ var CharacterSentiment = new Schema({
     negSum   : {type: Number},
     posCount : {type: Number},
     negCount : {type: Number},
-    nullCount: {type: Number}
+    nullCount: {type: Number},
+    description: {type: String}			// To distinguish between data sources. E.g. Group 6, Group 7
 });
 
 module.exports = mongoose.model('CharacterSentiment', CharacterSentiment);
