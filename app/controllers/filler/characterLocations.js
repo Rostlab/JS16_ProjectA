@@ -1,6 +1,5 @@
-var Scraper = require(__appbase + 'controllers/scraper/cultures');
-var Culture = require(__appbase + 'models/culture');
-var Cultures = require(__appbase + 'stores/cultures');
+var Scraper = require(__appbase + 'controllers/scraper/characterLocations');
+var CharacterLocations = require(__appbase + 'models/characterLocations');
 var jsonfile = require('jsonfile');
 var async = require('async');
 var cfg = require(__appbase + '../cfg/config.json');
@@ -16,7 +15,7 @@ module.exports = {
             callback(false);
         };
 
-        var file = __tmpbase + 'cultures.json';
+        var file = __tmpbase + 'characterLocations.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
@@ -34,7 +33,7 @@ module.exports = {
                     console.log('Cache file outdated.');
                     scrape();
                 } else {
-                    console.log('Cultures from cache file "'+file+'". Not scrapped from wiki.');
+                    console.log('CharacterLocations from cache file "'+file+'". Not scrapped from wiki.');
                     module.exports.insertToDb(obj.data,afterInsertion);
                 }
             } else {
@@ -43,82 +42,90 @@ module.exports = {
         });
     },
     clearAll: function(callback) {
-        Culture.remove({}, function(err) {
-            console.log('Cultures collection removed');
+        CharacterLocations.remove({}, function(err) {
+            console.log('collection removed');
             callback();
         });
     },
-    matchToModel: function(culture) {
+    matchToModel: function(characterLocation) {
         // go through the properties of the house
-        for(var z in culture) {
+        for(var z in characterLocation) {
             // ignore references for now, later gather the ids and edit the entries
-            if (!Culture.schema.paths.hasOwnProperty(z)) {
-                delete culture[z];
+            if (!CharacterLocations.schema.paths.hasOwnProperty(z)) {
+                delete characterLocation[z];
             }
 
             // remove spaces and html tags
-            if (typeof culture[z] == 'string') {
-                culture[z] = culture[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
+            if (typeof characterLocation[z] == 'string') {
+                characterLocation[z] = characterLocation[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
             }
         }
 
-        return culture;
+        return characterLocation;
     },
-    insertToDb: function(cultures, callback) {
+    insertToDb: function(characterLocations, callback) {
         console.log('Inserting into db..');
 
-        var addCulture = function(culture, callb) {
-            Cultures.add(culture, function (success, data) {
+        var addCharacterLocations = function(characterLocation, callb) {
+            if(characterLocation.locations.length < 1) {
+                callb(true);
+                return;
+            }
+            var entry = new CharacterLocations();
+            entry.name = characterLocation.name;
+            entry.slug = characterLocation.slug;
+            entry.locations = characterLocation.locations;
 
-                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+            entry.save(function (err) {
+                console.log((err) ? 'Problem:' + err : 'SUCCESS: ' + entry.name);
                 callb(true);
             });
         };
 
-        var insert = function (cultures) {
-            // iterate through cultures
-            async.forEach(cultures, function (culture, _callback) {
+        var insert = function (characterLocations) {
+            // iterate through regions
+            async.forEach(characterLocations, function (characterLocation, _callback) {
                     // name is required
-                    if (!culture.hasOwnProperty('name')) {
+                    if (!characterLocation.hasOwnProperty('name')) {
                         _callback();
                         return;
                     }
 
-                    culture = module.exports.matchToModel(culture);
+                    characterLocation = module.exports.matchToModel(characterLocation);
 
                     if(module.exports.policy == 1) { // empty db, so just add it
-                        addCulture(culture, function(suc){ _callback(); });
+                        addCharacterLocations(characterLocation, function(suc){ _callback(); });
                     }
                     else {
                         // see if there is such an entry already in the db
-                        Cultures.getByName(culture.name,function(success,oldCulture){
-                            if(success == 1) { // old entry is existing
+                        CharacterLocations.findOne({'slug':characterLocation.slug},function(err,oldCharacterLocation){
+                            if(!err && oldCharacterLocation !== null) { // old entry is existing
                                 var isChange = false;
                                 // iterate through properties
-                                for(var z in culture) {
+                                for(var z in characterLocation) {
                                     // only change if update policy or property is not yet stored
-                                    if(z != "_id" && (module.exports.policy == 2 || oldCulture[z] === undefined)) {
-                                        if(oldCulture[z] === undefined) {
+                                    if(z != "_id" && (module.exports.policy == 2 || oldCharacterLocation[z] === undefined)) {
+                                        if(oldCharacterLocation[z] === undefined) {
                                             console.log("To old entry the new property "+z+" is added.");
                                         }
-                                        oldCulture[z] = culture[z];
+                                        oldCharacterLocation[z] = characterLocation[z];
                                         isChange = true;
                                     }
                                 }
                                 if(isChange) {
-                                    console.log(culture.name + " is updated.");
-                                    oldCulture.updatedAt = new Date();
-                                    oldCulture.save(function(err){
+                                    console.log(characterLocation.name + " is updated.");
+                                    oldCharacterLocation.updatedAt = new Date();
+                                    oldCharacterLocation.save(function(err){
                                         _callback();
                                     });
                                 }
                                 else {
-                                    console.log(culture.name + " is untouched.");
+                                    console.log(oldCharacterLocation.name + " is untouched.");
                                     _callback();
                                 }
                             }
                             else { // not existing, so it is added in every policy
-                                addCulture(culture, function(suc){_callback();});
+                                addCharacterLocations(characterLocation, function(suc){_callback();});
                             }
                         });
 
@@ -131,10 +138,10 @@ module.exports = {
         // delete the collection before the insertion?
         if(module.exports.policy == 1) {
             console.log("Delete and refill policy. Deleting collection..");
-            module.exports.clearAll(function() {insert(cultures);});
+            module.exports.clearAll(function() {insert(characterLocations);});
         }
         else {
-            insert(cultures);
+            insert(characterLocations);
         }
     }
 };

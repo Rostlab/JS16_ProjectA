@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "~1.15.0",
     "cheerio": "^0.20.0",
+    "console-stamp": "^0.2.0",
     "cors": "^2.7.1",
     "express": "latest",
     "jsonfile": "^2.2.3",
@@ -43,6 +44,7 @@
     "check-updates": "npm-check-updates",
     "refill": "node scripts/refill.js",
     "update": "node scripts/update.js",
-    "safeUpdate": "node scripts/safeUpdate.js"
+    "safeUpdate": "node scripts/safeUpdate.js",
+    "updatePageRanks": "node scripts/updatePageRanks.js"
   }
 }

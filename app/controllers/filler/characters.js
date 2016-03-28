@@ -3,7 +3,8 @@ var Character = require(__appbase + 'models/character');
 var Characters = require(__appbase + 'stores/characters');
 var jsonfile = require('jsonfile');
 var async = require('async');
-var cfg = require(__appbase + '../cfg/config.json');
+var cfg = require(__base + 'cfg/config.json');
+var pageRankFile = __base + 'data/pageRanks.json';
 
 module.exports = {
     fill: function(policy, callback) {
@@ -12,13 +13,20 @@ module.exports = {
 
         var afterInsertion = function()
         {
-            console.log('Filling done =).');
-            callback(false);
+            console.log();
+            console.log("Updating pageRanks..");
+            jsonfile.readFile(pageRankFile,function(err,pageRanks) {
+                module.exports.updatePageRanks(pageRanks, function (err) {
+                    console.log('Filling done =).');
+                    callback(false);
+                });
+            });
         };
 
-        var file = __appbase + '../wikiData/characters.json';
+        var file = __tmpbase + 'characters.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
+                console.log('DONE WITH SCRAPING');
                 if (err !== null) {
                     console.log(err);
                 } else {
@@ -52,25 +60,13 @@ module.exports = {
         // go through the properties of the character
         for(var z in character) {
             // ignore references for now, later gather the ids and edit the entries
-            if ( z == 'skills' || !Character.schema.paths.hasOwnProperty(z)) {
+            if (!Character.schema.paths.hasOwnProperty(z)) {
                 delete character[z];
             }
 
             // remove spaces and html tags
             if (typeof character[z] == 'string') {
                 character[z] = character[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
-            }
-            // translate to a number
-            if (z == 'dateOfBirth' || z == 'dateOfDeath') {
-                if (character[z].indexOf('AC') > -1 || character[z].indexOf('ac') > -1) {
-                    character[z] = Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else if (character[z].indexOf('BC') > -1 || character[z].indexOf('bc') > -1) {
-                    character[z] = 0 - Math.abs(character[z].replace(/\D/g, ''));
-                }
-                else {
-                    delete character[z]; // ignore it for now
-                }
             }
         }
 
@@ -102,8 +98,9 @@ module.exports = {
 
         var addCharacter = function(character, callb) {
             Characters.add(character, function (success, data) {
-
-                console.log((success != 1) ? 'Problem:' + data : 'SUCCESS: ' + data.name);
+                if(success) {
+                    console.log('SUCCESS: ' + data.name);
+                }
                 callb(true);
             });
         };
@@ -184,5 +181,34 @@ module.exports = {
         else {
             insertAll(characters);
         }
+    },
+    updatePageRanks: function(ranks, callback) {
+        async.forEach(ranks, function(rank,_callback){
+
+            Character.find({'name':{ "$regex": rank.name, "$options": "i" }}, function (err, oldChar) {
+                if (err || oldChar.length === 0) {
+                    _callback();
+                } else {
+                    oldChar = oldChar[0];
+                    oldChar.pageRank = rank.score;
+
+                    if(oldChar.imageLink === undefined) {
+                        oldChar.pageRank /= 2;
+                        console.log(oldChar.name + ' has no image. Score divided by two!');
+                    }
+
+                    oldChar.save(function(err){
+                        console.log(oldChar.name + ' got updated by the page rank ' + oldChar.pageRank);
+                        if(err){
+                            console.log('Error updating character: ' + err);
+
+                        }
+                        _callback();
+                    });
+                }
+            });
+        },function(err) {
+            callback(false);
+        });
     }
 };
