@@ -12,8 +12,16 @@ var castFile = __appbase + '../data/cast.json';
 module.exports = {
     fill: function(policy,callback) {
         module.exports.policy = policy;
-        
         console.log('Filling started.');
+
+        //load extra episodes from backup file
+        var extraEpisodes = {};
+        jsonfile.readFile(__appbase + 'data/episodesMissing.json', function(err, obj) {
+            if(err) {
+                return;
+            }
+            extraEpisodes = obj.data;
+        });
 
         var afterInsertion = function() {
             var filler = require(__appbase + 'controllers/filler/episodes');
@@ -25,13 +33,13 @@ module.exports = {
             });
         };
 
-        var file = __appbase + '../wikiData/episodes.json';
+        var file = __tmpbase + 'episodes.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
                     console.log(err);
                 } else {
-                    module.exports.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data.concat(extraEpisodes), afterInsertion);
                 }
             });
         };
@@ -48,7 +56,7 @@ module.exports = {
                     scrape();
                 } else {
                     console.log('Episodes from cache file "'+file+'". Not scrapped from wiki.');
-                    module.exports.insertToDb(obj.data,afterInsertion);
+                    module.exports.insertToDb(obj.data.concat(extraEpisodes), afterInsertion);
                 }
             });
         };

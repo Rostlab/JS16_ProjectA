@@ -1,5 +1,4 @@
 var Character = require(__appbase + 'models/character');
-var CharacterPlod = require(__appbase + 'models/characterPlod');
 
 module.exports = {
 
@@ -46,24 +45,19 @@ module.exports = {
         });
     },
 
-    getByName: function(name, callback) {
-        this.get({'name':{ "$regex": name, "$options": "i" } },function (success, message) {
+    getByName: function(name, strict, callback) {
+        if(arguments.length == 2) {
+            callback = strict;
+            strict = false;
+        }
+
+        var lookup = (strict == 'true' || strict === true) ? {'name':name} : {'name':{ "$regex": name, "$options": "i" } };
+        this.get(lookup,function (success, message) {
             if (success == 1) {
                 callback(success, message[0]);
             }
             else {
                 callback(success, message);
-            }
-        });
-    },
-
-    getByPLOD: function(count, callback) {
-        CharacterPlod.find({plod: {$exists: true, $ne: null}}).sort({plod: -1}).limit(parseInt(count)).exec(function(err,resp){
-            if (err) {
-                callback(false,err);
-            }
-            else {
-                callback(true,resp);
             }
         });
     },

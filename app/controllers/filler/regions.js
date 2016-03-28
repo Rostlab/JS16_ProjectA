@@ -12,11 +12,27 @@ module.exports = {
 
         var afterInsertion = function()
         {
-            console.log('Filling done =).');
-            callback(false);
+            var endInsertion = function() {
+                console.log('Filling done =).');
+                callback(false);
+            };
+
+            var file = __base + 'data/regions.json';
+            console.log('Add additional data from file '+ file);
+            jsonfile.readFile(file, function(err, obj) {
+                if(!err && obj.length > 0) {
+                    module.exports.addDataToDb(obj,function(err){
+                        endInsertion();
+                    });
+                }
+                else {
+                    console.log('Could not open ' + file + ' to add additional data to the db.');
+                    endInsertion();
+                }
+            });
         };
 
-        var file = __appbase + '../wikiData/regions.json';
+        var file = __tmpbase + 'regions.json';
         var scrape = function(){
             Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
                 if (err !== null) {
@@ -77,7 +93,7 @@ module.exports = {
 
         var insert = function (regions) {
             // iterate through regions
-            async.forEach(regions, function (region, _callback) {
+            async.each(regions, function (region, _callback) {
                     // name is required
                     if (!region.hasOwnProperty('name')) {
                         _callback();
@@ -136,5 +152,69 @@ module.exports = {
         else {
             insert(regions);
         }
+    },
+    addDataToDb: function(data,callback) {
+
+        var createNewRegion = function(data,callb) {
+            var newRegion = new Region();
+            newRegion.name = data.name;
+            if (data.hasOwnProperty('color')) {
+                newRegion.color = data.color;
+            }
+            if (data.hasOwnProperty('path')) {
+                newRegion.borders = data.path;
+            }
+            newRegion.save(function(err){
+                if(err) {
+                    console.log(err);
+                    callb(true);
+                }
+                else {
+                    callb(false);
+                }
+            });
+        };
+
+        var notFoundRegions = [];
+
+       async.each(data, function (region, _callb) {
+            async.waterfall([
+                function(cb) { cb(null, region); },
+
+                function(region,cb) {
+                    Region.findOne({'name': region.name},function(err,oldRegion){
+                        if(!err && oldRegion !== null){
+                            if(region.hasOwnProperty('color')){
+                                oldRegion.color = region.color;
+                            }
+                            if(region.hasOwnProperty('path')){
+                                oldRegion.borders = region.path;
+                            }
+                            oldRegion.save(function(err){
+                               console.log(oldRegion.name + ' got updated!');
+                                cb(null);
+                            });
+                        }
+                        else{
+                            notFoundRegions.push(region.name);
+                            createNewRegion(region,function(err){
+                                cb(null);
+                            });
+                        }
+                    });
+                }
+            ], function(err, result) {
+                    _callb();
+            });
+        }, function (err) {
+           if(notFoundRegions.length > 0) {
+               console.log('Following regions are newly added by the data file to the db: '+notFoundRegions.join(', '));
+           }
+            if (err) {
+                console.log(err);
+                callback(true);
+            }
+            callback(false);
+        });
     }
 };

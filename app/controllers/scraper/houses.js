@@ -62,26 +62,8 @@
          */
         getAll: function (callback) {
 
-            /*
-             sc = require("./scraper");
-             sc.getAllNames(function(houses) {
-             */
-            /*
-             * For testing purposes(and faster results) uncomment this section and comment the above code section.
-             */
-
-            var fs = require("fs");
-            fs.readFile('./sample data/houses.txt', function (err, data) {
-                if (err) {
-                    return console.error(err);
-                }
-                let string_array = data.toString().split("**");
-                let houses = JSON.parse(string_array[0]);
-                let fields = JSON.parse(string_array[1]);
-
-
-                var housesCollection = [];
-                var scraper = require("./houses");
+            module.exports.getAllNames(function(houses) {
+                 var housesCollection = [];
                 var saveHouse = function (house) {
                     housesCollection.push(house);
                     if (housesCollection.length == houses.length) {
@@ -90,10 +72,11 @@
                 };
                 for (let i = 0; i < houses.length; i++) {
                     console.log();
-                    console.log((i-1) + " of " + houses.length + " houses scraped.");
-                    scraper.get(houses[i], saveHouse);
+                    console.log((i+1) + " of " + houses.length + " houses scraped.");
+                    module.exports.get(houses[i], saveHouse);
                 }
             });
+
         },
 
         /*

@@ -8,6 +8,7 @@
     });
     var jsonfile = require('jsonfile');
     var HtmlParser = require('cheerio');
+    var async = require('async');
 
     module.exports = {
         /*
@@ -19,24 +20,23 @@
                 return ;
             }
 
-            console.log("Fetching " + characterName);
-
             var pageName = characterName.replace(/\s/g, "_");
 
             var params = {
                 action: "parse",
                 page: pageName,
-                format: "json"
+                format: "json",
+				redirects: ""
             };
 
             var character = {};
             client.api.call(params, function (err, info, next, data) {
                 if (data) {
-
-
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
+                        character.slug = pageName;
+
                         for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
                             var name = tempName[0].substring(1, tempName[0].length - 1);
@@ -55,13 +55,7 @@
 
                             if (value !== null) {
                                 name = name.toLowerCase();
-                                if (name == "born") {
-                                    name = "dateOfBirth";
-                                }
-                                else if (name == "died") {
-                                    name = "dateOfDeath";
-                                }
-                                else if (name == "played by") {
+                                if (name == "played by") {
                                     name = "actor";
                                 }
                                 else if (name == "allegiance") {
@@ -94,8 +88,8 @@
                         if (gender === null) {
                             var secondAttempt = data.parse.text["*"];
                             if (secondAttempt !== null) {
-                                var fGender = (secondAttempt.match(/\sher\s/g) || []).length;
-                                var mGender = (secondAttempt.match(/\shis\s|\shim\s/g) || []).length;
+                                var fGender = (secondAttempt.match(/\sher\s|She|herself/g) || []).length;
+                                var mGender = (secondAttempt.match(/\shis\s|\shim\s|He|himself/g) || []).length;
                                 if (fGender > mGender) {
                                     gender = "Female";
                                 }
@@ -123,11 +117,11 @@
                         character.imageLink = imgLink;
                     }
 
-
+                    var infobox = $('.infobox th');
                     //fetch titles
                     character.titles = [];
 
-                    var titleTd = $('.infobox th').
+                    var titleTd = infobox.
                         filter(function(i, el) {return $(this).html() === 'Title';}).
                         parent().find('td')
                     ;
@@ -150,10 +144,10 @@
 
                     //fetch books
                     character.books = [];
-                    var booksTd = $('.infobox th').
+                    var booksTd = infobox.
                         filter(function(i, el) {return $(this).html() === 'Book(s)';}).
                         parent().find('td')
-                        ;
+                    ;
 
                     if(booksTd.html() !== null)
                     {
@@ -169,8 +163,67 @@
                             character.books.push(book);
                         });
                     }
+
+                    // Catch birthdate
+                    var bornTd = infobox.
+                        filter(function(i, el) {return $(this).html() === 'Born' || $(this).html() === 'Born in';}).
+                        parent().find('td')
+                        ;
+
+                    if(bornTd.html() !== null) {
+                        var born = bornTd.html();
+
+                        var isBirthDate = false;
+                        if(born.indexOf('AC') > -1) {
+                            var bornAC = born.match(/\d+ AC/);
+                            if(bornAC !== null) {
+                                born = bornAC[0].replace(/\D/g,'');
+                            }
+                            isBirthDate = true;
+                        }
+                        if(born.indexOf('BC') > -1) {
+                            var bornBC = born.match(/\d+ BC/);
+                            if(bornBC !== null) {
+                                born = 0 - bornBC[0].replace(/\D/g,'');
+                            }
+                            isBirthDate = true;
+                        }
+                        if(isBirthDate){
+                            character.dateOfBirth = born;
+                        }
+                    }
+
+                    // Catch dateOfDeath
+                    var diedTd = infobox.
+                        filter(function(i, el) {return $(this).html() === 'Died' || $(this).html() === 'Died in';}).
+                        parent().find('td')
+                    ;
+
+                    if(diedTd.html() !== null) {
+                        var died = diedTd.html();
+                        var isDead = false;
+
+                        if(died.indexOf('AC') > -1) {
+                            var diedAC = died.match(/\d+ AC/);
+                            if(diedAC !== null) {
+                                died = diedAC[0].replace(/\D/g,'');
+                            }
+                            isDead = true;
+                        }
+
+                        if(died.indexOf('BC') > -1) {
+                            var diedBC = died.match(/\d+ BC/);
+                            if(diedBC !== null) {
+                                died = 0 - diedBC[0].replace(/\D/g,'');
+                            }
+                            isDead = true;
+                        }
+
+                        if(isDead) {
+                            character.dateOfDeath = died;
+                        }
+                    }
                 }
-                console.log("Fetched " + character.name);
                 callback(character);
             });
         },
@@ -179,25 +232,23 @@
          * Call when you want to fetch all house information
          */
         getAll: function (callback) {
-
-
             var scraper = require("./characters");
             scraper.getAllNames(function (characters) {
-
                 var charactersCollection = [];
-                var saveChar = function (character) {
-                    charactersCollection.push(character);
-                    console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
-                    if (charactersCollection.length == characters.length) {
-                        callback(charactersCollection);
-                    }
-                };
 
-                console.log(characters.length);
-
-                for (let i = 0; i < characters.length; i++) {
-                    scraper.get(characters[i], saveChar);
-                }
+                async.each(characters, function(character, cb){
+                    scraper.get(character, function(char) {
+                        console.log('Fetched ' + char.name);
+                        charactersCollection.push(char);
+                        console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
+						
+                        cb();
+                    });
+                },
+                function(err) {
+                    console.log('Finished scraping.');
+                    callback(charactersCollection);
+                });
             });
         },
 
@@ -240,7 +291,7 @@
             scraperFunction(function (data) {
                 data = {'data': data, createdAt: new Date()};
                 console.log('Writing results into cache file "' + cacheFile + '"..');
-                jsonfile.writeFile(cacheFile, data, function (err) {
+                jsonfile.writeFile(cacheFile, data,{'spaces':2}, function (err) {
                     callback(err, data);
                 });
             });

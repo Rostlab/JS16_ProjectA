@@ -1,3 +1,5 @@
+require(__dirname + '/../' + 'constants');
+
 /*
  * check console input
  */
@@ -15,7 +17,9 @@ var possibleRefillings = [
     'cultures',
     'events',
     'houses',
-    'regions'
+    'regions',
+    'characterLocations',
+    'characterPaths'
 ]
 
 if(possibleRefillings.indexOf(requested) < 0) {
@@ -32,7 +36,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
 
-global.__base = __dirname + '/';
+global.__base = __dirname + '/../';
 global.__appbase = __dirname + '/../app/';
 
 //Create the DB connection string
