@@ -35,7 +35,7 @@
                     var arr = data.parse.text["*"].match(/<th\sscope(.*?)>(.*?)<\/td><\/tr>/g);
                     if (arr !== null) {
                         character.name = characterName;
-                        character.slug = pageName;
+                        character.slug = pageName.replace(/'/g,'_');
 
                         for (let i = 0; i < arr.length; i++) {
                             var tempName = arr[i].match(/<th\sscope(.*?)>(.*?)<\/th>/g)[0].match(/>(.*?)</g);
