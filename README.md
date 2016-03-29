@@ -1,4 +1,4 @@
-# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA) [![Codacy Badge](https://api.codacy.com/project/badge/grade/b635e40a61ea43fc843008c5af01fba6)](https://www.codacy.com/app/mail_25/JS16_ProjectA)
+# JS16_ProjectA [![Build Status](https://travis-ci.org/Rostlab/JS16_ProjectA.svg?branch=master)](https://travis-ci.org/Rostlab/JS16_ProjectA) [![Code Climate](https://codeclimate.com/github/Rostlab/JS16_ProjectA/badges/gpa.svg)](https://codeclimate.com/github/Rostlab/JS16_ProjectA) [![Codacy Badge](https://api.codacy.com/project/badge/grade/b635e40a61ea43fc843008c5af01fba6)](https://www.codacy.com/app/mail_25/JS16_ProjectA)
 In this project we will lay the foundations for our system by integrating data from multiple sources into a central database. The database will serve the apps and the visualization tool that will be developed in other projects.
 
 # Links
