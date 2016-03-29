@@ -3,8 +3,8 @@ In this project we will lay the foundations for our system by integrating data f
 
 # Links
   - Main wiki entry: https://rostlab.org/owiki/index.php/Javascript_technology_2016#Project_A
-  - API accessable at: https://got-api.bruck.me/api
-  - Documentation about API endpoints: https://got-api.bruck.me/doc
+  - API accessable at: https://api.got.show/api
+  - Documentation about API endpoints: https://api.got.show/doc/
 
 
 # Developer information
