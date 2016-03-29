@@ -2,5 +2,8 @@ language: node_js
 node_js:
   - "4.2"
   - "5.1"
+addons:
+  code_climate:
+  repo_token: 8b6910f5f1ce9de7cff2c2be42de23ee5bac174a8e719fefeb82c8b7e517de42
 before_script:
   - npm install grunt-cli -g
