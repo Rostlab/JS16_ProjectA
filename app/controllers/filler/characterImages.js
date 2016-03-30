@@ -15,7 +15,7 @@ module.exports = {
             function(cb) {
                 jsonfile.readFile(cacheFile, function(err, obj) {
                     // no cache file
-                    if(obj == undefined) {
+                    if(obj === undefined) {
                         cb(null, false); // scrap it!
                     }
                     else {

@@ -17,7 +17,7 @@ module.exports = {
             function(cb) {
                 jsonfile.readFile(cacheFile, function(err, obj) {
                     // no cache file
-                    if(obj == undefined) {
+                    if(obj === undefined) {
                         cb(null, false); // scrap it!
                     }
                     else {
@@ -71,7 +71,7 @@ module.exports = {
                     if(err) {
                         console.log(err);
                     }
-                    cb(null)
+                    cb(null);
                 });
             },
             // update page ranks
@@ -152,14 +152,14 @@ module.exports = {
                                     // old entry is existing
                                     else {
                                         var isChange = false;
-                                        for (var prop in character) {
-                                            if (module.exports.policy == 2 && oldCharacter[prop] != character[prop] && prop !== '_id') { // just overwrite old properties
-                                                oldCharacter[prop] = character[prop];
+                                        for (var p in character) {
+                                            if (module.exports.policy == 2 && oldCharacter[p] != character[p] && p !== '_id') { // just overwrite old perties
+                                                oldCharacter[p] = character[p];
                                                 isChange = true;
                                             }
-                                            else if (oldCharacter[prop] === undefined) { // just add new properties
-                                                console.log(oldCharacter.name + ' gets new property ' + prop + '(' + oldCharacter[prop] + ' -> ' + character[prop] + ')');
-                                                oldCharacter[prop] = character[prop];
+                                            else if (oldCharacter[p] === undefined) { // just add new perties
+                                                console.log(oldCharacter.name + ' gets new property ' + p + '(' + oldCharacter[p] + ' -> ' + character[p] + ')');
+                                                oldCharacter[p] = character[p];
                                                 isChange = true;
                                             }
                                         }
