@@ -9,46 +9,87 @@ var pageRankFile = __base + 'data/pageRanks.json';
 module.exports = {
     fill: function(policy, callback) {
         module.exports.policy = policy;
+        var cacheFile = __tmpbase + 'characters.json';
         console.log('Filling started.');
 
-        var afterInsertion = function()
-        {
-            console.log();
-            console.log("Updating pageRanks..");
-            jsonfile.readFile(pageRankFile,function(err,pageRanks) {
-                module.exports.updatePageRanks(pageRanks, function (err) {
-                    console.log('Filling done =).');
-                    callback(false);
+        async.waterfall([
+            // check cache file
+            function(cb) {
+                jsonfile.readFile(cacheFile, function(err, obj) {
+                    // no cache file
+                    if(obj == undefined) {
+                        cb(null, false); // scrap it!
+                    }
+                    else {
+
+                        // cache outdated?
+                        var cacheAge = ((new Date()) - new Date(obj.createdAt));
+                        if(cacheAge > cfg.TTLWikiCache) {
+                            cb(null,false); // scrap it!
+                        }
+                        else {
+                            console.log('Characters from cache file "'+cacheFile+'". Not scrapped from wiki.');
+                            cb(null,obj.data);
+                        }
+
+                    }
+
                 });
-            });
-        };
-
-        var file = __tmpbase + 'characters.json';
-        var scrape = function(){
-            Scraper.scrapToFile(file, Scraper.getAll, function (err, obj) {
-                console.log('DONE WITH SCRAPING');
-                if (err !== null) {
-                    console.log(err);
-                } else {
-                    module.exports.insertToDb(obj.data,afterInsertion);
+            },
+            // scraping required?
+            function(characters,cb) {
+                // scraping if characters not yet fetched
+                if(!characters) {
+                    Scraper.scrapToFile(cacheFile, Scraper.getAll, function (err, obj) {
+                        console.log('DONE WITH SCRAPING');
+                        if (err !== null) {
+                            console.log(err);
+                        } else {
+                            cb(null,obj.data);
+                        }
+                    });
                 }
-            });
-        };
-
-        jsonfile.readFile(file, function(err, obj) {
-            if(obj !== undefined) {
-                var cacheAge = ((new Date()) - new Date(obj.createdAt));
-                if(cacheAge > cfg.TTLWikiCache) {
-                    console.log('Cache file outdated.');
-                    scrape();
-                } else {
-                    console.log('Characters from cache file "'+file+'". Not scrapped from wiki.');
-                    module.exports.insertToDb(obj.data,afterInsertion);
+                else {
+                    cb(null,characters);
                 }
-            } else {
-                scrape();
+            },
+            // delete collection before filling?
+            function(characters,cb) {
+                if (module.exports.policy == 1) {
+                    console.log("Delete and refill policy. Deleting collection..");
+                    module.exports.clearAll(function () {
+                        cb(null, characters);
+                    });
+                }
+                else {
+                    cb(null, characters);
+                }
+            },
+            // at this step characters are fetched
+            function(characters,cb) {
+                module.exports.insertToDb(characters,function(err) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    cb(null)
+                });
+            },
+            // update page ranks
+            function(cb) {
+                console.log("Updating pageRanks..");
+                jsonfile.readFile(pageRankFile,function(err,pageRanks) {
+                    module.exports.updatePageRanks(pageRanks, function (err) {
+                        if(err) {
+                            console.log(err);
+                        }
+                        else {
+                            console.log('Filling done =).');
+                            callback(false);
+                        }
+                    });
+                });
             }
-        });
+        ]);
     },
     clearAll: function(callback) {
         Character.remove({}, function(err) {
@@ -59,8 +100,7 @@ module.exports = {
     matchToModel: function(character) {
         // go through the properties of the character
         for(var z in character) {
-            // ignore references for now, later gather the ids and edit the entries
-            if (!Character.schema.paths.hasOwnProperty(z)) {
+            if (!Character.schema.paths.hasOwnProperty(z) || ((z == 'dateOfBirth' || z == 'dateOfDeath') && isNaN(character[z]))) {
                 delete character[z];
             }
 
@@ -69,122 +109,105 @@ module.exports = {
                 character[z] = character[z].trim().replace(/\*?<(?:.|\n)*?>/gm, '');
             }
         }
-
         return character;
     },
     insertToDb: function(characters, callback) {
         console.log('Inserting into db..');
 
-        var downloadImage = function(character, callb) {
-            var fs = require('fs'),
-                request = require('request');
-            var uri = 'http://awoiaf.westeros.org/' + character.imageLink;
-            var filename = '/misc/images/characters/' + character.name.replace(new RegExp(" ", "g"),"_");
-            console.log(uri);
-            request.head(uri, function(err, res, body){
-                if(!err) {
-                    var type = res.headers['content-type'].replace(new RegExp("/", "g"),'.');
-                    var downloadTo = filename+'.'+type;
-                    downloadTo = downloadTo.replace(".image",'');
-                    request(uri).pipe(fs.createWriteStream(__appbase + '..' + downloadTo)).on('close', function() {
-                        callb(false,downloadTo);
-                    });
-                }
-                else {
-                    callb(true,null);
-                }
-            });
-        };
-
-        var addCharacter = function(character, callb) {
-            Characters.add(character, function (success, data) {
-                if(success) {
-                    console.log('SUCCESS: ' + data.name);
-                }
-                callb(true);
-            });
-        };
-
-        var insert = function(character,_callback) {
-            character = module.exports.matchToModel(character);
-
-            if(module.exports.policy == 1) { // empty db, so just add it
-                addCharacter(character, function(suc){ _callback(); });
+        // iterate through characters
+        async.forEach(characters, function (character, _callback) {
+            // name is required
+            if (!character.hasOwnProperty('name')) {
+                _callback(); // skip character
             }
             else {
-                // see if there is such an entry already in the db
-                Characters.getByName(character.name,function(success,oldCharacter){
-                    if(success == 1) { // old entry is existing
-                        var isChange = false;
-                        // iterate through properties
-                        for(var z in character) {
-                            // only change if update policy or property is not yet stored
-                            if(z != "_id" && (module.exports.policy == 2 || oldCharacter[z] === undefined)) {
-                                if(oldCharacter[z] === undefined) {
-                                    console.log("To old entry the new property "+z+" is added.");
+                async.waterfall([
+                        // get or create character
+                        function (cb) {
+                            character = module.exports.matchToModel(character);
+
+                            // empty db, so just create a new one
+                            if (module.exports.policy == 1) {
+                                var characterToSafe = new Character();
+                                for (var prop in character) {
+                                    characterToSafe[prop] = character[prop];
                                 }
-                                oldCharacter[z] = character[z];
-                                isChange = true;
+                                cb(null, characterToSafe);
                             }
-                        }
-                        if(isChange) {
-                            console.log(character.name + " is updated.");
-                            oldCharacter.updatedAt = new Date();
-                            oldCharacter.save(function(err){
-                                _callback();
+                            else {
+                                // get old character
+                                Character.findOne({'name': character.name}, function (err, oldCharacter) {
+                                    // old entry is not existing
+                                    if (err || oldCharacter === null) {
+                                        console.log('Character ' + character.name + ' is not existing yet!');
+                                        console.log(err);
+                                        console.log(oldCharacter);
+                                        console.log('---');
+                                        var characterToSafe = new Character();
+                                        for (var prop in character) {
+                                            characterToSafe[prop] = character[prop];
+                                        }
+                                        cb(null, characterToSafe);
+                                    }
+                                    // old entry is existing
+                                    else {
+                                        var isChange = false;
+                                        for (var prop in character) {
+                                            if (module.exports.policy == 2 && oldCharacter[prop] != character[prop] && prop !== '_id') { // just overwrite old properties
+                                                oldCharacter[prop] = character[prop];
+                                                isChange = true;
+                                            }
+                                            else if (oldCharacter[prop] === undefined) { // just add new properties
+                                                console.log(oldCharacter.name + ' gets new property ' + prop + '(' + oldCharacter[prop] + ' -> ' + character[prop] + ')');
+                                                oldCharacter[prop] = character[prop];
+                                                isChange = true;
+                                            }
+                                        }
+
+                                        if (!isChange) {
+                                            console.log(oldCharacter.name + ' still up-to-date.');
+                                        }
+                                        else {
+                                            oldCharacter.updatedAt = new Date();
+                                        }
+
+                                        cb(null, oldCharacter);
+                                    }
+                                });
+                            }
+                        },
+                        // store updated or new character
+                        function (characterToSafe, cb) {
+                            characterToSafe.save(function (err) {
+                                if (!err) {
+                                    console.log('SUCCESS: ' + characterToSafe.name);
+                                    cb(null);
+                                }
+                                else {
+                                    console.log('ERROR: ' + err);
+                                    cb(err);
+                                }
                             });
                         }
-                        else {
-                            console.log(character.name + " is untouched.");
-                            _callback();
+                    ],
+                    function (err) {
+                        if (err) {
+                            console.log(err);
                         }
-                    }
-                    else { // not existing, so it is added in every policy
-                        addCharacter(character, function(suc){_callback();});
-                    }
-                });
-            }
-        };
-
-        var insertAll = function (characters) {
-            // iterate through characters
-            async.forEach(characters, function (character, _callback) {
-                // name is required
-                if (!character.hasOwnProperty('name')) {
-                    _callback();
-                    return;
-                }
-
-                if(character.imageLink !== undefined){
-                    downloadImage(character, function(err, newImageLink){
-                        if(!err) {
-                            character.imageLink = newImageLink;
-                        }
-                        insert(character,_callback);
+                        _callback();
                     });
                 }
-                else {
-                    insert(character,_callback);
-                }
             },
-            function (err) { callback(true); }
-            );
-        };
-
-        // delete the collection before the insertion?
-        if(module.exports.policy == 1) {
-            console.log("Delete and refill policy. Deleting collection..");
-            module.exports.clearAll(function() {
-                insertAll(characters);
-            });
-        }
-        else {
-            insertAll(characters);
-        }
+            function (err) {
+                if(err) {
+                    console.log(err);
+                }
+                callback(false);
+            }
+        );
     },
     updatePageRanks: function(ranks, callback) {
         async.forEach(ranks, function(rank,_callback){
-
             Character.find({'name':{ "$regex": rank.name, "$options": "i" }}, function (err, oldChar) {
                 if (err || oldChar.length === 0) {
                     _callback();

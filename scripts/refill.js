@@ -19,7 +19,8 @@ var possibleRefillings = [
     'houses',
     'regions',
     'characterLocations',
-    'characterPaths'
+    'characterPaths',
+    'characterImages'
 ]
 
 if(possibleRefillings.indexOf(requested) < 0) {
