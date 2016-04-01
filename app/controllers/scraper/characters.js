@@ -275,13 +275,14 @@
 
             console.log("Loading all character names from the wiki. This might take a while");
             client.api.call(params, function (err, info, next, data) {
-                var arr = data.parse.text["*"];
-                var links = arr.match(/<li>\s<a\shref(.*?)<\/a>/g);
-                for(let i = 0; i < links.length; i++) {
-                    var matchedName = links[i].match(/title=\"(.*?)\"/g);
-                    var characterName  = matchedName[0].substring(7, matchedName[0].length-1);
-                    characters.push(characterName);
-                }
+                var $ = HtmlParser.load(data.parse.text["*"]); 
+                var allLis = $('li');
+
+                var name;
+                allLis.each(function() {
+                    name = $(this).find('a').first().attr("title").replace(/_/g,' ');
+                    characters.push(name);
+                });
                 console.log("All character names loaded");
                 callback(characters);
             });
