@@ -63,7 +63,7 @@
                                 if (name == "played by") {
                                     name = "actor";
                                 }
-                                else if (name == "allegiance") {
+                                else if (name == "allegiance" || name.toLowerCase() == "royal house") {
                                     name = "house";
                                 }
                                 character[name] = value;
