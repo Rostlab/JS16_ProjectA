@@ -19,7 +19,12 @@
                 console.log("Skipped: "+characterName);
                 return ;
             }
-
+            
+        /* we need to exclude some cases, as they are no valid character names*/
+	if(characterName == "House Farman" || characterName == "House Templeton"){
+		console.log("Not valid character name, skipped: "+characterName);
+		return;
+	}
             var pageName = characterName.replace(/\s/g, "_");
 
             var params = {
