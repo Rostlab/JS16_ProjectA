@@ -24,6 +24,21 @@ We are using [apidoc](http://apidocjs.com/) to generate documentation for the RE
 * To update the collection with newly scraped data (manual edits are overwritten!) use: `npm run update --collection=x`
 * To only add new properties/entries to the collection from a newly scrap use: `npm run safeUpdate --collection=x`
 
+Available Collections:
+*    'ages',
+*    'characters',
+*    'episodes',
+*    'cities',
+*    'continents',
+*    'cultures',
+*    'events',
+*    'houses',
+*    'regions',
+*    'characterLocations',
+*    'characterPaths',
+*    'characterImages'
+
+
 ## Setup nodejs & mongodb
 * Install nodejs and mongodb on your local machine (https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/ and https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
 * Clone this project to a folder on your hard drive, open a console and change into the folder you just checked out
