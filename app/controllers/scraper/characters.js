@@ -274,7 +274,7 @@
 
             console.log("Loading all character names from the wiki. This might take a while");
             client.api.call(params, function (err, info, next, data) {
-                var $ = HtmlParser.load(data.parse.text["*"]); 
+                var $ = HtmlParser.load(data.parse.text["*"]);
                 var allLis = $('li');
 
                 var name;
