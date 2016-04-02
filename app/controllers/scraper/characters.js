@@ -19,12 +19,7 @@
                 console.log("Skipped: "+characterName);
                 return ;
             }
-            
-        /* we need to exclude some cases, as they are no valid character names*/
-	if(characterName == "House Farman" || characterName == "House Templeton"){
-		console.log("Not valid character name, skipped: "+characterName);
-		return;
-	}
+
             var pageName = characterName.replace(/\s/g, "_");
 
             var params = {
@@ -246,7 +241,6 @@
                         console.log('Fetched ' + char.name);
                         charactersCollection.push(char);
                         console.log("Still " + (characters.length - charactersCollection.length) + " characters to fetch.");
-						
                         cb();
                     });
                 },
@@ -286,7 +280,9 @@
                 var name;
                 allLis.each(function() {
                     name = $(this).find('a').first().attr("title").replace(/_/g,' ');
-                    characters.push(name);
+                    if(name.indexOf('House_') < 0) {
+                        characters.push(name);
+                    }
                 });
                 console.log("All character names loaded");
                 callback(characters);
