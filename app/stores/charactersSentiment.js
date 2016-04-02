@@ -105,7 +105,7 @@ module.exports = {
             }
         }
 
-        this.getById(id,function(success, CharacterSentiment) {
+        this.get({'_id': id},function(success, CharacterSentiment) {
             // CharacterSentiment exists
             if(success == 1) {
                 for (var key in data) {
