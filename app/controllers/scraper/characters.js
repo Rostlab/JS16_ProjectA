@@ -280,7 +280,7 @@
                 var name;
                 allLis.each(function() {
                     name = $(this).find('a').first().attr("title").replace(/_/g,' ');
-                    if(name.indexOf('House_') < 0) {
+                    if(name.indexOf('House ') < 0) {
                         characters.push(name);
                     }
                 });
