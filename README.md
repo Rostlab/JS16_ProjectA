@@ -37,6 +37,7 @@ Available Collections:
 *    'characterLocations',
 *    'characterPaths',
 *    'characterImages'
+*    'characterPlods'
 
 
 ## Setup nodejs & mongodb
