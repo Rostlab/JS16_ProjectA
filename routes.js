@@ -43,7 +43,7 @@ module.exports = function (app, router) {
     router.post('/characters/find', characterController.get);
     router.get('/characters', characterController.getAll);
     router.get('/characters/:name', characterController.getByName);
-    router.get('/characters/:sluhg', characterController.getBySlug);
+    router.get('/characters/:slug', characterController.getBySlug);
     router.get('/characters/byId/:id', characterController.getById);
 
     // This data is not scraped by Project A but inserted via API by Project B! 
