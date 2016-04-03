@@ -62,6 +62,23 @@ module.exports = {
         });
     },
 
+    getBySlug: function(name, strict, callback) {
+        if(arguments.length == 2) {
+            callback = strict;
+            strict = false;
+        }
+
+        var lookup = (strict == 'true' || strict === true) ? {'slug':slug} : {'slug':{ "$regex": slug, "$options": "i" } };
+        this.get(lookup,function (success, message) {
+            if (success == 1) {
+                callback(success, message[0]);
+            }
+            else {
+                callback(success, message);
+            }
+        });
+    },
+
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {

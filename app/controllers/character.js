@@ -99,6 +99,41 @@ module.exports = {
     },
 
     /**
+     * @api {get} /api/characters/:slug Get character by slug
+     * @apiVersion 0.0.1
+     * @apiName GetBySlug
+     * @apiGroup Characters
+     *
+     *
+     * @apiParam {Boolean} strict  Optional. Non-strict by default, which looks up case-insensitive and for substrings in the name. Just put ?strict=true for case-sensitive lookup.
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message" : "Success", "data" : character}
+     *
+     * @apiError (404) NotFound No character with that data existing!
+     * @apiErrorExample {json} NotFound
+     *      HTTP/1.1 404
+     *      { "message": "Failure. No character with that data existing!", "data": err };
+     *
+     * @apiDescription Return the character with slug:slug.
+     */
+    getBySlug: function(req, res) {
+        var charactersStore = require('../stores/characters');
+        var strict = (req.query.strict === undefined) ? 'false' : req.query.strict;
+        if(strict != 'false' && strict != 'true'){
+            res.status(400).json({ message: 'Error: Strict option requires to be of type boolean.' });
+            return;
+        }
+        charactersStore.getBySlug(req.params.slug, strict, function(success, message) {
+            if(success == 1)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No character with that data existing!',data: message });
+        });
+    },
+
+    /**
      * @api {get} /api/characters/byId/:id Get character by id
      * @apiVersion 0.0.1
      * @apiName GetById
