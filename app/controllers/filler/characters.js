@@ -253,7 +253,7 @@ module.exports = {
                 }
                 cb(false);
             });
-        }
+        };
 
         if(policy === 1) {
             CharacterPlod.remove({}, function(err) {
