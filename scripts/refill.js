@@ -20,7 +20,8 @@ var possibleRefillings = [
     'regions',
     'characterLocations',
     'characterPaths',
-    'characterImages'
+    'characterImages',
+    'characterPlods'
 ]
 
 if(possibleRefillings.indexOf(requested) < 0) {
@@ -69,6 +70,15 @@ db.on('disconnected', function () {
 });
 
 db.on('open', function () {
-    var controller = require('../app/controllers/filler/' + requested);
-    controller.fill(1,function() {process.exit();});
+    if(requested != 'characterPlods') {
+        var controller = require('../app/controllers/filler/' + requested);
+        controller.fill(1,function() {process.exit();});
+    }
+    else {
+        var controller = require('../app/controllers/filler/characters');
+        controller.updatePlods(1,function(){
+            console.log('Finished refilling plods!');
+            process.exit();
+        });
+    }
 });

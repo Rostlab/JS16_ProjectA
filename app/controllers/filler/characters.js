@@ -1,10 +1,12 @@
 var Scraper = require(__appbase + 'controllers/scraper/characters');
 var Character = require(__appbase + 'models/character');
+var CharacterPlod = require(__appbase + 'models/characterPlod');
 var Characters = require(__appbase + 'stores/characters');
 var jsonfile = require('jsonfile');
 var async = require('async');
 var cfg = require(__base + 'cfg/config.json');
 var pageRankFile = __base + 'data/pageRanks.json';
+var gotplod = require('gotplod');
 
 module.exports = {
     fill: function(policy, callback) {
@@ -233,5 +235,75 @@ module.exports = {
         },function(err) {
             callback(false);
         });
+    },
+    updatePlods: function(policy,callback) {
+        var plods = gotplod.getAllCharPLOD();
+
+        var addNewPlod = function(char, plod, cb) {
+            var newCharPlod = new CharacterPlod();
+            newCharPlod.character = char;
+            newCharPlod.plod = plod;
+            newCharPlod.algorithm = 'gotplod.getAllCharPLOD()';
+            newCharPlod.date = new Date();
+            newCharPlod.characterSlug = char.replace(/'/g,'_').replace(/ /g,'_');
+            newCharPlod.save(function(err){
+                console.log(newCharPlod.character + ' has been newly added to the db with the plod ' + plod);
+                if(err){
+                    console.log('Error adding new plod: ' + err);
+                }
+                cb(false);
+            });
+        }
+
+        if(policy === 1) {
+            CharacterPlod.remove({}, function(err) {
+                console.log('CharacterPlods cleared.');
+                async.forEachOf(plods,function(plod, char, cb){
+                    addNewPlod(char,plod,function() {
+                       cb();
+                    });
+                }, function(err) {
+                    callback(false);
+                });
+            });
+        }
+        else {
+            var slug;
+            async.forEachOf(plods,function(plod, char, cb){
+                slug = char.replace(/'/g,'_').replace(/ /g,'_');
+                CharacterPlod.findOne({'characterSlug':slug}, function (err, oldChar) {
+
+                    if (err || oldChar === null || oldChar === undefined) {
+                        console.log(char + ' is new!');
+                        addNewPlod(char,plod,function() {
+                            cb();
+                        });
+                    } else {
+                        if(policy == 2 || (policy == 3 && oldChar.plod === undefined)) {
+                            oldChar.plod = plod;
+                            oldChar.algorithm = 'gotplod.getAllCharPLOD()';
+                            oldChar.date = new Date();
+                            oldChar.save(function(err){
+                                console.log(oldChar.character + ' got updated by the plod ' + plod);
+                                if(err){
+                                    console.log('Error updating character: ' + err);
+
+                                }
+                                cb();
+                            });
+                        }
+                        else {
+                            console.log(oldChar.character + ' has already a plod assigned. Due to safeUpdate policy no change.');
+                            cb();
+                        }
+                    }
+                });
+            },function(err) {
+                if(err) {
+                    console.log(err);
+                }
+                callback(false);
+            });
+        }
     }
 };
