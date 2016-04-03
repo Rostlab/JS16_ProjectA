@@ -23,6 +23,8 @@
     "console-stamp": "^0.2.0",
     "cors": "^2.7.1",
     "express": "latest",
+    "gotarffplod": "latest",
+    "gotplod": "latest",
     "jsonfile": "^2.2.3",
     "kerberos": "~0.0.17",
     "mongoose": "~4.4.5",
