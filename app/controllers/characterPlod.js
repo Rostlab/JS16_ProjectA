@@ -132,6 +132,29 @@ module.exports = {
     },
 
     /**
+     * @api {get} /api/plod/byName/:name Get character plods by name
+     * @apiVersion 0.0.1
+     * @apiName GetByName
+     * @apiGroup CharacterPlod
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {"message": "Success", "data": [characterplod]}
+     *
+     * @apiDescription Get character PLOD values by the name of the character like Jon Snow.
+     */
+    getByName: function(req, res) {
+        var charactersPlodStore = require('../stores/charactersPlod');
+
+        charactersPlodStore.getByName(req.params.name, function(success, message) {
+            if(success)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No character PLOD with that data existing!'});
+        });
+    },
+
+    /**
      * @api {get} /api/plod/byId/:id Get characters PLOD by :id
      * @apiVersion 0.0.1
      * @apiName GetById

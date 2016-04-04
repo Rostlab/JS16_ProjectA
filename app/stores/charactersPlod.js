@@ -87,6 +87,17 @@ module.exports = {
         });
     },
 
+    getByName: function(name, callback) {
+        CharacterPlod.find({'character': { "$regex": name, "$options": "i" } },function(err,resp){
+            if (err) {
+                callback(false,err);
+            }
+            else {
+                callback(true,resp);
+            }
+        });
+    },
+
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {
