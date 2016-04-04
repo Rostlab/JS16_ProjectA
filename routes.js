@@ -43,7 +43,7 @@ module.exports = function (app, router) {
     router.post('/characters/find', characterController.get);
     router.get('/characters', characterController.getAll);
     router.get('/characters/:name', characterController.getByName);
-    router.get('/characters/:slug', characterController.getBySlug);
+    router.get('/characters/bySlug/:slug', characterController.getBySlug);
     router.get('/characters/byId/:id', characterController.getById);
 
     // This data is not scraped by Project A but inserted via API by Project B! 
@@ -53,8 +53,6 @@ module.exports = function (app, router) {
     router.post('/plod/find', characterPlodController.get);
     router.get('/plod', characterPlodController.getAll);
     router.get('/plod/byCount/:count', characterPlodController.getByPLOD);
-    router.get('/plod/bySlug/:slug', characterPlodController.getBySlug);
-    router.get('/plod/byName/:name', characterPlodController.getByName);
     router.get('/plod/byId/:id', characterPlodController.getById);
     router.get('/plod/byAlgorithm/:algorithm', characterPlodController.getByAlgorithm);
     router.put('/plod/edit/:id', characterPlodController.edit);
