@@ -7,6 +7,7 @@ var async = require('async');
 var cfg = require(__base + 'cfg/config.json');
 var pageRankFile = __base + 'data/pageRanks.json';
 var gotplod = require('gotplod');
+var gotarffplod = require('gotarffplod/npm');
 
 module.exports = {
     fill: function(policy, callback) {
@@ -243,13 +244,13 @@ module.exports = {
             var newCharPlod = new CharacterPlod();
             newCharPlod.character = char;
             newCharPlod.plod = plod;
-            newCharPlod.algorithm = 'gotplod.getAllCharPLOD()';
+            newCharPlod.algorithm = 'gotplod';
             newCharPlod.date = new Date();
             newCharPlod.characterSlug = char.replace(/'/g,'_').replace(/ /g,'_');
             newCharPlod.save(function(err){
-                console.log(newCharPlod.character + ' has been newly added to the db with the plod ' + plod);
+                console.log('gotplod:' + newCharPlod.character + ' has been newly added to the db with the plod ' + plod);
                 if(err){
-                    console.log('Error adding new plod: ' + err);
+                    console.log('gotplod:' + 'Error adding new plod: ' + err);
                 }
                 cb(false);
             });
@@ -260,10 +261,10 @@ module.exports = {
                 console.log('CharacterPlods cleared.');
                 async.forEachOf(plods,function(plod, char, cb){
                     addNewPlod(char,plod,function() {
-                       cb();
+                        cb();
                     });
                 }, function(err) {
-                    callback(false);
+                    module.exports.updateArffPlods(policy,callback);
                 });
             });
         }
@@ -271,7 +272,7 @@ module.exports = {
             var slug;
             async.forEachOf(plods,function(plod, char, cb){
                 slug = char.replace(/'/g,'_').replace(/ /g,'_');
-                CharacterPlod.findOne({'characterSlug':slug}, function (err, oldChar) {
+                CharacterPlod.findOne({'characterSlug':slug,'algorithm':'gotplod'}, function (err, oldChar) {
 
                     if (err || oldChar === null || oldChar === undefined) {
                         console.log(char + ' is new!');
@@ -281,23 +282,99 @@ module.exports = {
                     } else {
                         if(policy == 2 || (policy == 3 && oldChar.plod === undefined)) {
                             oldChar.plod = plod;
-                            oldChar.algorithm = 'gotplod.getAllCharPLOD()';
                             oldChar.date = new Date();
                             oldChar.save(function(err){
-                                console.log(oldChar.character + ' got updated by the plod ' + plod);
+                                console.log('gotplod:' + oldChar.character + ' got updated by the plod ' + plod);
                                 if(err){
-                                    console.log('Error updating character: ' + err);
+                                    console.log('gotplod:' + 'Error updating character: ' + err);
 
                                 }
                                 cb();
                             });
                         }
                         else {
-                            console.log(oldChar.character + ' has already a plod assigned. Due to safeUpdate policy no change.');
+                            console.log('gotplod:' + oldChar.character + ' has already a plod assigned. Due to safeUpdate policy no change.');
                             cb();
                         }
                     }
                 });
+            },function(err) {
+                if(err) {
+                    console.log(err);
+                }
+                module.exports.updateArffPlods(policy,callback);
+            });
+        }
+    },
+    updateArffPlods: function(policy,callback) {
+        gotarffplod.init();
+        plods = gotarffplod.getAllCharPredictions();
+
+        var addNewPlod = function(char, plod, cb) {
+            if(plod === undefined) {
+                cb(false);
+            }
+            else {
+                var newCharPlod = new CharacterPlod();
+                newCharPlod.character = char;
+                newCharPlod.plod = plod;
+                newCharPlod.algorithm = 'gotarffplod';
+                newCharPlod.date = new Date();
+                newCharPlod.characterSlug = char.replace(/'/g,'_').replace(/ /g,'_');
+                newCharPlod.save(function(err){
+                    console.log('gotarffplod:' + newCharPlod.character + ' has been newly added to the db with the plod ' + plod);
+                    if(err){
+                        console.log('Error adding new plod: ' + err);
+                    }
+                    cb(false);
+                });
+            }
+        };
+        console.log(plods);
+        if(policy === 1) {
+            async.forEachOf(plods,function(plod, char, cb){
+                addNewPlod(char,plod,function() {
+                    cb();
+                });
+            }, function(err) {
+                callback(false);
+            });
+        }
+        else {
+            var slug;
+            async.forEachOf(plods,function(plod, char, cb){
+                if(plod === undefined) {
+                    cb();
+                }
+                else {
+                    slug = char.replace(/'/g,'_').replace(/ /g,'_');
+                    CharacterPlod.findOne({'characterSlug':slug,'algorithm':'gotarffplod'}, function (err, oldChar) {
+
+                        if (err || oldChar === null || oldChar === undefined) {
+                            console.log('gotarffplod:' + char + ' is new!');
+                            addNewPlod(char,plod,function() {
+                                cb();
+                            });
+                        } else {
+                            if(policy == 2 || (policy == 3 && oldChar.plod === undefined)) {
+                                oldChar.plod = plod;
+                                oldChar.date = new Date();
+                                oldChar.save(function(err){
+                                    console.log('gotarffplod:' + oldChar.character + ' got updated by the plod ' + plod);
+                                    if(err){
+                                        console.log('gotarffplod:' + 'Error updating character: ' + err);
+
+                                    }
+                                    cb();
+                                });
+                            }
+                            else {
+                                console.log('gotarffplod:' + oldChar.character + ' has already a plod assigned. Due to safeUpdate policy no change.');
+                                cb();
+                            }
+                        }
+                    });
+                }
             },function(err) {
                 if(err) {
                     console.log(err);
