@@ -216,12 +216,12 @@ module.exports = {
                 } else {
                     oldChar = oldChar[0];
                     oldChar.pageRank = rank.score;
-/*
+
                     if(oldChar.imageLink === undefined) {
                         oldChar.pageRank /= 2;
                         console.log(oldChar.name + ' has no image. Score divided by two!');
                     }
-*/
+
                     oldChar.save(function(err){
                         console.log(oldChar.name + ' got updated by the page rank ' + oldChar.pageRank);
                         if(err){
