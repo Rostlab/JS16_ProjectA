@@ -99,7 +99,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/characters/:slug Get character by slug
+     * @api {get} /api/characters/bySlug/:slug Get character by slug
      * @apiVersion 0.0.1
      * @apiName GetBySlug
      * @apiGroup Characters
