@@ -191,7 +191,9 @@ module.exports = {
      *
      * @apiError (404) message: 'Failure. No character PLOD with that data existing!', data: message
      *
-     * @apiDescription Get character PLOD values by :algorithm. Algorithm is a distinction between Project B, Group 6 and Group 7 as well as other PLOD methods.
+     * @apiError (400) message: 'Error.', error: message
+     *
+     * @apiDescription Get character PLOD values by :algorithm. Algorithm is of type String and serves as a distinction between "Project B", "Group 6" and "Group 7" as well as other PLOD methods.
      */
     getByAlgorithm: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
@@ -199,8 +201,10 @@ module.exports = {
         charactersPlodStore.getByAlgorithm(req.params.algorithm, function(success, message) {
             if(success == 1)
                 res.status(200).json({ message: 'Success', data: message });
-            else
+            else if (success == 2)
                 res.status(404).json({ message: 'Failure. No character PLOD with that data existing!',data: message });
+            else
+                res.status(400).json({ message: 'Error.', error: message });
         });
     },
 

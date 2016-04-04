@@ -56,11 +56,11 @@ module.exports = {
 
     getByAlgorithm: function(algorithm, callback) {
         this.get({'algorithm':{ "$regex": algorithm, "$options": "i" } },function (success, message) {
-            if (success == 1) {
-                callback(success, message[0]);
+            if (success) {
+                callback(success, message);
             }
             else {
-                callback(success, message);
+                callback(2, message);
             }
         });
     },
