@@ -43,7 +43,8 @@ module.exports = {
      * @apiError (404) message: 'Failure. No character PLOD with that data existing!',data: message 
      * @apiError (400) message: 'Error: Bad request. Usage of non existing schema property!', errorProperty: message
      *
-     * @apiDescription Get character PLOD values.
+     * @apiDescription Get character PLOD values. The request should be in the body.
+     * Check the <a href="https://github.com/Rostlab/JS16_ProjectA/blob/master/app/models/characterPlod.js" target="_blank">characterPlod model</a>.
      */
     get: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
@@ -95,7 +96,7 @@ module.exports = {
      *
      * @apiError (404) message: 'Failure. No character PLOD with that data existing!'
      *
-     * @apiDescription Get character PLOD values, limited by :count parameter
+     * @apiDescription Get character PLOD values, limited by :count parameter. PLOD values are sorted in descending order.
      */
     getByPLOD: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
@@ -193,7 +194,7 @@ module.exports = {
      *
      * @apiError (400) message: 'Error.', error: message
      *
-     * @apiDescription Get character PLOD values by :algorithm. Algorithm is of type String and serves as a distinction between "Project B", "Group 6" and "Group 7" as well as other PLOD methods.
+     * @apiDescription Get character PLOD values by :algorithm. Algorithm is of type String and serves as a distinction between Project B, Group 6, Group 7 etc. as well as other PLOD methods. As of April 4th, there is "gotplod" and "gotarffplod" in the DB.
      */
     getByAlgorithm: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
