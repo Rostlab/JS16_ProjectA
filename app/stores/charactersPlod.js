@@ -76,6 +76,17 @@ module.exports = {
         });
     },
 
+    getBySlug: function(slug, callback) {
+        CharacterPlod.findOne({'characterSlug': slug },function(err,resp){
+            if (err) {
+                callback(false,err);
+            }
+            else {
+                callback(true,resp);
+            }
+        });
+    },
+
     getById: function(id, callback) {
         this.get({'_id': id},function(success,message){
             if(success == 1) {

@@ -53,6 +53,7 @@ module.exports = function (app, router) {
     router.post('/plod/find', characterPlodController.get);
     router.get('/plod', characterPlodController.getAll);
     router.get('/plod/byCount/:count', characterPlodController.getByPLOD);
+    router.get('/plod/bySlug/:slug', characterPlodController.getBySlug);
     router.get('/plod/byId/:id', characterPlodController.getById);
     router.get('/plod/byAlgorithm/:algorithm', characterPlodController.getByAlgorithm);
     router.put('/plod/edit/:id', characterPlodController.edit);

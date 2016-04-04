@@ -87,8 +87,8 @@ module.exports = {
      * @api {get} /api/plod/byCount/:count Get all characters PLOD
      * @apiVersion 0.0.1
      * @apiName GetByPlod
-     * @apiGroup CharacterPlod  
-     * 
+     * @apiGroup CharacterPlod
+     *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
      *     {characterplod}
@@ -101,6 +101,31 @@ module.exports = {
         var charactersPlodStore = require('../stores/charactersPlod');
 
         charactersPlodStore.getByPLOD(req.params.count, function(success, message) {
+            if(success)
+                res.status(200).json({ message: 'Success', data: message });
+            else
+                res.status(404).json({ message: 'Failure. No character PLOD with that data existing!'});
+        });
+    },
+
+    /**
+     * @api {get} /api/plod/bySlug/:slug Get character by slug
+     * @apiVersion 0.0.1
+     * @apiName GetBySlug
+     * @apiGroup CharacterPlod
+     *
+     * @apiSuccessExample {json} Success-Response
+     *     HTTP/1.1 200 OK
+     *     {characterplod}
+     *
+     * @apiError (404) message: 'Failure. No character PLOD with that slug existing!'
+     *
+     * @apiDescription Get character PLOD values, limited by :count parameter
+     */
+    getBySlug: function(req, res) {
+        var charactersPlodStore = require('../stores/charactersPlod');
+
+        charactersPlodStore.getBySlug(req.params.slug, function(success, message) {
             if(success)
                 res.status(200).json({ message: 'Success', data: message });
             else
