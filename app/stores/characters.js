@@ -62,7 +62,7 @@ module.exports = {
         });
     },
 
-    getBySlug: function(name, strict, callback) {
+    getBySlug: function(slug, strict, callback) {
         if(arguments.length == 2) {
             callback = strict;
             strict = false;
