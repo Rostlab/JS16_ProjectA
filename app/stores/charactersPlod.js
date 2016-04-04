@@ -77,7 +77,7 @@ module.exports = {
     },
 
     getBySlug: function(slug, callback) {
-        CharacterPlod.findOne({'characterSlug': slug },function(err,resp){
+        CharacterPlod.find({'characterSlug': slug },function(err,resp){
             if (err) {
                 callback(false,err);
             }
