@@ -109,18 +109,16 @@ module.exports = {
     },
 
     /**
-     * @api {get} /api/plod/bySlug/:slug Get character by slug
+     * @api {get} /api/plod/bySlug/:slug Get character plods by slug
      * @apiVersion 0.0.1
      * @apiName GetBySlug
      * @apiGroup CharacterPlod
      *
      * @apiSuccessExample {json} Success-Response
      *     HTTP/1.1 200 OK
-     *     {characterplod}
+     *     {"message": "Success", "data": [characterplod]}
      *
-     * @apiError (404) message: 'Failure. No character PLOD with that slug existing!'
-     *
-     * @apiDescription Get character PLOD values, limited by :count parameter
+     * @apiDescription Get character PLOD values by the slug of the character like Jon_Snow.
      */
     getBySlug: function(req, res) {
         var charactersPlodStore = require('../stores/charactersPlod');
