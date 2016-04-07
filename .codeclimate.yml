@@ -1,13 +1,13 @@
 engines:
-  duplication:
-    enabled: true
-    config:
-    languages:
-    - javascript
   eslint:
     enabled: true
   fixme:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
 ratings:
   paths:
   - "**.css"
