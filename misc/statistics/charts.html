@@ -5,6 +5,7 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawNewCharactersIntroduced);
       google.charts.setOnLoadCallback(drawCharactersPerEpisode);
+      google.charts.setOnLoadCallback(drawDeadAndAlive);
 
       function drawNewCharactersIntroduced() {
         var data = new google.visualization.arrayToDataTable([
@@ -53,6 +54,26 @@
         chart.draw(data, options);
       };
 
+      function drawDeadAndAlive() {
+      	var data = new google.visualization.arrayToDataTable([
+           ['Category', 'Men', 'Women'],
+           ['Alive', -839, 612],
+           ['Dead', -366, 129],
+           ['Nobles', -629, 268],
+           ['Peasants', -576, 473]
+      	]);
+
+      	var options = {
+      		width: 600,
+		    height: 400,
+		    legend: { position: 'top', maxLines: 3 },
+			bar: { groupWidth: '75%' },
+			isStacked: true
+      	};
+
+      	var chart = new google.visualization.BarChart(document.getElementById('dead_and_alive'));
+        chart.draw(data, options);
+      };
     </script>
 
   </head>
@@ -60,7 +81,7 @@
   <body>
     <div id="new_characters_introduced"></div>
     <div id="characters_per_episode"></div>
-    <div id=""></div>
+    <div id="dead_and_alive"></div>
     <div id=""></div>
     <div id=""></div>
     <div id=""></div>
