@@ -1,91 +1,113 @@
 <html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawNewCharactersIntroduced);
-      google.charts.setOnLoadCallback(drawCharactersPerEpisode);
-      google.charts.setOnLoadCallback(drawDeadAndAlive);
+<head>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawNewCharactersIntroduced);
+		google.charts.setOnLoadCallback(drawCharactersPerEpisode);
+		google.charts.setOnLoadCallback(drawDeadAndAlive);
+		google.charts.setOnLoadCallback(drawMapAnalysis);
 
-      function drawNewCharactersIntroduced() {
-        var data = new google.visualization.arrayToDataTable([
-           ['Book No.', 'Males', 'Females'],
-           ['Book 1', -271, 115],
-           ['Book 2', -266, 171],
-           ['Book 3', -210, 146],
-           ['Book 4', -210, 181],
-           ['Book 5', -64, 40],
-           ['Other', -184, 88]
-        ]);
+		function drawNewCharactersIntroduced() {
+			var data = new google.visualization.arrayToDataTable([
+				['Book No.', 'Males', 'Females'],
+				['Book 1', -271, 115],
+				['Book 2', -266, 171],
+				['Book 3', -210, 146],
+				['Book 4', -210, 181],
+				['Book 5', -64, 40],
+				['Other', -184, 88]
+			]);
 
-		var options = {
-		    width: 600,
-		    height: 400,
-		    legend: { position: 'top', maxLines: 3 },
-			bar: { groupWidth: '75%' },
-			isStacked: true
+			var options = {
+				width: 600,
+				height: 400,
+				legend: { position: 'top', maxLines: 3 },
+				bar: { groupWidth: '75%' },
+				isStacked: true
+			};
+
+			var chart = new google.visualization.BarChart(document.getElementById('new_characters_introduced'));
+			chart.draw(data, options);
 		};
 
-        var chart = new google.visualization.BarChart(document.getElementById('new_characters_introduced'));
-        chart.draw(data, options);
-      };
+		function drawCharactersPerEpisode() {
+			var data = new google.visualization.arrayToDataTable([
+				['Episode', 'Characters'], ['1-1', 29], ['1-2', 31], ['1-3', 39], ['1-4', 30], ['1-5', 34],
+				['1-6', 31], ['1-7', 41], ['1-8', 39], ['1-9', 39], ['1-10', 45], ['2-1', 34], ['2-2', 34],
+				['2-3', 33], ['2-4', 39], ['2-5', 35], ['2-6', 32], ['2-7', 39], ['2-8', 19], ['2-9', 40],
+				['2-10', 36], ['3-1', 37], ['3-2', 46], ['3-3', 31], ['3-4', 37], ['3-5', 35], ['3-6', 39],
+				['3-7', 27], ['3-8', 27], ['3-9', 36], ['3-10', 36], ['4-1', 32], ['4-2', 43], ['4-3', 29],
+				['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
+				['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
+				['5-8', 34], ['5-9', 37], ['5-10', 55]
+			]);
 
-      function drawCharactersPerEpisode() {
-      	var data = new google.visualization.arrayToDataTable([
-      		['Episode', 'Characters'], ['1-1', 29], ['1-2', 31], ['1-3', 39], ['1-4', 30], ['1-5', 34],
-			['1-6', 31], ['1-7', 41], ['1-8', 39], ['1-9', 39], ['1-10', 45], ['2-1', 34], ['2-2', 34],
-			['2-3', 33], ['2-4', 39], ['2-5', 35], ['2-6', 32], ['2-7', 39], ['2-8', 19], ['2-9', 40],
-			['2-10', 36], ['3-1', 37], ['3-2', 46], ['3-3', 31], ['3-4', 37], ['3-5', 35], ['3-6', 39],
-			['3-7', 27], ['3-8', 27], ['3-9', 36], ['3-10', 36], ['4-1', 32], ['4-2', 43], ['4-3', 29],
-			['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
-			['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
-			['5-8', 34], ['5-9', 37], ['5-10', 55]
-      	]);
+			var options = {
+				title: 'New Characters per Episode',
+				curveType: 'function',
+				legend: { position: 'bottom' },
+				width: 600,
+				height: 400
+			};
 
-      	var options = {
-      		title: 'New Characters per Episode',
-          	curveType: 'function',
-          	legend: { position: 'bottom' },
-          	width: 600,
-      		height: 400
-      	};
+			var chart = new google.visualization.LineChart(document.getElementById('characters_per_episode'));
+			chart.draw(data, options);
+		};
 
-      	var chart = new google.visualization.LineChart(document.getElementById('characters_per_episode'));
-        chart.draw(data, options);
-      };
+		function drawDeadAndAlive() {
+			var data = new google.visualization.arrayToDataTable([
+				['Category', 'Men', 'Women'],
+				['Alive', -839, 612],
+				['Dead', -366, 129],
+				['Nobles', -629, 268],
+				['Peasants', -576, 473]
+			]);
 
-      function drawDeadAndAlive() {
-      	var data = new google.visualization.arrayToDataTable([
-           ['Category', 'Men', 'Women'],
-           ['Alive', -839, 612],
-           ['Dead', -366, 129],
-           ['Nobles', -629, 268],
-           ['Peasants', -576, 473]
-      	]);
+			var options = {
+				width: 600,
+				height: 400,
+				legend: { position: 'top', maxLines: 3 },
+				bar: { groupWidth: '75%' },
+				isStacked: true
+			};
 
-      	var options = {
-      		width: 600,
-		    height: 400,
-		    legend: { position: 'top', maxLines: 3 },
-			bar: { groupWidth: '75%' },
-			isStacked: true
-      	};
+			var chart = new google.visualization.BarChart(document.getElementById('dead_and_alive'));
+			chart.draw(data, options);
+		};
 
-      	var chart = new google.visualization.BarChart(document.getElementById('dead_and_alive'));
-        chart.draw(data, options);
-      };
-    </script>
+		function drawMapAnalysis() {
+			var data = new google.visualization.arrayToDataTable([
+				['Category', 'Count'],
+				['City', 25],
+				['Town', 16],
+				['Castle', 109],
+				['Ruin', 22],
+				['Other', 68]
+			]);
 
-  </head>
+			var options = {
+				width: 600,
+				height: 400,
+				legend: { position: 'top', maxLines: 3 },
+				bar: { groupWidth: '75%' },
+				isStacked: true
+			};
 
-  <body>
-    <div id="new_characters_introduced"></div>
-    <div id="characters_per_episode"></div>
-    <div id="dead_and_alive"></div>
-    <div id=""></div>
-    <div id=""></div>
-    <div id=""></div>
-    <div id=""></div>
-    <div id=""></div>
-  </body>
+			var chart = new google.visualization.ColumnChart(document.getElementById('map_analysis'));
+			chart.draw(data, options);
+		};
+	</script>
+</head>
+
+<body>
+	<div id="new_characters_introduced"></div>
+	<div id="characters_per_episode"></div>
+	<div id="dead_and_alive"></div>
+	<div id="map_analysis"></div>
+	<div id="location_popularity"></div>
+	<div id=""></div>
+	<div id=""></div>
+	<div id=""></div>
+</body>
 </html>
