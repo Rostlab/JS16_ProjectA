@@ -9,24 +9,27 @@
 		google.charts.setOnLoadCallback(drawMapAnalysis);
 		google.charts.setOnLoadCallback(drawDistributionPLODs);
 		google.charts.setOnLoadCallback(drawDistributionPLODsNoblesPeasants);
+		google.charts.setOnLoadCallback(drawDistributionPLODsAgeDistribution);
 
 		function drawNewCharactersIntroduced() {
 			var data = new google.visualization.arrayToDataTable([
 				['Book No.', 'Males', 'Females'],
-				['Book 1', -271, 115],
-				['Book 2', -266, 171],
-				['Book 3', -210, 146],
-				['Book 4', -210, 181],
-				['Book 5', -64, 40],
-				]);
+				['Book 1', 271, 115],
+				['Book 2', 266, 171],
+				['Book 3', 210, 146],
+				['Book 4', 210, 181],
+				['Book 5', 64, 40],
+			]);
 
 			var options = {
 				width: 600,
 				height: 400,
+				title: 'Number of Characters, Introduced in Each New Book',
 				legend: { position: 'top', maxLines: 3 },
 				bar: { groupWidth: '75%' },
-				isStacked: true,
-				vAxis: {viewWindow: {min: 0}}
+				vAxis: {viewWindow: {min: 0}},
+				isStacked: 'true',
+				series: {1:{targetAxisIndex: 1}}, hAxes: {1: {direction: -1}},
 			};
 
 			var chart = new google.visualization.BarChart(document.getElementById('new_characters_introduced'));
@@ -43,7 +46,7 @@
 				['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
 				['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
 				['5-8', 34], ['5-9', 37], ['5-10', 55]
-				]);
+			]);
 
 			var options = {
 				title: 'New Characters per Episode',
@@ -64,11 +67,12 @@
 				['Dead', -366, 129],
 				['Nobles', -629, 268],
 				['Peasants', -576, 473]
-				]);
+			]);
 
 			var options = {
 				width: 600,
 				height: 400,
+				title: 'Number Dead and Alive, Male/Female, Noble/Non-Noble',
 				legend: { position: 'top', maxLines: 3 },
 				bar: { groupWidth: '75%' },
 				isStacked: true
@@ -86,18 +90,28 @@
 				['Castle', 109],
 				['Ruin', 22],
 				['Other', 68]
+			]);
+
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1,
+				{ calc: "stringify",
+				sourceColumn: 1,
+				type: "string",
+				role: "annotation" }
 				]);
 
 			var options = {
 				width: 600,
 				height: 400,
-				legend: { position: 'top', maxLines: 3 },
+				title: 'Map Analysis',
+				legend: {position: 'none'},
+				vAxis: {title: 'Count'},
+				hAxis: {slantedText: true, slantedTextAngle: 30},
 				bar: { groupWidth: '75%' },
-				isStacked: true
 			};
 
 			var chart = new google.visualization.ColumnChart(document.getElementById('map_analysis'));
-			chart.draw(data, options);
+			chart.draw(view, options);
 		};
 
 		function drawDistributionPLODs() {
@@ -204,7 +218,7 @@
 				[98,1,0],
 				[99,0,0],
 				[100,0,0],
-				]);
+			]);
 
 			var options = {
 				width: 600,
@@ -324,7 +338,7 @@
 				[98,1,0],
 				[99,0,0],
 				[100,0,0]
-				]);
+			]);
 
 			var options = {
 				width: 600,
@@ -340,6 +354,34 @@
 			chart.draw(data, options);
 		};
 
+		function drawDistributionPLODsAgeDistribution() {
+			var data = new google.visualization.arrayToDataTable([
+				['Age Distribution','Averaged Likelihood of Death'],
+				['0-10',34],
+				['11-20',30],
+				['21-30',41],
+				['31-40',45],
+				['41-50',35],
+				['51-60',42],
+				['61-70',35],
+				['71-80',27],
+				['81-90',25],
+				['91-100',19]
+			]);
+
+			var options = {
+				width: 600,
+				height: 400,
+				title: 'Distribution of PLODs Mapped to Age Distribution',
+				legend: {position: 'none'},
+				vAxis: {title: 'Averaged Likelihood of Death (%)'},
+				hAxis: {title: 'Age Distribution', slantedText: true, slantedTextAngle: 60},
+				bar: { groupWidth: '75%' },
+			};
+
+			var chart = new google.visualization.ColumnChart(document.getElementById('distribution_plods_age_distribution'));
+			chart.draw(data, options);
+		};
 	</script>
 </head>
 
@@ -351,6 +393,6 @@
 	<div id="location_popularity"></div>
 	<div id="distribution_plods"></div>
 	<div id="distribution_plods_nobles_peasants"></div>
-	<div id=""></div>
+	<div id="distribution_plods_age_distribution"></div>
 </body>
 </html>
