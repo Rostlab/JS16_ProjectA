@@ -7,6 +7,7 @@
 		google.charts.setOnLoadCallback(drawCharactersPerEpisode);
 		google.charts.setOnLoadCallback(drawDeadAndAlive);
 		google.charts.setOnLoadCallback(drawMapAnalysis);
+		google.charts.setOnLoadCallback(drawDistributionPLODs);
 
 		function drawNewCharactersIntroduced() {
 			var data = new google.visualization.arrayToDataTable([
@@ -16,8 +17,7 @@
 				['Book 3', -210, 146],
 				['Book 4', -210, 181],
 				['Book 5', -64, 40],
-				['Other', -184, 88]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -42,7 +42,7 @@
 				['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
 				['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
 				['5-8', 34], ['5-9', 37], ['5-10', 55]
-			]);
+				]);
 
 			var options = {
 				title: 'New Characters per Episode',
@@ -63,7 +63,7 @@
 				['Dead', -366, 129],
 				['Nobles', -629, 268],
 				['Peasants', -576, 473]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -85,7 +85,7 @@
 				['Castle', 109],
 				['Ruin', 22],
 				['Other', 68]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -98,6 +98,124 @@
 			var chart = new google.visualization.ColumnChart(document.getElementById('map_analysis'));
 			chart.draw(data, options);
 		};
+
+		function drawDistributionPLODs() {
+			var data = new google.visualization.arrayToDataTable([
+				['Likelihood of Death', 'Men', 'Women'],
+				[0,100,100],
+				[1,95,92],
+				[2,87,78],
+				[3,85,73],
+				[4,82,71],
+				[5,80,69],
+				[6,79,68],
+				[7,78,67],
+				[8,76,66],
+				[9,75,65],
+				[10,74,64],
+				[11,73,63],
+				[12,72,62],
+				[13,71,61],
+				[14,70,61],
+				[15,70,60],
+				[16,69,59],
+				[17,68,58],
+				[18,67,54],
+				[19,64,51],
+				[20,63,48],
+				[21,60,45],
+				[22,59,43],
+				[23,59,41],
+				[24,56,38],
+				[25,52,34],
+				[26,51,31],
+				[27,49,29],
+				[28,46,27],
+				[29,44,24],
+				[30,40,22],
+				[31,39,21],
+				[32,38,20],
+				[33,37,18],
+				[34,36,17],
+				[35,35,17],
+				[36,35,17],
+				[37,34,16],
+				[38,34,16],
+				[39,33,16],
+				[40,33,15],
+				[41,32,15],
+				[42,32,14],
+				[43,31,14],
+				[44,31,14],
+				[45,30,13],
+				[46,30,13],
+				[47,30,13],
+				[48,29,12],
+				[49,29,12],
+				[50,29,12],
+				[51,27,12],
+				[52,26,11],
+				[53,25,11],
+				[54,24,11],
+				[55,23,10],
+				[56,23,10],
+				[57,22,10],
+				[58,22,9],
+				[59,22,9],
+				[60,21,9],
+				[61,20,9],
+				[62,19,8],
+				[63,19,8],
+				[64,19,8],
+				[65,18,8],
+				[66,18,8],
+				[67,18,8],
+				[68,18,8],
+				[69,17,7],
+				[70,16,7],
+				[71,15,7],
+				[72,15,6],
+				[73,14,6],
+				[74,14,6],
+				[75,14,6],
+				[76,13,6],
+				[77,13,6],
+				[78,12,5],
+				[79,11,5],
+				[80,10,4],
+				[81,9,4],
+				[82,8,4],
+				[83,7,4],
+				[84,7,3],
+				[85,7,3],
+				[86,6,3],
+				[87,5,3],
+				[88,5,3],
+				[89,5,2],
+				[90,5,2],
+				[91,4,2],
+				[92,4,2],
+				[93,3,2],
+				[94,3,2],
+				[95,2,1],
+				[96,2,1],
+				[97,1,0],
+				[98,1,0],
+				[99,0,0],
+				[100,0,0]
+				]);
+
+			var options = {
+				width: 600,
+				height: 400,
+		        title: 'Percent Likelihood of Death',
+		        curveType: 'function',
+		        legend: { position: 'top' }
+			};
+
+			var chart = new google.visualization.LineChart(document.getElementById('distribution_plods'));
+			chart.draw(data, options);
+		};
 	</script>
 </head>
 
@@ -107,7 +225,7 @@
 	<div id="dead_and_alive"></div>
 	<div id="map_analysis"></div>
 	<div id="location_popularity"></div>
-	<div id=""></div>
+	<div id="distribution_plods"></div>
 	<div id=""></div>
 	<div id=""></div>
 </body>
