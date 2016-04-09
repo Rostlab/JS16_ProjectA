@@ -24,7 +24,8 @@
 				height: 400,
 				legend: { position: 'top', maxLines: 3 },
 				bar: { groupWidth: '75%' },
-				isStacked: true
+				isStacked: true,
+				vAxis: {viewWindow: {min: 0}}
 			};
 
 			var chart = new google.visualization.BarChart(document.getElementById('new_characters_introduced'));
