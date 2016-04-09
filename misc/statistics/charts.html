@@ -209,7 +209,9 @@
 			var options = {
 				width: 600,
 				height: 400,
-				title: 'Percent Likelihood of Death',
+				title: 'Percent Likelihood of Death, Cut By Women and Men',
+				hAxis: {title: 'Likelihood of Death (%)'},
+				vAxis: {title: 'Percentage of Characters (%)', viewWindow: {min: 0, max: 100}},
 				curveType: 'function',
 				legend: { position: 'top' }
 			};
@@ -327,7 +329,9 @@
 			var options = {
 				width: 600,
 				height: 400,
-				title: 'Percent Likelihood of Death',
+				title: 'Distribution of PLODs, Cut By Noble / Non-Noble',
+				hAxis: {title: 'Likelihood of Death (%)'},
+				vAxis: {title: 'Percentage of Characters (%)', viewWindow: {min: 0, max: 100}},
 				curveType: 'function',
 				legend: { position: 'top' }
 			};
