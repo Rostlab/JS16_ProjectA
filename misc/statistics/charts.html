@@ -484,14 +484,14 @@
 
 		function drawBalanceOfPower() {
 			var data = new google.visualization.arrayToDataTable([
-				['Faction','Percentage'],
+				['Faction','Share (%)'],
 				['The Reach', 16.2],
 				['North', 15.7],
 				['Riverlands', 12.5],
 				['The Westerland', 12.5],
 				['Crownlands', 10.5],
 				['The Stormlands', 8.7],
-				['Iron Islands', 8.7]
+				['Iron Islands', 8.7],
 				['The Vale', 7.7],
 				['Dorne', 6.6],
 				['Three Sisters', 0.2],
@@ -502,7 +502,7 @@
 			var options = {
 				title: 'Balance of Power - Westeros',
 				height: 500,
-				width: 500
+				width: 500,
 			};
 
 			var chart = new google.visualization.PieChart(document.getElementById('balance_of_power'));
