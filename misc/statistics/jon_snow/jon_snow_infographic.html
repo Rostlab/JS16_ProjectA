@@ -8,6 +8,7 @@
 		google.charts.setOnLoadCallback(drawCultureLeastLikelyToDie);
 		google.charts.setOnLoadCallback(drawTitleMostLikelyToDie);
 		google.charts.setOnLoadCallback(drawTitleLeastLikelyToDie);
+		google.charts.setOnLoadCallback(drawSurvivalRateMenVsWomen);
 
 		function drawCultureMostLikelyToDie() {
 			var data = new google.visualization.arrayToDataTable([
@@ -85,6 +86,28 @@
 
 			var chart = new google.visualization.PieChart(document.getElementById('title_least_likely_to_die'));
 			chart.draw(data, options);
+		};
+
+		function drawSurvivalRateMenVsWomen() {
+			var data = new google.visualization.arrayToDataTable([
+				['Gender', 'Death Percentage', {role: 'annotation'}],
+				['Men', 30.45, '30% or 367/1205 males dead'],
+				['Women', 17.27, '17% or 128/741 females dead']
+				]);
+
+			var options = {
+				width: 400,
+				height: 300,
+				hAxis: {maxValue: 100, minValue: 0},
+				legend: {position: 'none'},
+				title: 'Gender Least Likely to Die:\nWomen',
+				series: { 0: { color: '#593159' }},
+				fontName: 'Cinzel Decorative',
+				annotations: {alwaysOutside: true, highContrast: true}
+			};
+
+			var chart = new google.visualization.BarChart(document.getElementById('survival_rate_men_vs_women'));
+			chart.draw(data, options);
 		};		
 	</script>
 </head>
@@ -99,9 +122,8 @@
 	<div id="title_least_likely_to_die"></div>
 	<p>John Snow as Lord Commander has a relatively low death probability of 11.6%</p>
 <h3>Which Gender is More Likely to Die?</h3>
-<p>Women are more likely to survive</p>
-	<div id="title_most_likely_to_die"></div>
-	<div id="title_least_likely_to_die"></div>
+	<div id="survival_rate_men_vs_women"></div>
+	<p>Women are more likely to survive</p>
 </div>
 </body>
 </html>
