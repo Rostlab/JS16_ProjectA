@@ -10,6 +10,8 @@
 		google.charts.setOnLoadCallback(drawDistributionPLODs);
 		google.charts.setOnLoadCallback(drawDistributionPLODsNoblesPeasants);
 		google.charts.setOnLoadCallback(drawDistributionPLODsAgeDistribution);
+		google.charts.setOnLoadCallback(drawTweetSentiment);
+		google.charts.setOnLoadCallback(drawTweetLanguages);
 
 		function drawNewCharactersIntroduced() {
 			var data = new google.visualization.arrayToDataTable([
@@ -382,6 +384,49 @@
 			var chart = new google.visualization.ColumnChart(document.getElementById('distribution_plods_age_distribution'));
 			chart.draw(data, options);
 		};
+
+		function drawTweetSentiment() {
+			var data = new google.visualization.arrayToDataTable([
+				['Tweet Sentiment','Count'],
+				['Positive', 600000],
+				['Negative', 420000],
+				['Neutral', 1730000]
+			]);
+
+			var options = {
+				title: 'Sentiment from 2.75 Million Crawled Tweets',
+				height: 500,
+				width: 500
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('tweet_sentiment'));
+			chart.draw(data, options);
+		};
+
+		function drawTweetLanguages() {
+			var data = new google.visualization.arrayToDataTable([
+				['Top 10 Tweet Languages','Count'],
+				['English',626141],
+				['Spanish',137483],
+				['German',26870],
+				['Portuguese',19007],
+				['Indian',11423],
+				['French', 9409],
+				['Turkish', 9212],
+				['Undefined', 9090],
+				['Italian', 7003],
+				['Welsh',6488]
+			]);
+
+			var options = {
+				title: 'Top 10 Languages on Twitter',
+				height: 500,
+				width: 500
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('tweet_languages'));
+			chart.draw(data, options);
+		};
 	</script>
 </head>
 
@@ -394,5 +439,7 @@
 	<div id="distribution_plods"></div>
 	<div id="distribution_plods_nobles_peasants"></div>
 	<div id="distribution_plods_age_distribution"></div>
+	<div id="tweet_sentiment"></div>
+	<div id="tweet_languages"></div>
 </body>
 </html>
