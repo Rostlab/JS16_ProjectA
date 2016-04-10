@@ -20,6 +20,8 @@
 			var options = {
 				width: 250,
 				height: 250,
+				is3D: true,
+				pieSliceText: 'value',
 				title: 'Culture Most Likely to Die:\nValyrians',
 				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
 				fontName: 'Cinzel Decorative'
@@ -39,6 +41,8 @@
 			var options = {
 				width: 250,
 				height: 250,
+				is3D: true,
+				pieSliceText: 'value',
 				title: 'Culture Least Likely to Die:\nIronmen',
 				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
 				fontName: 'Cinzel Decorative'
@@ -59,6 +63,8 @@
 			var options = {
 				width: 250,
 				height: 250,
+				is3D: true,
+				pieSliceText: 'value',
 				title: 'Title Most Likely to Die:\nPrince of Dragonstone',
 				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
 				fontName: 'Cinzel Decorative'
@@ -79,6 +85,8 @@
 			var options = {
 				width: 250,
 				height: 250,
+				is3D: true,
+				pieSliceText: 'value',
 				title: 'Title Least Likely to Die:\nLord Commander of the Night\'s Watch',
 				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
 				fontName: 'Cinzel Decorative'
@@ -91,8 +99,8 @@
 		function drawSurvivalRateMenVsWomen() {
 			var data = new google.visualization.arrayToDataTable([
 				['Gender', 'Death Percentage', {role: 'annotation'}],
-				['Men', 30.45, '30% or 367/1205 males dead'],
-				['Women', 17.27, '17% or 128/741 females dead']
+				['Men', 30.45, '30% or 367/1205 Males Dead'],
+				['Women', 17.27, '17% or 128/741 Females Dead']
 				]);
 
 			var options = {
@@ -117,10 +125,14 @@
 <h3>Culture Most or Least Likely to Die</h3>
 	<div id="culture_most_likely_to_die"></div>
 	<div id="culture_least_likely_to_die"></div>
+</div>
+<div id = "second_row">
 <h3>Title Most or Least Likely to Die</h3>
 	<div id="title_most_likely_to_die"></div>
 	<div id="title_least_likely_to_die"></div>
 	<p>John Snow as Lord Commander has a relatively low death probability of 11.6%</p>
+</div>
+<div id = "third_row">
 <h3>Which Gender is More Likely to Die?</h3>
 	<div id="survival_rate_men_vs_women"></div>
 	<p>Women are more likely to survive</p>
