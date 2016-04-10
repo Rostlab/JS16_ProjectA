@@ -13,6 +13,7 @@
 		google.charts.setOnLoadCallback(drawDistributionPLODsAgeDistribution);
 		google.charts.setOnLoadCallback(drawTweetSentiment);
 		google.charts.setOnLoadCallback(drawTweetLanguages);
+		google.charts.setOnLoadCallback(drawBalanceOfPower);
 
 		function drawNewCharactersIntroduced() {
 			var data = new google.visualization.arrayToDataTable([
@@ -480,6 +481,33 @@
 			var chart = new google.visualization.PieChart(document.getElementById('tweet_languages'));
 			chart.draw(data, options);
 		};
+
+		function drawBalanceOfPower() {
+			var data = new google.visualization.arrayToDataTable([
+				['Faction','Percentage'],
+				['The Reach', 16.2],
+				['North', 15.7],
+				['Riverlands', 12.5],
+				['The Westerland', 12.5],
+				['Crownlands', 10.5],
+				['The Stormlands', 8.7],
+				['Iron Islands', 8.7]
+				['The Vale', 7.7],
+				['Dorne', 6.6],
+				['Three Sisters', 0.2],
+				['Shield Islands', 0.2],
+				['Blackwater', 0.2]
+				]);
+
+			var options = {
+				title: 'Balance of Power - Westeros',
+				height: 500,
+				width: 500
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('balance_of_power'));
+			chart.draw(data, options);
+		};
 	</script>
 </head>
 
@@ -495,5 +523,6 @@
 	<div id="distribution_plods_age_distribution"></div>
 	<div id="tweet_sentiment"></div>
 	<div id="tweet_languages"></div>
+	<div id="balance_of_power"></div>
 </body>
 </html>
