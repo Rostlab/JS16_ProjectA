@@ -1,0 +1,107 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../stylesheet.css">
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawCultureMostLikelyToDie);
+		google.charts.setOnLoadCallback(drawCultureLeastLikelyToDie);
+		google.charts.setOnLoadCallback(drawTitleMostLikelyToDie);
+		google.charts.setOnLoadCallback(drawTitleLeastLikelyToDie);
+
+		function drawCultureMostLikelyToDie() {
+			var data = new google.visualization.arrayToDataTable([
+				['Culture', 'Count'],
+				['Dead', 37],
+				['Alive', 6]
+				]);
+
+			var options = {
+				width: 250,
+				height: 250,
+				title: 'Culture Most Likely to Die:\nValyrians',
+				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
+				fontName: 'Cinzel Decorative'
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('culture_most_likely_to_die'));
+			chart.draw(data, options);
+		};
+
+		function drawCultureLeastLikelyToDie() {
+			var data = new google.visualization.arrayToDataTable([
+				['Culture', 'Count'],
+				['Dead', 0],
+				['Alive', 5]
+				]);
+
+			var options = {
+				width: 250,
+				height: 250,
+				title: 'Culture Least Likely to Die:\nIronmen',
+				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
+				fontName: 'Cinzel Decorative'
+
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('culture_least_likely_to_die'));
+			chart.draw(data, options);
+		};
+
+		function drawTitleMostLikelyToDie() {
+			var data = new google.visualization.arrayToDataTable([
+				['Culture', 'Count'],
+				['Dead', 5],
+				['Alive', 0]
+				]);
+
+			var options = {
+				width: 250,
+				height: 250,
+				title: 'Title Most Likely to Die:\nPrince of Dragonstone',
+				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
+				fontName: 'Cinzel Decorative'
+
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('title_most_likely_to_die'));
+			chart.draw(data, options);
+		};
+
+		function drawTitleLeastLikelyToDie() {
+			var data = new google.visualization.arrayToDataTable([
+				['Culture', 'Count'],
+				['Dead', 2],
+				['Alive', 9]
+				]);
+
+			var options = {
+				width: 250,
+				height: 250,
+				title: 'Title Least Likely to Die:\nLord Commander of the Night\'s Watch',
+				slices: { 0: { color: '#8C232C' }, 1: { color: '#347338' }},
+				fontName: 'Cinzel Decorative'
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('title_least_likely_to_die'));
+			chart.draw(data, options);
+		};		
+	</script>
+</head>
+
+<body>
+<div id = "first_row">
+<h3>Culture Most or Least Likely to Die</h3>
+	<div id="culture_most_likely_to_die"></div>
+	<div id="culture_least_likely_to_die"></div>
+<h3>Title Most or Least Likely to Die</h3>
+	<div id="title_most_likely_to_die"></div>
+	<div id="title_least_likely_to_die"></div>
+	<p>John Snow as Lord Commander has a relatively low death probability of 11.6%</p>
+<h3>Which Gender is More Likely to Die?</h3>
+<p>Women are more likely to survive</p>
+	<div id="title_most_likely_to_die"></div>
+	<div id="title_least_likely_to_die"></div>
+</div>
+</body>
+</html>
