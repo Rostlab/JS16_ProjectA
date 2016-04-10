@@ -1565,11 +1565,23 @@
 				fontColor: 'black',
 				showScale: true,
 				height: 1280,
-				width: 900
+				width: 900,
+				generateTooltip: showFullTooltip
 			};
 
 			var tree = new google.visualization.TreeMap(document.getElementById('location_popularity'));
 			tree.draw(data, options);
+			
+			function showFullTooltip(row, size, value) {
+			    return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+			           '<span style="font-family:Courier"><b>' + data.getValue(row, 0) +
+			           '</b>, ' + data.getValue(row, 1) + ', ' + data.getValue(row, 2) +
+			           ', ' + '</span><br>' +
+			           'Datatable row: ' + row + '<br>' +
+				   data.getColumnLabel(1) +
+			           ' (total value of this cell and its children): ' + size + '<br>' +
+				   data.getColumnLabel(2) + ': ' + value + ' </div>';
+			  }
 		};
 </script>
 </head>

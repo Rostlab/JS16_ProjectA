@@ -4,7 +4,8 @@
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart']});
 		google.charts.setOnLoadCallback(drawNewCharactersIntroduced);
-		google.charts.setOnLoadCallback(drawCharactersPerEpisode);
+		google.charts.setOnLoadCallback(drawAllCharactersPerEpisode);
+		google.charts.setOnLoadCallback(drawNewCharactersPerEpisode);
 		google.charts.setOnLoadCallback(drawDeadAndAlive);
 		google.charts.setOnLoadCallback(drawMapAnalysis);
 		google.charts.setOnLoadCallback(drawDistributionPLODs);
@@ -21,7 +22,7 @@
 				['Book 3', 210, 146],
 				['Book 4', 210, 181],
 				['Book 5', 64, 40],
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -38,6 +39,58 @@
 			chart.draw(data, options);
 		};
 
+		function drawAllCharactersPerEpisode() {
+			var data = new google.visualization.arrayToDataTable([
+				['Episode', 'Characters'], ['1-1', 29], ['1-2', 31], ['1-3', 39], ['1-4', 30], ['1-5', 34],
+				['1-6', 31], ['1-7', 41], ['1-8', 39], ['1-9', 39], ['1-10', 45], ['2-1', 34], ['2-2', 34],
+				['2-3', 33], ['2-4', 39], ['2-5', 35], ['2-6', 32], ['2-7', 39], ['2-8', 19], ['2-9', 40],
+				['2-10', 36], ['3-1', 37], ['3-2', 46], ['3-3', 31], ['3-4', 37], ['3-5', 35], ['3-6', 39],
+				['3-7', 27], ['3-8', 27], ['3-9', 36], ['3-10', 36], ['4-1', 32], ['4-2', 43], ['4-3', 29],
+				['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
+				['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
+				['5-8', 34], ['5-9', 37], ['5-10', 55]
+				]);
+
+			var options = {
+				title: 'All Characters per Episode',
+				curveType: 'function',
+				hAxis: {title: 'Episodes'},
+				vAxis: {title: 'Number of All Characters per Episode'},
+				legend: { position: 'none' },
+				width: 600,
+				height: 400
+			};
+
+			var chart = new google.visualization.LineChart(document.getElementById('all_characters_per_episode'));
+			chart.draw(data, options);
+		};
+
+		function drawNewCharactersPerEpisode() {
+			var data = new google.visualization.arrayToDataTable([
+				['Episode', 'Characters'],
+				['1-1',29],['1-2',12],['1-3',8],['1-4',6],['1-5',2],['1-6',5],['1-7',7],['1-8',5],
+				['1-9',3],['1-10',9],['2-1',6],['2-2',5],['2-3',3],['2-4',4],['2-5',5],['2-6',2],
+				['2-7',1],['2-8',1],['2-9',1],['2-10',4],['3-1',7],['3-2',6],['3-3',1],['3-4',3],
+				['3-5',1],['3-6',2],['3-7',3],['3-8',1],['3-9',0],['3-10',4],['4-1',3],['4-2',3],
+				['4-3',0],['4-4',2],['4-5',1],['4-6',0],['4-7',6],['4-8',1],['4-9',2],['4-10',3],
+				['5-1',3],['5-2',1],['5-3',3],['5-4',0],['5-5',1],['5-6',0],['5-7',0],['5-8',3],
+				['5-9',0],['5-10',6]
+				]);
+
+			var options = {
+				title: 'New Characters per Episode',
+				curveType: 'function',
+				hAxis: {title: 'Episodes'},
+				vAxis: {title: 'Number of New Characters per Episode', viewWindow: {min: 0}},
+				legend: { position: 'none' },
+				width: 600,
+				height: 400
+			};
+
+			var chart = new google.visualization.LineChart(document.getElementById('new_characters_per_episode'));
+			chart.draw(data, options);
+		};
+
 		function drawCharactersPerEpisode() {
 			var data = new google.visualization.arrayToDataTable([
 				['Episode', 'Characters'], ['1-1', 29], ['1-2', 31], ['1-3', 39], ['1-4', 30], ['1-5', 34],
@@ -48,7 +101,7 @@
 				['4-4', 31], ['4-5', 24], ['4-6', 29], ['4-7', 35], ['4-8', 14], ['4-9', 34], ['4-10', 38],
 				['5-1', 38], ['5-2', 31], ['5-3', 38], ['5-4', 28], ['5-5', 26], ['5-6', 33], ['5-7', 15],
 				['5-8', 34], ['5-9', 37], ['5-10', 55]
-			]);
+				]);
 
 			var options = {
 				title: 'New Characters per Episode',
@@ -69,7 +122,7 @@
 				['Dead', -366, 129],
 				['Nobles', -629, 268],
 				['Peasants', -576, 473]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -92,7 +145,7 @@
 				['Castle', 109],
 				['Ruin', 22],
 				['Other', 68]
-			]);
+				]);
 
 			var view = new google.visualization.DataView(data);
 			view.setColumns([0, 1,
@@ -220,7 +273,7 @@
 				[98,1,0],
 				[99,0,0],
 				[100,0,0],
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -340,7 +393,7 @@
 				[98,1,0],
 				[99,0,0],
 				[100,0,0]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -369,7 +422,7 @@
 				['71-80',27],
 				['81-90',25],
 				['91-100',19]
-			]);
+				]);
 
 			var options = {
 				width: 600,
@@ -391,7 +444,7 @@
 				['Positive', 600000],
 				['Negative', 420000],
 				['Neutral', 1730000]
-			]);
+				]);
 
 			var options = {
 				title: 'Sentiment from 2.75 Million Crawled Tweets',
@@ -416,7 +469,7 @@
 				['Undefined', 9090],
 				['Italian', 7003],
 				['Welsh',6488]
-			]);
+				]);
 
 			var options = {
 				title: 'Top 10 Languages on Twitter',
@@ -432,7 +485,8 @@
 
 <body>
 	<div id="new_characters_introduced"></div>
-	<div id="characters_per_episode"></div>
+	<div id="all_characters_per_episode"></div>
+	<div id="new_characters_per_episode"></div>
 	<div id="dead_and_alive"></div>
 	<div id="map_analysis"></div>
 	<div id="location_popularity"></div>
