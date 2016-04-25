@@ -19,8 +19,7 @@
             console.log("Fetching " + regionName);
 
             var pageName = regionName.replace(/\s/g, "_");
-			
-            var scraper = require("./regions");
+
             var params = {
                 action: "parse",
                 page: pageName,
