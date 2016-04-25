@@ -42,13 +42,19 @@ Available Collections:
 *    'ages',
 *    'characters',
 *    'episodes',
-*    'cities',
-*    'continents',
+*    'cities', (uses 'data/cities.json')
+*    'continents', (uses 'data/continents.json')
 *    'cultures',
 *    'events',
 *    'houses',
 *    'regions',
-*    'characterLocations',
-*    'characterPaths',
-*    'characterImages'
-*    'characterPlods'
+*    'characterLocations', (requires cities collection to be filled)
+*    'characterPaths', (requires characters collection to be filled)
+*    'characterImages' (requires characters collection to be filled)
+*    'characterPlods' (requires characters collection to be filled)
+
+### Updating the pageRank of characters
+`x` is a placeholder for the file containing the pageRanks. (e.g. data/pageRanks.json)
+
+* Requirements: Characters and characterImages collections are up-to-date.
+* Run: `npm run updatePageRanks --update=characters --file=x`
