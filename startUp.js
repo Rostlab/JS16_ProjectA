@@ -158,10 +158,15 @@
 
                 //Character images
                 app.use('/misc/images/', express.static('misc/images'));
+                
+                // Service the favicon
+                app.get('/favicon.ico', function(req, res){
+                        res.sendFile(__base + 'apidoc/img/favicon.ico');
+                });
 
                 //Redirect to docs
                 app.get('*', function (req, res) {
-                    res.redirect('/doc');
+                    res.redirect('/doc/');
                 });
 
                 //Start listening for requests
