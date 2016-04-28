@@ -39,6 +39,14 @@ module.exports = function (app, router) {
     router.get('/characters/paths', characterPaths.getAll);
     router.get('/characters/paths/:name', characterPaths.getByName);
 
+    var characterNews = require(__appbase + 'controllers/characterNews');
+    router.post('/characters/news', characterNewsController.add);
+    router.get('characters/news', characterNewsController.getAll);
+    router.get('characters/news/:count', characterNewsController.getByCount);
+    router.get('characters/news/byName/:name', characterNewsController.getByName);
+    router.get('characters/news/bySlug/:slug', characterNewsController.getBySlug);
+    router.get('characters/news/byId/:id', characterNewsController.getById);
+
     var characterController = require(__appbase + 'controllers/character');
     router.post('/characters/find', characterController.get);
     router.get('/characters', characterController.getAll);
